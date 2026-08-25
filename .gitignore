@@ -1,0 +1,44 @@
+# Secrets — never commit. Only .env.example is tracked.
+.env
+*.pem
+
+# Runtime output
+output/
+!output/.gitkeep
+
+# Partial downloads. The pipeline confines its own downloads to output/work/,
+# but a bare `yt-dlp` run in the repo root leaves these behind and they are
+# large enough to be worth never committing by accident.
+*.part
+*.part-Frag*
+*.ytdl
+
+# Build metadata from `pip install -e .`
+*.egg-info/
+build/
+dist/
+
+# Caches
+.cache/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+__pycache__/
+*.py[cod]
+.coverage
+htmlcov/
+
+# Model weights / HF cache
+models/
+*.bin
+*.onnx
+
+# Environments
+.venv/
+venv/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

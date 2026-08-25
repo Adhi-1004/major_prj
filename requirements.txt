@@ -1,0 +1,56 @@
+# --- Core pipeline -----------------------------------------------------------
+# Pinned for the Reproducibility / Portability NFRs in docs/approach.md.
+
+# Ingestion
+yt-dlp==2026.8.19
+curl-cffi==0.16.1
+
+# ASR  (ctranslate2 is faster-whisper's backend; pinned so the CUDA ABI is stable)
+faster-whisper==1.2.1
+ctranslate2==4.8.1
+
+# CUDA compute libraries for ctranslate2. The NVIDIA *driver* is enough for
+# ctranslate2 to report a GPU, but not to run on it -- without these, inference
+# fails with "Library cublas64_12.dll is not found" and falls back to CPU.
+# Harmless on machines without a GPU; the pipeline degrades to CPU either way.
+# On Windows these DLLs are not on the default search path; see
+# infra/cuda_runtime.py, which puts them there.
+nvidia-cublas-cu12==12.9.2.10; platform_machine == "x86_64" or platform_machine == "AMD64"
+nvidia-cudnn-cu12==9.24.0.43; platform_machine == "x86_64" or platform_machine == "AMD64"
+
+# Diarization
+#   NOTE: pyannote.audio 4.x -> pipeline id is "pyannote/speaker-diarization-community-1"
+#   and the auth kwarg is `token=`, not the pre-4.x `use_auth_token=`.
+#   The pipeline is GATED: a valid HF_TOKEN is necessary but not sufficient, the
+#   repo's user conditions must also be accepted. See README.
+pyannote.audio==4.0.7
+
+# Torch: this pins the CPU build. For GPU, install first from the CUDA index:
+#   pip install torch torchaudio --index-url https://download.pytorch.org/whl/cu126
+# (verified working here as torch 2.13.0+cu126 on an RTX 4060)
+torch==2.13.0
+torchaudio==2.11.0
+
+# Matching
+rapidfuzz==3.14.5
+
+# Frame-exact decoding (PTS-based; see domain/timing.py invariant 2)
+av==18.1.0
+pillow==11.3.0
+
+# Declared explicitly because audio/waveform.py imports it directly. It also
+# arrives transitively via faster-whisper, but depending on that would make our
+# code break silently if that dependency ever changed.
+numpy==2.4.6
+
+# ASD transport (stubs are vendored pre-compiled; grpcio is still the runtime)
+grpcio==1.71.0
+protobuf==5.29.5
+
+# Config / API / logging
+pydantic==2.11.7
+pydantic-settings==2.10.1
+fastapi==0.116.1
+uvicorn[standard]==0.35.0
+structlog==25.4.0
+python-dotenv==1.1.1
