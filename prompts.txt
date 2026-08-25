@@ -1,0 +1,154 @@
+Design and Documentation Phase 
+
+- Prompt 1: [Attached the problem statement and gave my understanding to ai to validate and iterate on my rough approach/ flow] 
+Problem Statement: Find the Exact Frame Where a Dialogue Appears in a media URL
+You are given a video URL (for example, a YouTube video link or equivalent).
+At some point in the video, an on-screen dialogue appears. Your task is to build a program that
+can identify:
+1. The exact video frame in which the dialogue first appears, and
+2. The text contained in that dialogue.
+3. The actual dialogue: “My mind rebels at stagnation”
+Input
+Use this publicly accessible video URL: https://ok.ru/video/248244667877
+Output
+Your program should produce, at minimum:
+● The timestamp of the identified frame
+● The frame number, where applicable
+● The extracted dialogue text
+● The corresponding video frame as an image
+For example:
+Timestamp : HH:MM:SS.sss
+Frame : <Frame number>
+Text : "My mind rebels at stagnation"
+along with the corresponding image from the video.
+Requirements
+The solution should work without requiring the candidate/interviewer to manually inspect the
+video and identify the relevant portion.
+The approach should be reasonably robust to normal variations in video quality, resolution,
+frame rate, and the appearance of the dialogue.
+You may use AI/ML tools, libraries, APIs, or locally hosted models as part of your solution.
+
+See for this i saw the video and understood stuffs from it 
+What is thought is initially the user will have two choices to pass the url with dialogue or without dialogue and if the user gives it with the dialogue means i must return the frame no timestamp the extracted text dialogue and then the image of that frame where the dialogue comes as above or if the user doesnt give means returning all the on screen dialogues is best choice from the video
+Also on screen dialogue means the character when they are speaking that dialogue appears in the frame of camera on screen 
+On-screen dialogue refers to spoken words delivered by a character who is physically visible within the video frame at the exact moment they are speaking.
+
+Essential Conditions for On-Screen Dialogue [Researched and got it from searching on browser]
+
+To classify dialogue as on-screen, the scene must meet these specific conditions:
+
+Visual presence: The character's body or face is inside the camera frame.
+Sync accuracy: The mouth movements perfectly match the audio track.
+Camera alignment: The speaker is in the active, current shot.
+Real-time action: The speaking occurs during the live timeline of the scene.
+
+When to Label Dialogue as "On-Screen"
+
+You explicitly label or treat dialogue as on-screen in scripts and captions under these circumstances:
+Standard scenes: The camera focuses directly on the person talking.
+Mirror reflections: The character speaks while visible through a reflective surface.
+VFX screens: The character appears speaking via a live video call or television broadcast inside the scene.
+Cutaways: The camera stays on the speaker instead of cutting to the listener.
+When It is NOT On-Screen (The Contrast)
+
+Understanding the opposites helps clarify the definition:
+
+Off-Screen (O.S.): The character is in the room, but the camera is pointed at something else.
+Voice-Over (V.O.): The speaker is narrating from a different time or place, or it is a internal monologue.
+To help you apply this correctly, tell me how you plan to use this information:
+
+Other People in the Frame
+Background actors: Extras can walk, eat, or move around the scene.
+Reacting characters: Other main or supporting actors can be visible in the same shot, listening or reacting.
+Overlapping speakers: Multiple people can be on screen speaking simultaneously, such as in a chaotic argument.
+
+Other Audio Elements
+Diegetic sound: Real-world noises within the scene, like traffic, wind, or music playing from a radio.
+Non-diegetic sound: Elements added in post-production, like a dramatic musical score or sound effects.
+Cross-talk: Background chatter from crowds or other characters murmuring nearby.
+
+As long as the camera shows the specific person whose mouth is moving to deliver the specific lines of dialogue, it is legally on-screen dialogue.
+
+
+[My Rough Idea after reading the statement]
+Also there can be any video of any length and then this is onscreen dialogues and my task above i gave 
+for this i thought i can basically convert the entire video into text format and chunk is perfectly with llama index and whisper models kind of and then pass the entire chunked text thing which has the dialogue and the time frame it comes this entire thing is passed with the video to the visual langauge mode where we use lipsync blip kind of things to run the video and the text accordingly for the time frames and then decide the on screen dialogues la and then once they are decided that the dialogue is on screen we can have it stored and then return as per the user input 
+Basically as i said above the video and the text chunked thing will be fully given to the model and i must correctly identify the lip sync and stuffs inside open cv or someother modules and make sure that everything is accurate and gonna give me the result for on screen or not with proper sync between the video and the test thing 
+This synchronization logic must be perfectt and help me with thhis 
+also the text and video comparison or audio and video comparison which is feasible and efficient 
+but if the user gives the dialogue means we must be returning the first frame where that dialogue comes as onscreen dialogue la so we need not compute everythingg fulllyy till end instead we can check with the dialogue and return at first itselff
+Also when there is no dialogue we pass all the on screen dialogues as a json which can be show in ui like a dropdown or in a convinient way 
+IS the above things ok aask me some questions and also help me tackle those give me edge cases and assumptions and defending thing for those too make it very perfect
+
+- Prompt 2: nvidia has a active speaker detection model i can use that right just check and let me know.
+https://build.nvidia.com/nvidia/active-speaker-detection/api [Verified with AI and manually read the docs to confirm the usage]
+
+- Prompt 3: https://huggingface.co/nvidia/diar_sortformer_4spk-v1
+https://github.com/okankop/ASDNet
+https://github.com/pyannote/pyannote-audio
+
+these are also feasible to implement right and also verify this can be used for this. I read the docs and these feels aligned
+
+- Prompt 4: [Decision Making for Fallbacks] so asdnet can be kept as a fallbackk to nvidia right or what can be kept for asd like a open source tool to implement within this timeline.
+
+- Prompt 5: [Writing the documentation] I gave this initially itself but giving now for more easy finding 
+Problem Statement: Find the Exact Frame
+Where a Dialogue Appears in a media URL
+You are given a video URL (for example, a YouTube video link or equivalent).
+At some point in the video, an on-screen dialogue appears. Your task is to build a program that
+can identify:
+1. The exact video frame in which the dialogue first appears, and
+2. The text contained in that dialogue.
+3. The actual dialogue: “My mind rebels at stagnation”
+Input
+Use this publicly accessible video URL: https://ok.ru/video/248244667877
+Output
+Your program should produce, at minimum:
+● The timestamp of the identified frame
+● The frame number, where applicable
+● The extracted dialogue text
+● The corresponding video frame as an image
+For example:
+Timestamp : HH:MM:SS.sss
+Frame : <Frame number>
+Text : "My mind rebels at stagnation"
+along with the corresponding image from the video.
+Requirements
+The solution should work without requiring the candidate/interviewer to manually inspect the
+video and identify the relevant portion.
+The approach should be reasonably robust to normal variations in video quality, resolution,
+frame rate, and the appearance of the dialogue.
+You may use AI/ML tools, libraries, APIs, or locally hosted models as part of your solution.
+Evaluation
+
+I am gonna write the doc now make it perfectt like 
+This must have these sections:
+
+Problem - 1-2 paragraphs 
+Solution 
+Functional requirements 
+Non functional Requirements
+Additional requirements
+Scope of this document - whats this document gonna tell the readers
+3-4 Approaches with main as the recommended and other as fallback 1 and 2 and each and every approach must have whats this approach and why this and how will i do this and also the pros and cons and make it very perfect
+System architecture
+The user flow
+THe system flow
+Edge cases and handling - in table format
+Assumptions - in table format
+Customer Impact
+Novelty and USP as compared to existing solutions
+User installation setup and how to distribute this to the users
+References and links
+
+Make this very very perfect and clear and clean doc
+Include all the researches i did till now and how did i arrive at this and also make it very perfect and understandable in simple way
+
+- Prompt 6: [Designed Mermaid based diagrams for architecture and flow and verified the documentation and made some changes manually and pointed out for next iteration]
+I verified the documentation and there are some catches
+The additional requirements means additional features which can be done but are future scope
+Include phase wise development in this along with a proper timeline
+Make this perfectly
+
+
+Implementation Phase:
