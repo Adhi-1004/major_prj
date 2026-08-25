@@ -241,3 +241,25 @@ def test_satisfies_the_transcriber_port(tmp_path: Path, transcript: Transcript) 
     """The pipeline must not be able to tell it is talking to a cache."""
     cached = CachedTranscriber(CountingTranscriber(transcript), DiskCache(tmp_path))
     assert isinstance(cached, Transcriber)
+
+
+class TestFingerprintCoversDecodingConstants:
+    """Same audit as the diarization cache.
+
+    These parameters are pinned today, but if one is ever changed an existing
+    cache must not keep serving transcripts produced under the old setting.
+    """
+
+    def test_decoding_constants_appear_in_the_key(self) -> None:
+        from dialogue_extractor.config import constants
+
+        key = whisper_fingerprint("large-v3", "en", 5, "int8_float16")
+        assert f"temp={constants.WHISPER_TEMPERATURE}" in key
+        assert f"cond={constants.WHISPER_CONDITION_ON_PREVIOUS_TEXT}" in key
+
+    def test_compute_type_is_part_of_the_key(self) -> None:
+        """Quantization changes the transcript: the same audio gave 325 words at
+        int8 on CPU and 337 at int8_float16 on GPU."""
+        assert whisper_fingerprint("large-v3", "en", 5, "int8") != whisper_fingerprint(
+            "large-v3", "en", 5, "int8_float16"
+        )

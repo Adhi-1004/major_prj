@@ -162,8 +162,17 @@ class ASDUnavailableError(ASDError):
     """The endpoint could not be reached at all."""
 
 
+class ASDInvalidInputError(ASDError):
+    """The service rejected the input as malformed.
+
+    Covers anything the service will not accept -- container, codec, a truncated
+    or stub file. Distinct from MalformedDiarizationError so the message points
+    at the right thing: gRPC reports both as INVALID_ARGUMENT.
+    """
+
+
 class MalformedDiarizationError(ASDError):
-    """The service rejected our diarization payload."""
+    """The service rejected our diarization payload specifically."""
 
 
 class DiarizationDroppedError(ASDError):

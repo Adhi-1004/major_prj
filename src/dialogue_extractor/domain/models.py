@@ -170,16 +170,22 @@ class Face:
     """One detected face within one frame, as reported by the ASD service.
 
     `diarized_speaker_id` is the service echoing back which of *our* diarized
-    speakers it associated with this face. A null value on every face in a
-    response means our diarization payload was dropped -- see
-    DiarizationDroppedError.
+    speakers it associated with this face. It is an **integer**, not a label:
+    the proto field is an int32, and the documented JSON's string speaker ids
+    are converted on the way in. Translating it back to a label is what
+    SpeakerCodec is for.
+
+    None means no association. The wire cannot express that -- an unset int32
+    arrives as 0 -- so the provider normalizes 0 to None before constructing
+    this. A response in which *every* face is unassociated means the diarization
+    payload never reached the session; see DiarizationDroppedError.
     """
 
     face_id: int
     bbox: BoundingBox
     is_speaking: bool
     face_detection_confidence: float
-    diarized_speaker_id: str | None = None
+    diarized_speaker_id: int | None = None
 
 
 @dataclass(frozen=True, slots=True)

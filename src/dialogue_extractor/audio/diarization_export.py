@@ -24,6 +24,7 @@ Hence a dedicated module with its own tests, rather than an inline dict literal.
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 from typing import Any
 
 from dialogue_extractor.config.constants import UNASSIGNED_SPEAKER_ID
@@ -32,6 +33,81 @@ from dialogue_extractor.domain.models import Word
 SAMPLE_FORMAT = "sample"
 RIVA_FORMAT = "riva"
 
+UNASSIGNED_CODE = 0
+"""Integer this codec reserves for words diarization could not attribute.
+
+Note this is *our* convention on the way out, not the service's on the way back.
+The service signals "no association" with -1; zero is a perfectly ordinary
+speaker id to it. The two do not clash because this codec numbers real speakers
+from 1, so a returned 0 can only be our unattributed bucket -- and `decode`
+maps it to None because it was never registered as a label.
+"""
+
+
+@dataclass(frozen=True, slots=True)
+class SpeakerCodec:
+    r"""Bidirectional map between our speaker labels and the service's integers.
+
+    Needed because the wire protocol is not what the JSON example suggests. The
+    documented payload shows `"speaker_id": "speaker_0"`, but the proto field is
+    an **int32**, and the service's parser recovers it by running `\d+` over the
+    string. That has three consequences:
+
+      * A label with no digits raises. Our own unassigned placeholder,
+        "UNKNOWN", is exactly that -- and real output routinely contains
+        unattributed words, so every such request would fail.
+      * A label like "HOLMES" fails the same way, so any diarizer that names
+        speakers rather than numbering them is unusable.
+      * Responses come back carrying the *integer*, so comparing one directly
+        against "SPEAKER_03" can never match -- and that comparison is the
+        on-screen/off-screen check the whole system rests on.
+
+    So labels are assigned integers explicitly here, emitted in a form the
+    parser recovers exactly, and mapped back when the response arrives.
+    """
+
+    to_code: dict[str, int]
+    to_label: dict[int, str]
+
+    @classmethod
+    def from_words(cls, words: tuple[Word, ...]) -> SpeakerCodec:
+        """Build a codec covering every speaker present, in first-seen order.
+
+        First-seen rather than sorted, so the numbering is stable for a given
+        input regardless of how the labels happen to sort.
+        """
+        to_code: dict[str, int] = {}
+        to_label: dict[int, str] = {}
+        next_code = UNASSIGNED_CODE + 1
+
+        for word in words:
+            label = word.speaker_id
+            if label is None or label in to_code:
+                continue
+            to_code[label] = next_code
+            to_label[next_code] = label
+            next_code += 1
+
+        return cls(to_code=to_code, to_label=to_label)
+
+    def encode(self, label: str | None) -> int:
+        """Label to wire integer. Unknown labels fall back to the reserved code."""
+        if label is None:
+            return UNASSIGNED_CODE
+        return self.to_code.get(label, UNASSIGNED_CODE)
+
+    def decode(self, code: int) -> str | None:
+        """Wire integer back to our label, or None if it was unattributed."""
+        return self.to_label.get(code)
+
+    def wire_label(self, label: str | None) -> str:
+        r"""The string form emitted in the JSON payload.
+
+        `speaker_<n>` keeps the documented string shape while guaranteeing the
+        service's `\d+` extraction recovers exactly the integer we assigned.
+        """
+        return f"speaker_{self.encode(label)}"
+
 
 def to_nvidia_diarization(
     words: tuple[Word, ...],
@@ -39,6 +115,7 @@ def to_nvidia_diarization(
     language_code: str = "en-US",
     clip_start: float = 0.0,
     unassigned_speaker: str = UNASSIGNED_SPEAKER_ID,
+    codec: SpeakerCodec | None = None,
 ) -> dict[str, Any]:
     """Build the sample-format diarization payload.
 
@@ -66,7 +143,11 @@ def to_nvidia_diarization(
                 "text": word.text,
                 "start": max(0.0, start),
                 "end": max(0.0, end),
-                "speaker_id": word.speaker_id or unassigned_speaker,
+                "speaker_id": (
+                    codec.wire_label(word.speaker_id)
+                    if codec is not None
+                    else (word.speaker_id or unassigned_speaker)
+                ),
             }
         )
 

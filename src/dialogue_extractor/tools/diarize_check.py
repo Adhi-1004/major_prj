@@ -132,16 +132,24 @@ def main(argv: list[str] | None = None) -> int:
         aligned_path = args.out.with_name("aligned_transcript.json")
         aligned_path.write_text(
             json.dumps(
-                [
-                    {
-                        "text": w_.text,
-                        "start": w_.start,
-                        "end": w_.end,
-                        "probability": w_.probability,
-                        "speaker_id": w_.speaker_id,
-                    }
-                    for w_ in aligned
-                ],
+                {
+                    # Carried through explicitly: without it, a consumer has to
+                    # infer duration from the last word, which is short of the
+                    # real media length and would clamp a candidate window near
+                    # the end of the video too early.
+                    "language": transcript.language,
+                    "duration": transcript.duration,
+                    "words": [
+                        {
+                            "text": w_.text,
+                            "start": w_.start,
+                            "end": w_.end,
+                            "probability": w_.probability,
+                            "speaker_id": w_.speaker_id,
+                        }
+                        for w_ in aligned
+                    ],
+                },
                 indent=2,
             ),
             encoding="utf-8",

@@ -181,14 +181,20 @@ def run_ffmpeg(
     *,
     binary: str | None = None,
     timeout: float = DEFAULT_TIMEOUT,
+    loglevel: str = "error",
 ) -> str:
     """Run ffmpeg with `args`, returning stderr (where ffmpeg reports progress).
 
     Raises FFmpegError carrying the tail of stderr -- ffmpeg's own diagnostics
     are far more useful than a generic non-zero-exit message.
+
+    `loglevel` is a parameter because some filters *communicate through the
+    log*. `showinfo` writes its per-frame report at INFO level, so a hardcoded
+    "error" silently discards exactly the output the caller wanted -- and the
+    caller sees an empty result rather than a failure.
     """
     exe = resolve_binary("ffmpeg", binary)
-    cmd = [str(exe), "-hide_banner", "-loglevel", "error", "-y", *args]
+    cmd = [str(exe), "-hide_banner", "-loglevel", loglevel, "-y", *args]
     log.debug("ffmpeg.run", cmd=" ".join(cmd[:12]) + (" ..." if len(cmd) > 12 else ""))
     try:
         proc = _run_quiet(cmd, timeout=timeout)

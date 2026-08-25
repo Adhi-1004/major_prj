@@ -122,3 +122,43 @@ def test_null_cache_always_diarizes(tmp_path: Path, audio_file: Path) -> None:
 
 def test_satisfies_the_diarizer_port(tmp_path: Path) -> None:
     assert isinstance(CachedDiarizer(CountingDiarizer(), DiskCache(tmp_path)), Diarizer)
+
+
+class TestFingerprintCoversEveryOutputAffectingParameter:
+    """A config change that alters the stored turns must invalidate the cache.
+
+    The regression: the short-turn filter runs during extraction, so the cache
+    stores *filtered* turns -- but the threshold was not in the key. On any
+    machine that had already diarized, tuning it changed nothing, and the stage
+    kept serving the old unfiltered attribution while reporting success.
+    """
+
+    def test_min_turn_seconds_is_part_of_the_key(self) -> None:
+        assert pyannote_fingerprint("p", min_turn_seconds=0.25) != pyannote_fingerprint(
+            "p", min_turn_seconds=0.40
+        )
+
+    def test_changing_the_filter_invalidates_a_cached_result(
+        self, tmp_path: Path, audio_file: Path
+    ) -> None:
+        cache_dir = tmp_path / "cache"
+
+        first = CountingDiarizer()
+        CachedDiarizer(
+            first, DiskCache(cache_dir), fingerprint=pyannote_fingerprint("p", min_turn_seconds=0.0)
+        ).diarize(audio_file)
+
+        second = CountingDiarizer()
+        CachedDiarizer(
+            second,
+            DiskCache(cache_dir),
+            fingerprint=pyannote_fingerprint("p", min_turn_seconds=0.25),
+        ).diarize(audio_file)
+
+        assert second.calls == 1, "a filter change must not be served from cache"
+
+    def test_default_fingerprint_tracks_the_configured_constant(self) -> None:
+        """Guards against the constant and the key drifting apart."""
+        from dialogue_extractor.config import constants
+
+        assert f"min_turn={constants.MIN_SPEAKER_TURN_SECONDS}" in pyannote_fingerprint("p")

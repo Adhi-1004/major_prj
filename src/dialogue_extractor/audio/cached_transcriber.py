@@ -15,6 +15,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
+from dialogue_extractor.config import constants
 from dialogue_extractor.domain.models import Transcript, Word
 from dialogue_extractor.infra.disk_cache import make_key
 from dialogue_extractor.infra.logging import get_logger
@@ -114,6 +115,14 @@ def whisper_fingerprint(
     audio through the same model gave 325 words at int8 on CPU and 337 at
     int8_float16 on GPU. Serving one run's transcript to the other would quietly
     break the reproducibility the pinned decoding parameters exist to provide.
+
+    The decoding constants are included for the same reason: they are pinned
+    today, but if one is ever changed, an existing cache must not keep serving
+    transcripts produced under the old setting.
     """
-    parts = f"whisper|{model_size}|{language or 'auto'}|beam={beam_size}"
+    parts = (
+        f"whisper|{model_size}|{language or 'auto'}|beam={beam_size}"
+        f"|temp={constants.WHISPER_TEMPERATURE}"
+        f"|cond={constants.WHISPER_CONDITION_ON_PREVIOUS_TEXT}"
+    )
     return f"{parts}|{compute_type}" if compute_type else parts

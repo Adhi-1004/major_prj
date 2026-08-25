@@ -24,15 +24,33 @@ markers = [
 line-length = 100
 target-version = "py311"
 src = ["src", "tests"]
+# Vendored verbatim from NVIDIA-Maxine/nim-clients (see VENDORED.md). Kept
+# byte-identical to upstream so it stays diffable when they change it, which
+# means it is not ours to reformat.
+extend-exclude = ["src/dialogue_extractor/vision/providers/nim/"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
 ignore = ["B008"]
 
+[tool.ruff.lint.per-file-ignores]
+# RUF001/RUF002 flag "ambiguous" unicode characters -- curly quotes, en dashes,
+# non-breaking spaces. This module exists precisely to fold those into their
+# ASCII equivalents, so it has to name them literally.
+"src/dialogue_extractor/matching/text_normalizer.py" = ["RUF001", "RUF002"]
+# Tests assert that curly and straight forms normalize identically, so they
+# must contain both.
+"tests/unit/matching/test_text_normalizer.py" = ["RUF001", "RUF002"]
+
 [tool.mypy]
 python_version = "3.11"
 files = ["src/dialogue_extractor"]
 ignore_missing_imports = true
+exclude = ["src/dialogue_extractor/vision/providers/nim/"]
+
+[[tool.mypy.overrides]]
+module = "dialogue_extractor.vision.providers.nim.*"
+ignore_errors = true
 
 # The pure core carries the subtle logic; hold it to a stricter standard.
 [[tool.mypy.overrides]]
@@ -49,3 +67,4 @@ warn_return_any = true
 [tool.coverage.run]
 source = ["src/dialogue_extractor"]
 branch = true
+omit = ["src/dialogue_extractor/vision/providers/nim/*"]

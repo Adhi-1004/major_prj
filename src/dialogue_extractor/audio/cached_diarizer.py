@@ -10,6 +10,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from dialogue_extractor.audio.pyannote_diarizer import turns_from_dict, turns_to_dict
+from dialogue_extractor.config.constants import MIN_SPEAKER_TURN_SECONDS
 from dialogue_extractor.domain.models import SpeakerTurn
 from dialogue_extractor.infra.disk_cache import make_key
 from dialogue_extractor.infra.logging import get_logger
@@ -54,12 +55,19 @@ def pyannote_fingerprint(
     num_speakers: int | None = None,
     min_speakers: int | None = None,
     max_speakers: int | None = None,
+    min_turn_seconds: float = MIN_SPEAKER_TURN_SECONDS,
 ) -> str:
     """Config fingerprint for the cache key.
 
-    Speaker-count hints change the segmentation, so a run that pinned two
-    speakers must not be served to one that lets pyannote estimate.
+    Every parameter that changes the stored turns belongs here, or a config
+    change is silently ignored on any machine that ran the stage before it.
+
+    `min_turn_seconds` is included because the short-turn filter runs during
+    extraction, so the cache stores *filtered* turns. Omitting it meant tuning
+    the threshold had no effect on an existing cache -- the very fix it was
+    added for kept reporting the old, unfiltered attribution.
     """
     return (
-        f"pyannote|{pipeline_name}|n={num_speakers}|min={min_speakers}|max={max_speakers}"
+        f"pyannote|{pipeline_name}|n={num_speakers}|min={min_speakers}"
+        f"|max={max_speakers}|min_turn={min_turn_seconds}"
     )

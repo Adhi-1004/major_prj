@@ -28,7 +28,7 @@ def make_face(
     face_id: int = 1,
     speaking: bool = True,
     conf: float = 0.9,
-    speaker: str | None = "SPEAKER_00",
+    speaker: int | None = 1,
 ) -> Face:
     return Face(
         face_id=face_id,
@@ -122,7 +122,7 @@ class TestASDResult:
     def test_one_populated_speaker_id_is_enough(self) -> None:
         frames = (
             ASDFrame(0, (make_face(speaker=None),)),
-            ASDFrame(1, (make_face(speaker="SPEAKER_01"),)),
+            ASDFrame(1, (make_face(speaker=2),)),
         )
         result = ASDResult(frames, clip_start_frame=0, fps=25.0, provider="nvidia")
         assert result.any_speaker_id_present is True
