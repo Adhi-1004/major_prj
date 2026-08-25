@@ -22,7 +22,7 @@ from typing import Any
 import pytest
 
 from dialogue_extractor.audio.diarization_export import SpeakerCodec, to_nvidia_diarization
-from dialogue_extractor.domain.errors import ASDAuthError, ASDError, DiarizationDroppedError
+from dialogue_extractor.domain.errors import ASDAuthError, ASDError
 from dialogue_extractor.domain.models import Word
 from dialogue_extractor.vision.providers.nvidia_asd import NvidiaASDProvider
 
@@ -247,18 +247,48 @@ class TestOrderingObservedByTheServer:
         assert servicer.metadata["function-id"] == "fid-9"
 
 
-class TestDiarizationDroppedIsRefused:
-    def test_response_with_no_speaker_association_raises(
+class TestUnassociatedFacesAreNotAnError:
+    """A window where every face carries -1 flows through as a normal result.
+
+    -1 is the documented "tracked but unassigned" state, so a whole window of
+    them means the visible faces matched none of the diarized audio -- the
+    ordinary signal for dialogue spoken off camera. Raising here would turn the
+    system's core answer into an error, and briefly did: a real discovery run
+    reported `diarization_dropped` for a line whose speaker was simply not in
+    shot. The systematic version of the check lives at session level.
+    """
+
+    def test_the_response_is_returned_not_raised(
         self, stub_server, clip_and_payload
     ) -> None:  # type: ignore[no-untyped-def]
-        """The silent-wrong-answer case: ordinary-looking detections carrying no
-        speaker association at all."""
+        from dialogue_extractor.vision.providers.nvidia_asd import (
+            lacks_speaker_association,
+        )
+
         clip, audio, payload = clip_and_payload
         target = stub_server(RecordingServicer(frames=5, speaker_id=-1))
 
         provider = InsecureProvider(api_key="k", function_id="f", target=target)
-        with pytest.raises(DiarizationDroppedError):
-            provider.detect(clip, audio, payload, 0, 25.0)
+        result = provider.detect(clip, audio, payload, 0, 25.0)
+
+        assert len(result.frames) == 5
+        assert lacks_speaker_association(result) is True
+
+    def test_frame_selection_reports_it_as_not_on_screen(
+        self, stub_server, clip_and_payload
+    ) -> None:  # type: ignore[no-untyped-def]
+        """The honest answer, which is what the caller needs."""
+        from dialogue_extractor.vision.frame_selector import select_frame
+
+        clip, audio, payload = clip_and_payload
+        target = stub_server(RecordingServicer(frames=20, speaker_id=-1))
+
+        provider = InsecureProvider(api_key="k", function_id="f", target=target)
+        result = provider.detect(clip, audio, payload, 0, 25.0)
+
+        outcome = select_frame(result, speaker_code=1)
+        assert not outcome.found
+        assert outcome.reason is not None
 
 
 class TestServerErrors:

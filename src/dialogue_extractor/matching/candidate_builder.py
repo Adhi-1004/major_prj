@@ -17,7 +17,9 @@ The two modes differ only in where candidates come from:
 from __future__ import annotations
 
 from dialogue_extractor.config.constants import (
+    ASD_MIN_CLIP_SECONDS,
     CHUNK_MAX_SECONDS,
+    FRAGMENT_MERGE_GAP,
     WINDOW_PAD_SECONDS,
 )
 from dialogue_extractor.domain.enums import Mode
@@ -32,6 +34,7 @@ def candidates_from_matches(
     *,
     pad: float = WINDOW_PAD_SECONDS,
     max_seconds: float = CHUNK_MAX_SECONDS,
+    min_seconds: float = ASD_MIN_CLIP_SECONDS,
 ) -> tuple[Candidate, ...]:
     """Mode A: one padded window per match, in chronological order.
 
@@ -44,6 +47,7 @@ def candidates_from_matches(
 
     for match in matches:
         start, end = pad_window(match.start, match.end, pad, duration)
+        start, end = ensure_min_duration(start, end, duration, minimum=min_seconds)
         start, end = _clamp_length(
             start, end, max_seconds, duration,
             core_start=match.start, core_end=match.end,
@@ -70,6 +74,8 @@ def candidates_from_segments(
     *,
     pad: float = 0.0,
     max_seconds: float = CHUNK_MAX_SECONDS,
+    min_seconds: float = ASD_MIN_CLIP_SECONDS,
+    absorb_fragments: bool = True,
 ) -> tuple[Candidate, ...]:
     """Mode B: every segment, with adjacent same-speaker segments merged.
 
@@ -84,6 +90,11 @@ def candidates_from_segments(
     """
     if not segments:
         return ()
+
+    if absorb_fragments:
+        segments = absorb_unattributed_fragments(segments)
+        if not segments:
+            return ()
 
     merged: list[list[SpeechSegment]] = [[segments[0]]]
 
@@ -104,6 +115,7 @@ def candidates_from_segments(
             continue
 
         start, end = pad_window(group[0].start, group[-1].end, pad, duration)
+        start, end = ensure_min_duration(start, end, duration, minimum=min_seconds)
         start, end = _clamp_length(
             start, end, max_seconds, duration,
             core_start=group[0].start, core_end=group[-1].end,
@@ -122,6 +134,106 @@ def candidates_from_segments(
         )
 
     return _deduplicate(candidates)
+
+
+def ensure_min_duration(
+    start: float,
+    end: float,
+    duration: float,
+    *,
+    minimum: float = ASD_MIN_CLIP_SECONDS,
+) -> tuple[float, float]:
+    """Widen a window to at least `minimum` seconds, centred on its content.
+
+    The detection service returns *zero frames* for a clip below roughly three
+    seconds -- see ASD_MIN_CLIP_SECONDS. It does not complain; it simply gives
+    nothing back, which is indistinguishable from "nobody was on screen".
+
+    Widening rather than discarding, because a short line is still dialogue
+    someone might search for. Growth is symmetric so the utterance keeps its
+    place in the middle, and falls back to one-sided growth at the boundaries
+    of the video rather than giving up.
+    """
+    span = end - start
+    if span >= minimum or duration <= 0:
+        return start, end
+
+    if duration <= minimum:
+        # The whole video is shorter than the floor; send all of it.
+        return 0.0, duration
+
+    needed = minimum - span
+    new_start = max(0.0, start - needed / 2.0)
+    new_end = min(duration, new_start + minimum)
+    # Running into the end pushes the start back instead of returning short.
+    new_start = max(0.0, new_end - minimum)
+    return new_start, new_end
+
+
+def absorb_unattributed_fragments(
+    segments: tuple[SpeechSegment, ...],
+    *,
+    max_gap: float = FRAGMENT_MERGE_GAP,
+) -> tuple[SpeechSegment, ...]:
+    """Fold speaker-less single-word fragments into the neighbour they belong to.
+
+    Diarization strands words at utterance boundaries: "Tell" sits immediately
+    before "me, Doctor, as a medical man...", with no gap and no speaker. Left
+    alone it becomes its own candidate -- one that costs a request and has no
+    speaker to cross-check against, so its result can never be more than
+    unverified.
+
+    Only a *zero-gap* neighbour absorbs it. A fragment genuinely isolated in
+    time keeps its own candidate: assigning it a speaker on proximity alone
+    would be a guess, and this stage exists to avoid guesses.
+    """
+    if not segments:
+        return ()
+
+    result: list[SpeechSegment] = []
+
+    for segment in segments:
+        is_fragment = segment.speaker_id is None and len(segment.words) <= 1
+
+        if is_fragment and result:
+            previous = result[-1]
+            if previous.speaker_id is not None and (segment.start - previous.end) <= max_gap:
+                result[-1] = SpeechSegment(
+                    words=previous.words + segment.words,
+                    speaker_id=previous.speaker_id,
+                )
+                continue
+
+        result.append(segment)
+
+    # A fragment can also lead into the utterance it belongs to, which the
+    # backward pass above cannot see.
+    merged: list[SpeechSegment] = []
+    index = 0
+    while index < len(result):
+        segment = result[index]
+        is_fragment = segment.speaker_id is None and len(segment.words) <= 1
+        following = result[index + 1] if index + 1 < len(result) else None
+
+        if (
+            is_fragment
+            and following is not None
+            and following.speaker_id is not None
+            and (following.start - segment.end) <= max_gap
+        ):
+            merged.append(
+                SpeechSegment(
+                    words=segment.words + following.words,
+                    speaker_id=following.speaker_id,
+                )
+            )
+            index += 2
+            continue
+
+        merged.append(segment)
+        index += 1
+
+    return tuple(merged)
 
 
 def _clamp_length(

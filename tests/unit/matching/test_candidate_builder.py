@@ -55,11 +55,83 @@ class TestModeAPadding:
         candidates = candidates_from_matches(find_matches(words, TARGET), DURATION, pad=1.5)
         assert candidates[0].end <= DURATION
 
-    def test_zero_padding_is_the_bare_match(self) -> None:
+    def test_zero_padding_with_the_floor_disabled_is_the_bare_match(self) -> None:
         words = phrase("my mind rebels at stagnation", start=100.0)
         matches = find_matches(words, TARGET)
-        candidate = candidates_from_matches(matches, DURATION, pad=0.0)[0]
+        candidate = candidates_from_matches(
+            matches, DURATION, pad=0.0, min_seconds=0.0
+        )[0]
         assert candidate.start == pytest.approx(matches[0].start)
+
+    def test_the_minimum_clip_floor_overrides_zero_padding(self) -> None:
+        """The service returns zero frames below ~3s, so a bare match would be
+        a wasted request that looks like "nobody was on screen"."""
+        words = phrase("my mind rebels at stagnation", start=100.0)
+        candidate = candidates_from_matches(
+            find_matches(words, TARGET), DURATION, pad=0.0, min_seconds=3.5
+        )[0]
+        assert candidate.duration >= 3.5
+
+
+class TestMinimumClipLength:
+    """Measured against the live service: below roughly three seconds it
+    returns nothing at all, without reporting an error."""
+
+    def test_a_short_line_is_widened_not_dropped(self) -> None:
+        """"Yes." is real dialogue someone might search for."""
+        words = phrase("yes", start=100.0)
+        candidates = candidates_from_matches(
+            find_matches(words, "yes"), DURATION, pad=0.0, min_seconds=3.5
+        )
+        assert candidates
+        assert candidates[0].duration >= 3.5
+
+    def test_widening_is_centred_on_the_utterance(self) -> None:
+        words = phrase("yes", start=100.0)
+        matches = find_matches(words, "yes")
+        candidate = candidates_from_matches(
+            matches, DURATION, pad=0.0, min_seconds=3.5
+        )[0]
+        assert candidate.start < matches[0].start
+        assert candidate.end > matches[0].end
+
+    def test_a_line_at_the_very_start_grows_forwards(self) -> None:
+        """Symmetric growth would produce a negative start."""
+        words = phrase("yes", start=0.1)
+        candidate = candidates_from_matches(
+            find_matches(words, "yes"), DURATION, pad=0.0, min_seconds=3.5
+        )[0]
+        assert candidate.start == 0.0
+        assert candidate.duration >= 3.5
+
+    def test_a_line_at_the_very_end_grows_backwards(self) -> None:
+        words = phrase("yes", start=DURATION - 0.5)
+        candidate = candidates_from_matches(
+            find_matches(words, "yes"), DURATION, pad=0.0, min_seconds=3.5
+        )[0]
+        assert candidate.end <= DURATION
+        assert candidate.duration >= 3.5
+
+    def test_a_video_shorter_than_the_floor_is_sent_whole(self) -> None:
+        words = phrase("yes", start=0.5)
+        candidate = candidates_from_matches(
+            find_matches(words, "yes"), 2.0, pad=0.0, min_seconds=3.5
+        )[0]
+        assert candidate.start == 0.0
+        assert candidate.end == pytest.approx(2.0)
+
+    def test_an_already_long_window_is_untouched(self) -> None:
+        words = phrase("my mind rebels at stagnation", start=100.0)
+        matches = find_matches(words, TARGET)
+        with_floor = candidates_from_matches(matches, DURATION, pad=5.0, min_seconds=3.5)[0]
+        without = candidates_from_matches(matches, DURATION, pad=5.0, min_seconds=0.0)[0]
+        assert with_floor.start == pytest.approx(without.start)
+        assert with_floor.end == pytest.approx(without.end)
+
+    def test_discovery_candidates_also_clear_the_floor(self) -> None:
+        segments = (segment("yes", 10.0, speaker="SPEAKER_00"),)
+        candidates = candidates_from_segments(segments, DURATION, min_seconds=3.5)
+        assert candidates[0].duration >= 3.5
 
 
 class TestModeAMetadata:
@@ -311,3 +383,116 @@ class TestDeterminism:
         assert [(c.start, c.end, c.speaker_id) for c in first] == [
             (c.start, c.end, c.speaker_id) for c in second
         ]
+
+
+class TestFragmentAbsorption:
+    """Diarization strands single words at utterance boundaries.
+
+    Observed on real output: "Tell" immediately before "me, Doctor, as a
+    medical man...", with no gap and no speaker. Left alone it becomes its own
+    candidate -- one that costs a request and has no speaker to cross-check
+    against, so its result can never be better than unverified.
+    """
+
+    def test_a_leading_fragment_joins_the_line_it_starts(self) -> None:
+        from dialogue_extractor.matching.candidate_builder import (
+            absorb_unattributed_fragments,
+        )
+
+        fragment = SpeechSegment(
+            words=(Word("Tell", 45.53, 45.93, speaker_id=None),), speaker_id=None
+        )
+        utterance = segment("me Doctor as a medical man", 45.93, speaker="SPEAKER_04")
+
+        merged = absorb_unattributed_fragments((fragment, utterance))
+        assert len(merged) == 1
+        assert merged[0].speaker_id == "SPEAKER_04"
+        assert merged[0].text.startswith("Tell me Doctor")
+
+    def test_a_trailing_fragment_joins_the_line_it_ends(self) -> None:
+        from dialogue_extractor.matching.candidate_builder import (
+            absorb_unattributed_fragments,
+        )
+
+        utterance = segment("how much Ive enjoyed", 60.0, gap=0.3, speaker="SPEAKER_04")
+        fragment = SpeechSegment(
+            words=(Word("it.", utterance.end, utterance.end + 0.12, speaker_id=None),),
+            speaker_id=None,
+        )
+
+        merged = absorb_unattributed_fragments((utterance, fragment))
+        assert len(merged) == 1
+        assert merged[0].text.endswith("it.")
+
+    def test_an_isolated_fragment_keeps_its_own_candidate(self) -> None:
+        """Assigning a speaker on proximity alone would be a guess, and this
+        stage exists to avoid guesses."""
+        from dialogue_extractor.matching.candidate_builder import (
+            absorb_unattributed_fragments,
+        )
+
+        fragment = SpeechSegment(
+            words=(Word("Got", 87.9, 88.3, speaker_id=None),), speaker_id=None
+        )
+        distant = segment("some flowers for you", 101.1, speaker="SPEAKER_02")
+
+        merged = absorb_unattributed_fragments((fragment, distant))
+        assert len(merged) == 2
+        assert merged[0].speaker_id is None
+
+    def test_a_multi_word_unattributed_segment_is_left_alone(self) -> None:
+        """Several words together are an utterance, not a boundary artifact."""
+        from dialogue_extractor.matching.candidate_builder import (
+            absorb_unattributed_fragments,
+        )
+
+        run = SpeechSegment(
+            words=(
+                Word("something", 10.0, 10.4, speaker_id=None),
+                Word("longer", 10.4, 10.8, speaker_id=None),
+                Word("here", 10.8, 11.2, speaker_id=None),
+            ),
+            speaker_id=None,
+        )
+        neighbour = segment("and then this", 11.2, speaker="SPEAKER_00")
+
+        merged = absorb_unattributed_fragments((run, neighbour))
+        assert len(merged) == 2
+
+    def test_no_words_are_lost(self) -> None:
+        from dialogue_extractor.matching.candidate_builder import (
+            absorb_unattributed_fragments,
+        )
+
+        segments = (
+            SpeechSegment(words=(Word("Tell", 45.53, 45.93),), speaker_id=None),
+            segment("me Doctor", 45.93, speaker="SPEAKER_04"),
+            SpeechSegment(words=(Word("Got", 87.9, 88.3),), speaker_id=None),
+            segment("some flowers", 101.1, speaker="SPEAKER_02"),
+        )
+        merged = absorb_unattributed_fragments(segments)
+        assert sum(len(s.words) for s in merged) == sum(len(s.words) for s in segments)
+
+    def test_absorption_reduces_the_candidate_count(self) -> None:
+        segments = (
+            SpeechSegment(words=(Word("Tell", 45.53, 45.93),), speaker_id=None),
+            segment("me Doctor as a medical man", 45.93, speaker="SPEAKER_04"),
+        )
+        with_absorb = candidates_from_segments(segments, DURATION, absorb_fragments=True)
+        without = candidates_from_segments(segments, DURATION, absorb_fragments=False)
+        assert len(with_absorb) < len(without)
+
+    def test_absorption_gives_the_fragment_a_speaker_to_check_against(self) -> None:
+        segments = (
+            SpeechSegment(words=(Word("Tell", 45.53, 45.93),), speaker_id=None),
+            segment("me Doctor as a medical man", 45.93, speaker="SPEAKER_04"),
+        )
+        candidate = candidates_from_segments(segments, DURATION)[0]
+        assert candidate.speaker_id == "SPEAKER_04"
+
+    def test_empty_input(self) -> None:
+        from dialogue_extractor.matching.candidate_builder import (
+            absorb_unattributed_fragments,
+        )
+
+        assert absorb_unattributed_fragments(()) == ()

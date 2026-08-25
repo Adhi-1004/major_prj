@@ -431,31 +431,57 @@ class NvidiaASDProvider(ASDProvider):
         result = map_response_frames(
             frame_detections, clip_start_frame, fps, provider=self.name
         )
-        _assert_diarization_was_used(result)
+        if result.any_face_detected and not result.any_speaker_id_present:
+            # Not an error. Every face carrying -1 means the service tracked
+            # faces but matched none of them to the diarized audio -- which is
+            # precisely the off-camera case this system exists to detect. It
+            # flows on to frame selection, which reports it as not-on-screen
+            # with a reason.
+            log.debug(
+                "asd.no_speaker_association",
+                clip=clip_path.name,
+                frames=len(result.frames),
+            )
         return result
 
 
-def _assert_diarization_was_used(result: ASDResult) -> None:
-    """Refuse a response that shows diarization was dropped.
+def lacks_speaker_association(result: ASDResult) -> bool:
+    """True when faces were tracked but none matched a diarized speaker.
 
-    A session whose first inference request lacked diarization is treated as
-    having none, and the service then returns results with no speaker
-    association rather than an error. Those results look perfectly ordinary --
-    faces, confidences, is_speaking flags -- but the one thing the pipeline
-    needs from them, *which* speaker each face corresponds to, is absent. Better
-    to fail loudly than to answer confidently from it.
+    On its own this is *not* a failure. A face carrying -1 is the documented
+    "tracked but unassigned" state, and a whole window of them is the ordinary
+    signal for dialogue spoken off camera -- the thing this system is built to
+    identify. Raising here would turn the system's core answer into an error.
+
+    It only means something is wrong when it holds for *every* window in a run;
+    see `assert_diarization_reached_service`.
     """
-    if not result.any_face_detected:
-        return  # No faces at all is a legitimate outcome, handled downstream.
-    if result.any_speaker_id_present:
+    return result.any_face_detected and not result.any_speaker_id_present
+
+
+def assert_diarization_reached_service(
+    unassociated: int, processed: int, *, minimum_sample: int = 3
+) -> None:
+    """Raise when a whole run shows no speaker association anywhere.
+
+    This is the session-level version of the check, and it is the level the
+    problem actually lives at. A session whose first inference request lacked
+    diarization is treated as having none for its entire duration -- so the
+    symptom is systematic, not per-window.
+
+    Requiring a minimum sample keeps it from firing on a short run that happens
+    to contain only off-camera dialogue, which is a legitimate answer.
+    """
+    if processed < minimum_sample or unassociated < processed:
         return
 
     raise DiarizationDroppedError(
         "diarization_dropped",
-        "The service returned face detections with no speaker association at all, "
-        "which means the diarization payload was not applied to the session.",
+        f"All {processed} windows came back with no speaker association at all. "
+        "One such window is ordinary -- it means the speaker was off camera -- "
+        "but every window means the diarization payload never reached the service.",
         remediation=(
-            "Diarization must reach the service before the first inference request. "
-            "This is a bug in request ordering, not a configuration problem."
+            "Diarization must be sent before the first inference request. This "
+            "points at request ordering, not at configuration."
         ),
     )

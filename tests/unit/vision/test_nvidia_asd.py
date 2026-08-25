@@ -24,8 +24,9 @@ from dialogue_extractor.domain.errors import (
 )
 from dialogue_extractor.vision.providers.nvidia_asd import (
     NvidiaASDProvider,
-    _assert_diarization_was_used,
+    assert_diarization_reached_service,
     classify_grpc_error,
+    lacks_speaker_association,
     map_response_frames,
     read_file_chunks,
 )
@@ -128,31 +129,67 @@ class TestFrameOffsetInvariant:
         assert result.frames[0].frame_id == 7
 
 
-class TestDiarizationDroppedGuard:
-    """A session whose first inference request lacked diarization is treated as
-    having none, and the service then returns ordinary-looking results with no
-    speaker association rather than an error."""
+class TestNoSpeakerAssociation:
+    """A window where every face carries -1 is *not* a failure.
 
-    def test_raises_when_no_face_has_a_speaker(self) -> None:
+    -1 is the documented "tracked but unassigned" state. A whole window of them
+    means the visible faces matched none of the diarized audio -- which is the
+    ordinary signal for dialogue spoken off camera, the very thing this system
+    exists to identify. Raising here would turn the system's core answer into
+    an error, and it did: a real discovery run reported `diarization_dropped`
+    for a line whose speaker was simply not in shot.
+    """
+
+    def test_detects_the_condition(self) -> None:
         result = map_response_frames(
-            {0: [face_dict(speaker=None)], 1: [face_dict(speaker=None)]}, 0, 25.0
+            {0: [face_dict(speaker=-1)], 1: [face_dict(speaker=-1)]}, 0, 25.0
         )
+        assert lacks_speaker_association(result) is True
+
+    def test_one_associated_face_is_enough_to_clear_it(self) -> None:
+        result = map_response_frames(
+            {0: [face_dict(speaker=-1)], 1: [face_dict(speaker=2)]}, 0, 25.0
+        )
+        assert lacks_speaker_association(result) is False
+
+    def test_no_faces_at_all_is_not_the_same_condition(self) -> None:
+        assert lacks_speaker_association(map_response_frames({0: [], 1: []}, 0, 25.0)) is False
+
+    def test_empty_response(self) -> None:
+        assert lacks_speaker_association(map_response_frames({}, 0, 25.0)) is False
+
+
+class TestSessionLevelDiarizationGuard:
+    """The failure this guards against is systematic by nature: a session whose
+    first request lacked diarization has none for its whole duration. Checking
+    per-window cannot distinguish it from one off-camera line."""
+
+    def test_every_window_unassociated_raises(self) -> None:
         with pytest.raises(DiarizationDroppedError) as excinfo:
-            _assert_diarization_was_used(result)
+            assert_diarization_reached_service(unassociated=8, processed=8)
         assert excinfo.value.reason == "diarization_dropped"
 
-    def test_one_associated_face_is_enough(self) -> None:
-        result = map_response_frames(
-            {0: [face_dict(speaker=None)], 1: [face_dict(speaker=2)]}, 0, 25.0
-        )
-        _assert_diarization_was_used(result)  # must not raise
+    def test_one_unassociated_window_among_many_is_fine(self) -> None:
+        """The real observed case: 1 of 8 windows had no association because
+        that speaker was off camera."""
+        assert_diarization_reached_service(unassociated=1, processed=8)
 
-    def test_no_faces_at_all_is_a_legitimate_outcome(self) -> None:
-        """A window with nobody on screen is a real answer, not a failure."""
-        _assert_diarization_was_used(map_response_frames({0: [], 1: []}, 0, 25.0))
+    def test_most_but_not_all_is_fine(self) -> None:
+        assert_diarization_reached_service(unassociated=7, processed=8)
 
-    def test_empty_response_is_not_treated_as_dropped(self) -> None:
-        _assert_diarization_was_used(map_response_frames({}, 0, 25.0))
+    def test_a_short_run_is_not_enough_evidence(self) -> None:
+        """A one-candidate run of genuinely off-camera dialogue must not be
+        reported as a plumbing failure."""
+        assert_diarization_reached_service(unassociated=1, processed=1)
+        assert_diarization_reached_service(unassociated=2, processed=2)
+
+    def test_the_message_distinguishes_the_two_cases(self) -> None:
+        with pytest.raises(DiarizationDroppedError) as excinfo:
+            assert_diarization_reached_service(unassociated=5, processed=5)
+        assert "off camera" in excinfo.value.detail
+
+    def test_nothing_processed(self) -> None:
+        assert_diarization_reached_service(unassociated=0, processed=0)
 
 
 class TestGrpcErrorClassification:
@@ -433,18 +470,17 @@ class TestWireSpeakerIdSentinel:
         assert faces[1].is_speaking is True
 
     def test_a_zero_speaker_counts_as_association(self) -> None:
-        """So the dropped-diarization guard must not fire on it."""
+        """So it must not be mistaken for an unassociated window."""
         result = map_response_frames({0: [face_dict(speaker=0)]}, 0, 25.0)
         assert result.any_speaker_id_present is True
-        _assert_diarization_was_used(result)  # must not raise
+        assert lacks_speaker_association(result) is False
 
-    def test_all_negative_still_trips_the_guard(self) -> None:
+    def test_all_negative_reads_as_unassociated(self) -> None:
         result = map_response_frames(
             {0: [face_dict(speaker=-1)], 1: [face_dict(speaker=-1)]}, 0, 25.0
         )
         assert result.any_speaker_id_present is False
-        with pytest.raises(DiarizationDroppedError):
-            _assert_diarization_was_used(result)
+        assert lacks_speaker_association(result) is True
 
     def test_non_numeric_speaker_id_degrades_to_none(self) -> None:
         result = map_response_frames({0: [face_dict(speaker="bogus")]}, 0, 25.0)  # type: ignore[arg-type]

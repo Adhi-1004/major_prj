@@ -108,6 +108,44 @@ MAX_CLIP_HEIGHT: Final[int] = 720
 """Clips are downscaled before upload. Keeps requests small; face detection
 does not benefit from more."""
 
+ASD_MIN_CLIP_SECONDS: Final[float] = 3.5
+"""Shortest clip worth sending to the detection service.
+
+Measured, not guessed. The hosted service accepts a shorter clip without
+complaint and returns **zero frames** -- a wasted round-trip that looks exactly
+like "nobody was on screen". Probing a window known to contain a visible
+speaker, trimmed to varying lengths:
+
+    0.12s -> 0 frames        2.60s -> 0 frames
+    0.40s -> 0 frames        2.75s -> 0 frames
+    1.00s -> 0 frames        2.90s -> 0 frames
+    2.00s -> 0 frames        3.00s -> 72 frames
+    2.50s -> 0 frames        4.90s -> 118 frames
+
+72 frames is exactly 3.0s at this video's rate, so the floor looks like an
+internal context window rather than a duration check. 3.5s leaves margin.
+
+Short candidates are therefore **padded up to this length, not discarded**. A
+one-word line is still real dialogue -- "Yes." is something someone might
+search for -- it simply needs surrounding footage for the detector to work
+with. On the sample video 23 of 37 discovery candidates fell below the floor;
+without padding, every one of them would have come back empty.
+"""
+
+FRAGMENT_MERGE_GAP: Final[float] = 0.05
+"""Silence below which an unattributed fragment is treated as part of its neighbour.
+
+Diarization leaves single words stranded at utterance boundaries -- "Tell"
+immediately before "me, Doctor, as a medical man..." with no gap at all. Those
+are segmentation artifacts, not separate utterances, and verifying them
+separately costs a request while producing a candidate with no speaker to
+cross-check against.
+
+Only *zero-gap* neighbours are absorbed. A fragment genuinely isolated in time
+keeps its own candidate, because assigning it a speaker on proximity alone
+would be a guess.
+"""
+
 
 # --- Active speaker detection ------------------------------------------------
 
