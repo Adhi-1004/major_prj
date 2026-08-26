@@ -1,0 +1,43 @@
+# Secrets first. .env holds a real API key and a real HF token; copying it into
+# a layer would bake both into the image, where `docker history` can read them
+# and any push publishes them.
+.env
+.env.*
+!.env.example
+
+# Build context weight. .venv alone is several gigabytes and would be useless in
+# the image anyway -- the runtime builds its own from requirements.txt.
+.venv/
+venv/
+**/__pycache__/
+*.py[cod]
+*.egg-info/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+
+# Run artefacts: downloaded video, normalized media, cached transcripts,
+# extracted frames. Regenerated per run and mounted as a volume.
+output/
+.cache/
+*.part
+*.ytdl
+
+# Repository history and local editor state.
+.git/
+.gitignore
+.github/
+.vscode/
+.idea/
+
+# Not needed at runtime. Tests and docs are part of the submission, not the
+# service; leaving them out keeps the image to what actually runs.
+tests/
+docs/
+htmlcov/
+.coverage
+*.md
+!README.md
+requirements-dev.txt
+Dockerfile
+.dockerignore

@@ -352,3 +352,99 @@ class TestEmptyInput:
         assert result.results == ()
         assert result.candidates_total == 0
         assert result.truncated is False
+
+
+class TestOffScreenLinesAreReported:
+    """The exclusions are half the answer.
+
+    Telling on-screen dialogue from voice-over is what the system is for, so a
+    line ruled off camera is a finding. Reporting only a count -- worse, one
+    derived by subtracting the other buckets -- would make the system's central
+    judgement the one thing a caller could not inspect. On the sample video
+    these are the film's internal-monologue scenes.
+    """
+
+    def test_the_narrated_line_appears_with_its_reason(
+        self, manifest: MediaManifest, tmp_path: Path
+    ) -> None:
+        provider = ScriptedProvider([
+            {"speaking": True, "code": 1},
+            {"speaking": False},
+            {"speaking": True, "code": 1},
+        ])
+        result = discover(provider, manifest, tmp_path)
+
+        assert [r.text for r in result.not_on_screen] == ["narration over the scene"]
+        assert result.not_on_screen[0].ambiguity_reason is not None
+        assert result.not_on_screen[0].status is Status.NOT_ON_SCREEN
+
+    def test_it_says_when_the_line_was_spoken(
+        self, manifest: MediaManifest, tmp_path: Path
+    ) -> None:
+        """A list of off-screen lines is unusable without knowing where each is."""
+        provider = ScriptedProvider([
+            {"speaking": True, "code": 1},
+            {"speaking": False},
+            {"speaking": True, "code": 1},
+        ])
+        result = discover(provider, manifest, tmp_path)
+        assert result.not_on_screen[0].timestamp == pytest.approx(1.30)
+
+    def test_it_claims_no_frame(
+        self, manifest: MediaManifest, tmp_path: Path
+    ) -> None:
+        """There is no frame to point at, so none is offered."""
+        provider = ScriptedProvider([
+            {"speaking": True, "code": 1},
+            {"speaking": False},
+            {"speaking": True, "code": 1},
+        ])
+        entry = discover(provider, manifest, tmp_path).not_on_screen[0]
+        assert entry.frame_number is None
+        assert entry.image is None
+
+    def test_the_buckets_partition_everything_processed(
+        self, manifest: MediaManifest, tmp_path: Path
+    ) -> None:
+        """Nothing falls between the buckets, and nothing is counted twice.
+
+        This is the property the old subtract-the-rest count could not hold: a
+        candidate the loop forgot to file would have silently inflated it.
+        """
+        provider = ScriptedProvider([
+            {"speaking": True, "code": 1},
+            {"speaking": False},
+            {"error": True},
+        ])
+        result = discover(provider, manifest, tmp_path)
+
+        filed = (
+            len(result.results)
+            + len(result.ambiguous)
+            + len(result.not_on_screen)
+            + len(result.errors)
+        )
+        assert filed == result.candidates_processed == 3
+
+    def test_it_survives_serialization(
+        self, manifest: MediaManifest, tmp_path: Path
+    ) -> None:
+        import json
+
+        provider = ScriptedProvider([
+            {"speaking": True, "code": 1},
+            {"speaking": False},
+            {"speaking": True, "code": 1},
+        ])
+        payload = json.loads(json.dumps(discover(provider, manifest, tmp_path).to_dict()))
+        assert len(payload["not_on_screen"]) == 1
+        assert payload["not_on_screen"][0]["status"] == "not_on_screen"
+        assert "ambiguity_reason" in payload["not_on_screen"][0]
+
+    def test_an_all_on_screen_sweep_reports_an_empty_bucket(
+        self, manifest: MediaManifest, tmp_path: Path
+    ) -> None:
+        """Empty, not absent -- a caller can tell "none" from "not checked"."""
+        provider = ScriptedProvider([{"speaking": True, "code": 1}])
+        payload = discover(provider, manifest, tmp_path).to_dict()
+        assert payload["not_on_screen"] == []

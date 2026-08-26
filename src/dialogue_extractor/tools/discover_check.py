@@ -109,7 +109,8 @@ def main(argv: list[str] | None = None) -> int:
         )
 
         print(f"\n=== {len(result.results)} on screen, "
-              f"{len(result.ambiguous)} uncertain ===")
+              f"{len(result.ambiguous)} uncertain, "
+              f"{len(result.not_on_screen)} off camera ===")
         print(f"processed {result.candidates_processed} of {result.candidates_total}"
               f"{'  (TRUNCATED)' if result.truncated else ''}")
 
@@ -133,14 +134,13 @@ def main(argv: list[str] | None = None) -> int:
             for error in result.errors:
                 print(f"  candidate {error['candidate']}: {error['reason']}")
 
-        not_on_screen = (
-            result.candidates_processed
-            - len(result.results)
-            - len(result.ambiguous)
-            - len(result.errors)
-        )
-        print(f"\nnot on screen: {not_on_screen} "
-              f"(voice-over, off-camera, or nobody visible)")
+        if result.not_on_screen:
+            print(f"\n--- {len(result.not_on_screen)} ruled off camera ---")
+            for entry in result.not_on_screen:
+                reason = entry.ambiguity_reason.value if entry.ambiguity_reason else "?"
+                print(f"  {format_timestamp(entry.timestamp or 0)}  "
+                      f"{(entry.speaker_id or '(unassigned)'):>12}  "
+                      f"{reason:<22} {(entry.text or '')[:38]}")
 
         args.out.parent.mkdir(parents=True, exist_ok=True)
         args.out.write_text(json.dumps(result.to_dict(), indent=2), encoding="utf-8")

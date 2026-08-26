@@ -75,6 +75,8 @@ def build_success(
 def build_not_on_screen(
     candidate: Candidate,
     outcome: SelectionOutcome,
+    *,
+    with_timestamp: bool = False,
 ) -> ExtractionResult:
     """Build the result for a window where the speaker was not found on screen.
 
@@ -82,10 +84,17 @@ def build_not_on_screen(
     visible", "someone else was speaking", and "the run was too short" are
     different answers, and collapsing them would discard the only information
     that makes the result actionable.
+
+    `with_timestamp` records when the line was *spoken*, which is what discovery
+    needs -- a list of off-screen lines is unusable without knowing where each
+    one is. It stays off by default because there is no frame here, and Mode A
+    reports a single answer where a timestamp with no frame beside it invites
+    being read as one.
     """
     return ExtractionResult(
         status=Status.NOT_ON_SCREEN,
         text=candidate.text,
+        timestamp=candidate.start if with_timestamp else None,
         speaker_id=candidate.speaker_id,
         confidence=0.0,
         ambiguity_reason=outcome.reason or AmbiguityReason.NO_FACE_DETECTED,

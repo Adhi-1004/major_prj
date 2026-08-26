@@ -16,6 +16,10 @@ fewer results than exist would make "every on-screen line" a false claim.
 verified but scored below the success band goes to `ambiguous` with its reason,
 because the brief asks for uncertainty to be reported rather than guessed at.
 
+**Lines ruled off camera are reported, not dropped.** Telling on-screen dialogue
+from voice-over is the product, so the exclusions are half the answer and each
+one carries its reason.
+
 **One candidate failing does not end the run.** A network blip on chunk 12 of 37
 costs chunk 12, not the other 36. Failures are collected and reported alongside
 the results.
@@ -128,6 +132,7 @@ def run(
 
     verified: list[ExtractionResult] = []
     uncertain: list[ExtractionResult] = []
+    off_screen: list[ExtractionResult] = []
     failures: list[dict[str, object]] = []
     unassociated = 0
 
@@ -186,8 +191,15 @@ def run(
             unassociated += 1
 
         if not outcome.found:
-            # Not an error and not a result: the line exists, it simply was not
-            # spoken on camera. Discovery reports what *is* on screen.
+            # Not an error, and reported rather than dropped: "this line is
+            # spoken off camera" is a finding, not an absence of one. On the
+            # sample video these are the film's internal-monologue scenes, which
+            # is precisely the judgement a caller would want to check.
+            off_screen.append(
+                result_builder.build_not_on_screen(
+                    candidate, outcome, with_timestamp=True
+                )
+            )
             log.debug(
                 "mode_b.not_on_screen",
                 candidate=index + 1,
@@ -226,6 +238,7 @@ def run(
     return DiscoveryResult(
         results=tuple(verified),
         ambiguous=tuple(uncertain),
+        not_on_screen=tuple(off_screen),
         truncated=tracker.truncated,
         candidates_processed=tracker.processed,
         candidates_total=len(candidates),

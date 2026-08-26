@@ -52,13 +52,17 @@ exclude = ["src/dialogue_extractor/vision/providers/nim/"]
 module = "dialogue_extractor.vision.providers.nim.*"
 ignore_errors = true
 
-# The pure core carries the subtle logic; hold it to a stricter standard.
+# The pure core carries the subtle logic, and the orchestrator and request
+# schema are the two contract boundaries everything else is read through.
+# Hold all of them to a stricter standard.
 [[tool.mypy.overrides]]
 module = [
     "dialogue_extractor.domain.*",
     "dialogue_extractor.interfaces.*",
     "dialogue_extractor.matching.*",
     "dialogue_extractor.pipeline.confidence",
+    "dialogue_extractor.pipeline.orchestrator",
+    "dialogue_extractor.api.schemas",
 ]
 disallow_untyped_defs = true
 disallow_any_generics = true

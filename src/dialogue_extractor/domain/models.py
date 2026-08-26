@@ -298,10 +298,17 @@ class DiscoveryResult:
 
     `truncated` is reported honestly when a budget stopped the sweep early,
     rather than presenting a partial list as if it were exhaustive.
+
+    `not_on_screen` is a bucket rather than a leftover. Separating on-screen
+    dialogue from voice-over *is* the product, so the lines ruled out are half
+    the answer and each carries the reason it was ruled out. Reporting only a
+    count -- worse, one derived by subtracting the other buckets -- would make
+    the system's central judgement the one thing a caller could not inspect.
     """
 
     results: tuple[ExtractionResult, ...] = ()
     ambiguous: tuple[ExtractionResult, ...] = ()
+    not_on_screen: tuple[ExtractionResult, ...] = ()
     truncated: bool = False
     candidates_processed: int = 0
     candidates_total: int = 0
@@ -312,6 +319,7 @@ class DiscoveryResult:
             "status": Status.SUCCESS.value if self.results else Status.NOT_FOUND.value,
             "results": [r.to_dict() for r in self.results],
             "ambiguous": [r.to_dict() for r in self.ambiguous],
+            "not_on_screen": [r.to_dict() for r in self.not_on_screen],
             "candidates_processed": self.candidates_processed,
             "candidates_total": self.candidates_total,
         }
