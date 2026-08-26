@@ -206,13 +206,13 @@ I had attached the .env and also included it in .gitignore verify once and i wil
 
 - Other Prompts: [Verified each phase plan and implemented them]
 
-- Prompt 8: Give me a final checklist which includes all the edge cases and trials for testing this system fulllyyin functional and infrastructural aspect. Make it perfect
+- Prompt 8: Give me a final checklist which includes all the edge cases and trials for testing this system fulllyy in functional and infrastructural aspect. Make it perfect
 
 - Prompt 9: [Verified and Implemented Phase 5 and gave the NVIDIA credentials]
 okk we can start with phase 5 and make the implementation perfect and also i have added the function id and the api key in the .env
 
 - Prompt 10: [Reviewed Phase 5 output including e2e test failures]
-I verified myself and from ur side check thiss and tell me are we good to go to phase 6 tell me ?
+I verified myself and from ur side check thiss and tell me we are good to go to phase 6
 
 - Prompt 11: [Reviewed Phase 6 output, asked for a pre-commit check]
 verify phase 6 and we are good to go to phase 7 also before moving is this ok to put this into github check and tell that too. I will commit and push myself manually
@@ -223,13 +223,13 @@ give me testing checklist which covers every possible case for the 6 phases comp
 - Prompt 13: [Confirmed Phase 6 status without requesting new work]
 Ok we are done with phase 6 and good to go for phase 7 dont do anything just tell me and also everything till here is working perfect right
 
-- Prompt 14: [Started Phase 7 -- Mode B discovery]
-okk we can start with phase 7 and make the implementation perfect
+- Prompt 14: [Started Phase 7  Mode B discovery]
+okk we can start with phase 7 and do the implementation
 
 - Prompt 15: [Verified Phase 7's live discovery run against the real video, asked for the Phase 8 go-ahead]
 (pasted a dry-run, an 8-candidate bounded run, a time-budget run, and a full 31-candidate sweep against the real video, each followed by a request to verify)
 
-- Prompt 16: [Started Phase 8 -- orchestrator, CLI, and API, after pushing Phase 7 to GitHub]
+- Prompt 16: [Started Phase 8 orchestrator, CLI, and API, after pushing Phase 7 to GitHub]
 okk we can start with phase 8 and make the implementation perfect
 I pushed to github
 
@@ -244,7 +244,7 @@ verify this and also i sent a request from the browser but it was hanging but i 
 (pasted the output of re-running ingestion against the original URL)
 verify this and we are good to go to phase 9 just tell me yes or no i will first put this manually myself into github
 
-- Prompt 20: [Started Phase 9 -- documentation, after pushing Phase 8 to GitHub]
+- Prompt 20: [Started Phase 9 documentation, after pushing Phase 8 to GitHub]
 okk we can start with phase 9 and make the implementation perfect
 I pushed to github and if we are good to go we can start
 
