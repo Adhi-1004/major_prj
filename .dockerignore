@@ -41,3 +41,10 @@ htmlcov/
 requirements-dev.txt
 Dockerfile
 .dockerignore
+
+# Frontend: node_modules would balloon the build context, and dist is rebuilt
+# inside the image's node stage rather than copied from the host.
+node_modules/
+frontend/node_modules/
+frontend/dist/
+*.tsbuildinfo

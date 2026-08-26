@@ -45,6 +45,9 @@ from dialogue_extractor.pipeline.orchestrator import (
 class FakeSource:
     def __init__(self, raise_: BaseException | None = None) -> None:
         self.raise_ = raise_
+        # Counted so a test can assert the network was not touched at all,
+        # which is the property the media cache exists to provide.
+        self.acquired = 0
 
     def supports(self, uri: str) -> bool:
         return True
@@ -52,19 +55,28 @@ class FakeSource:
     def acquire(self, uri: str, dest_dir: Path) -> RawMedia:
         if self.raise_:
             raise self.raise_
+        self.acquired += 1
         return RawMedia(path=Path("video.mp4"), source_uri=uri, title="fake")
 
 
 class FakeNormalizer:
     def __init__(self, raise_: BaseException | None = None) -> None:
         self.raise_ = raise_
+        self.normalized = 0
 
     def normalize(self, raw: RawMedia, work_dir: Path) -> MediaManifest:
         if self.raise_:
             raise self.raise_
+        self.normalized += 1
+        # Real files, because the cache copies them.
+        work_dir.mkdir(parents=True, exist_ok=True)
+        video = work_dir / "normalized.mp4"
+        audio = work_dir / "audio.wav"
+        video.write_bytes(b"VIDEO")
+        audio.write_bytes(b"AUDIO")
         return MediaManifest(
-            video_path=Path("normalized.mp4"),
-            audio_path=Path("audio.wav"),
+            video_path=video,
+            audio_path=audio,
             fps=25.0,
             frame_count=250,
             duration=10.0,
@@ -347,3 +359,173 @@ class TestOkMeansAFrameWasProduced:
         from dialogue_extractor.pipeline.orchestrator import PipelineOutcome
 
         assert PipelineOutcome(payload={}).ok is False
+
+
+class TestMediaIsNotRefetched:
+    """The pipeline must not re-download a video it has already normalized.
+
+    This is the fix for a real failure: every run went back to YouTube, and
+    four or five runs in quick succession was enough to trip bot detection,
+    after which nothing worked at all. The property that matters is not that
+    the cache is fast -- it is that the second run never touches the network.
+    """
+
+    def build_with_cache(self, tmp_path: Path, cache):  # type: ignore[no-untyped-def]
+        from dialogue_extractor.ingestion.media_cache import media_fingerprint
+
+        source = FakeSource()
+        normalizer = FakeNormalizer()
+        stages = Stages(
+            source_for=lambda uri: source,  # type: ignore[arg-type,return-value]
+            normalizer=normalizer,  # type: ignore[arg-type]
+            transcriber=lambda: FakeTranscriber(),  # type: ignore[return-value]
+            diarizer=lambda: FakeDiarizer(),  # type: ignore[return-value]
+            asd=lambda: FakeASD(RuntimeError("stop after normalization")),  # type: ignore[return-value]
+            extractor=FakeExtractor(),  # type: ignore[arg-type]
+        )
+        orchestrator = Orchestrator(
+            stages,
+            work_dir=tmp_path / "work",
+            output_dir=tmp_path / "out",
+            cache=cache,
+            media_fingerprint=media_fingerprint(
+                max_height=1080, target_audio_rate=16000
+            ),
+        )
+        return orchestrator, source, normalizer
+
+    def test_the_second_run_does_not_acquire_again(self, tmp_path: Path) -> None:
+        from dialogue_extractor.infra.disk_cache import DiskCache
+
+        cache = DiskCache(tmp_path / "cache")
+
+        first, source_a, norm_a = self.build_with_cache(tmp_path / "a", cache)
+        first.run(REQUEST)
+        assert source_a.acquired == 1, "the first run must download"
+        assert norm_a.normalized == 1
+
+        second, source_b, norm_b = self.build_with_cache(tmp_path / "b", cache)
+        second.run(REQUEST)
+        assert source_b.acquired == 0, "the second run must not download again"
+        assert norm_b.normalized == 0, "and must not re-encode"
+
+    def test_a_different_url_is_still_fetched(self, tmp_path: Path) -> None:
+        from dialogue_extractor.infra.disk_cache import DiskCache
+
+        cache = DiskCache(tmp_path / "cache")
+        first, _, _ = self.build_with_cache(tmp_path / "a", cache)
+        first.run(REQUEST)
+
+        second, source, _ = self.build_with_cache(tmp_path / "b", cache)
+        second.run(PipelineRequest(url="https://example.com/other", dialogue="hi"))
+        assert source.acquired == 1
+
+    def test_without_a_cache_every_run_fetches(self, tmp_path: Path) -> None:
+        """The default has to stay the old behaviour, not a silent shortcut."""
+        from dialogue_extractor.infra.disk_cache import NullCache
+
+        cache = NullCache()
+        first, source_a, _ = self.build_with_cache(tmp_path / "a", cache)
+        first.run(REQUEST)
+        second, source_b, _ = self.build_with_cache(tmp_path / "b", cache)
+        second.run(REQUEST)
+
+        assert source_a.acquired == 1
+        assert source_b.acquired == 1
+
+    def test_a_cache_hit_still_reports_both_stages(self, tmp_path: Path) -> None:
+        """A caller watching progress must not see stages vanish just because
+        the work was skipped."""
+        from dialogue_extractor.infra.disk_cache import DiskCache
+
+        cache = DiskCache(tmp_path / "cache")
+        first, _, _ = self.build_with_cache(tmp_path / "a", cache)
+        first.run(REQUEST)
+
+        seen: list[str] = []
+        second, _, _ = self.build_with_cache(tmp_path / "b", cache)
+        second.run(REQUEST, on_progress=lambda stage, _m: seen.append(stage.value))
+
+        assert StageName.INGESTION.value in seen
+        assert StageName.NORMALIZATION.value in seen
+
+
+class TestTwoVideosNeverCrossContaminate:
+    """The end-to-end guard for a real and badly-misleading failure.
+
+    Running a second video returned the *first* one's dialogue, reported with
+    full confidence and a plausible frame. The mechanism was yt-dlp skipping a
+    download whose destination already existed, but the property worth pinning
+    down is the outcome, not the mechanism: whatever a stage does internally,
+    two different sources must produce two different sets of media.
+    """
+
+    def build(self, tmp_path: Path, cache, marker: bytes):  # type: ignore[no-untyped-def]
+        from dialogue_extractor.ingestion.media_cache import media_fingerprint
+
+        class MarkedNormalizer(FakeNormalizer):
+            def normalize(self, raw: RawMedia, work_dir: Path) -> MediaManifest:
+                manifest = super().normalize(raw, work_dir)
+                # Stand in for "these are this video's bytes".
+                manifest.video_path.write_bytes(marker)
+                return manifest
+
+        stages = Stages(
+            source_for=lambda uri: FakeSource(),  # type: ignore[arg-type,return-value]
+            normalizer=MarkedNormalizer(),  # type: ignore[arg-type]
+            transcriber=lambda: FakeTranscriber(),  # type: ignore[return-value]
+            diarizer=lambda: FakeDiarizer(),  # type: ignore[return-value]
+            asd=lambda: FakeASD(RuntimeError("stop here")),  # type: ignore[return-value]
+            extractor=FakeExtractor(),  # type: ignore[arg-type]
+        )
+        return Orchestrator(
+            stages,
+            work_dir=tmp_path,
+            output_dir=tmp_path / "out",
+            cache=cache,
+            media_fingerprint=media_fingerprint(
+                max_height=1080, target_audio_rate=16000
+            ),
+        )
+
+    def test_the_second_video_gets_its_own_media(self, tmp_path: Path) -> None:
+        from dialogue_extractor.infra.disk_cache import DiskCache
+        from dialogue_extractor.ingestion.media_cache import lookup, media_fingerprint
+
+        cache = DiskCache(tmp_path / "cache")
+        fp = media_fingerprint(max_height=1080, target_audio_rate=16000)
+
+        first = PipelineRequest(url="https://youtu.be/FIRST", dialogue="x")
+        second = PipelineRequest(url="https://youtu.be/SECOND", dialogue="x")
+
+        self.build(tmp_path / "a", cache, b"VIDEO-ONE").run(first)
+        self.build(tmp_path / "b", cache, b"VIDEO-TWO").run(second)
+
+        got_first = lookup(cache, first.url, fp, tmp_path / "check-a")
+        got_second = lookup(cache, second.url, fp, tmp_path / "check-b")
+
+        assert got_first is not None and got_second is not None
+        assert got_first.video_path.read_bytes() == b"VIDEO-ONE"
+        assert got_second.video_path.read_bytes() == b"VIDEO-TWO", (
+            "the second video was served the first video's media"
+        )
+
+    def test_replaying_the_first_still_returns_the_first(
+        self, tmp_path: Path
+    ) -> None:
+        """Caching the second must not evict or overwrite the first."""
+        from dialogue_extractor.infra.disk_cache import DiskCache
+        from dialogue_extractor.ingestion.media_cache import lookup, media_fingerprint
+
+        cache = DiskCache(tmp_path / "cache")
+        fp = media_fingerprint(max_height=1080, target_audio_rate=16000)
+
+        first = PipelineRequest(url="https://youtu.be/FIRST", dialogue="x")
+        second = PipelineRequest(url="https://youtu.be/SECOND", dialogue="x")
+
+        self.build(tmp_path / "a", cache, b"VIDEO-ONE").run(first)
+        self.build(tmp_path / "b", cache, b"VIDEO-TWO").run(second)
+
+        replayed = lookup(cache, first.url, fp, tmp_path / "again")
+        assert replayed is not None
+        assert replayed.video_path.read_bytes() == b"VIDEO-ONE"

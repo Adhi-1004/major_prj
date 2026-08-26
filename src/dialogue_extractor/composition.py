@@ -21,6 +21,7 @@ from dialogue_extractor.config.settings import Settings
 from dialogue_extractor.domain.models import MediaManifest, RawMedia
 from dialogue_extractor.infra.disk_cache import DiskCache, NullCache
 from dialogue_extractor.ingestion.local_file_source import LocalFileSource
+from dialogue_extractor.ingestion.media_cache import media_fingerprint
 from dialogue_extractor.ingestion.normalizer import normalize
 from dialogue_extractor.ingestion.url_validator import SourceKind, classify_source
 from dialogue_extractor.ingestion.ytdlp_source import YtDlpSource
@@ -65,7 +66,9 @@ def build_cache(settings: Settings) -> Cache:
     return DiskCache(settings.cache_dir)
 
 
-def source_for(uri: str, *, dns_mode: str = "auto") -> VideoSource:
+def source_for(
+    uri: str, *, dns_mode: str = "auto", settings: Settings | None = None
+) -> VideoSource:
     """Pick the acquisition strategy for one URI.
 
     Classification happens per request rather than once at startup because a
@@ -73,7 +76,13 @@ def source_for(uri: str, *, dns_mode: str = "auto") -> VideoSource:
     """
     if classify_source(uri) is SourceKind.LOCAL:
         return LocalFileSource()
-    return YtDlpSource(dns_mode=dns_mode)
+    settings = settings or Settings()
+    return YtDlpSource(
+        dns_mode=dns_mode,
+        player_clients=settings.ytdlp_player_clients,
+        cookies_from_browser=settings.ytdlp_cookies_from_browser,
+        cookie_file=settings.ytdlp_cookie_file,
+    )
 
 
 def build_transcriber(settings: Settings, cache: Cache) -> Transcriber:
@@ -131,7 +140,7 @@ def build_stages(
     """Assemble every dependency the orchestrator needs."""
     cache = build_cache(settings)
     return Stages(
-        source_for=lambda uri: source_for(uri, dns_mode=dns_mode),
+        source_for=lambda uri: source_for(uri, dns_mode=dns_mode, settings=settings),
         normalizer=FfmpegNormalizer(settings),
         transcriber=lambda: build_transcriber(settings, cache),
         diarizer=lambda: build_diarizer(settings, cache),
@@ -151,4 +160,9 @@ def build_orchestrator(
         build_stages(settings, provider_name=provider_name, dns_mode=dns_mode),
         work_dir=settings.work_dir,
         output_dir=settings.output_dir,
+        cache=build_cache(settings),
+        media_fingerprint=media_fingerprint(
+            max_height=constants.MAX_NORMALIZED_HEIGHT,
+            target_audio_rate=constants.TARGET_AUDIO_SAMPLE_RATE,
+        ),
     )

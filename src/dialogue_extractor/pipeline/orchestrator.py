@@ -32,9 +32,12 @@ from dialogue_extractor.config import constants
 from dialogue_extractor.domain.enums import Mode, StageName, Status
 from dialogue_extractor.domain.errors import StageError
 from dialogue_extractor.domain.models import MediaManifest, SpeechSegment, Word
+from dialogue_extractor.infra.disk_cache import NullCache
 from dialogue_extractor.infra.logging import get_logger
+from dialogue_extractor.ingestion import media_cache
 from dialogue_extractor.interfaces.ports import (
     ASDProvider,
+    Cache,
     Diarizer,
     FrameExtractor,
     MediaNormalizer,
@@ -47,7 +50,7 @@ from dialogue_extractor.matching.candidate_builder import (
 )
 from dialogue_extractor.matching.fuzzy_matcher import find_matches
 from dialogue_extractor.pipeline import mode_a, mode_b
-from dialogue_extractor.pipeline.mode_b import Budget
+from dialogue_extractor.pipeline.mode_b import Budget, OnCandidate
 
 log = get_logger(__name__)
 
@@ -100,6 +103,7 @@ class _StageTracker:
 
     current: StageName = StageName.CONFIG
     on_progress: ProgressFn | None = None
+    on_candidate: OnCandidate | None = None
 
     def enter(self, stage: StageName, message: str) -> None:
         self.current = stage
@@ -133,6 +137,31 @@ class PipelineOutcome:
         return self.status in {Status.SUCCESS.value, Status.AMBIGUOUS.value}
 
 
+def _discard_raw_download(path: Path, work_dir: Path) -> None:
+    """Delete the downloaded original once normalized media has been cached.
+
+    Downloads are named per source URL, because yt-dlp skips a download whose
+    destination already exists and would otherwise hand back the previous
+    video's bytes. That fix means the directory would accumulate one full
+    download per video, so the original is dropped as soon as the normalized
+    pair it produced is safely cached -- nothing downstream ever reads it again.
+
+    Guarded twice over. Only files this pipeline downloaded into its own working
+    directory are touched: a local file the user pointed at is copied in under a
+    plain `source.*` name, or used exactly where it lies, and neither matches.
+    """
+    try:
+        if path.parent.resolve() != work_dir.resolve():
+            return
+        if not path.name.startswith("source_"):
+            return
+        path.unlink(missing_ok=True)
+        log.debug("pipeline.raw_discarded", path=str(path))
+    except OSError as exc:
+        # Housekeeping must never fail a run that has already succeeded.
+        log.debug("pipeline.raw_discard_failed", error=type(exc).__name__)
+
+
 class Orchestrator:
     """Runs the whole pipeline for one request."""
 
@@ -142,23 +171,49 @@ class Orchestrator:
         *,
         work_dir: Path,
         output_dir: Path,
+        cache: Cache | None = None,
+        media_fingerprint: str = "",
     ) -> None:
         self._stages = stages
         self._work_dir = Path(work_dir)
         self._output_dir = Path(output_dir)
+        # Defaults to a cache that forgets, so a caller that passes nothing gets
+        # the old always-fresh behaviour rather than a surprise.
+        self._cache: Cache = cache or NullCache()
+        self._media_fingerprint = media_fingerprint
+
+    @property
+    def _frames_dir(self) -> Path:
+        """Where extracted frames go, for both modes.
+
+        One directory, deliberately. The two modes used to write to different
+        places -- target to the output root, discovery to output/frames -- while
+        `frame_filename` names files only by frame number. The API resolves a
+        frame name by checking output/frames first, so once both directories
+        held a `frame_144.png`, a target-mode result was served discovery's
+        frame, potentially from an entirely different video. Sharing one
+        directory removes the precedence question rather than answering it.
+        """
+        return self._output_dir / "frames"
 
     def run(
         self,
         request: PipelineRequest,
         *,
         on_progress: ProgressFn | None = None,
+        on_candidate: OnCandidate | None = None,
     ) -> PipelineOutcome:
         """Run the pipeline, returning a result document either way.
 
         Never raises for a pipeline failure. A caller that wants to distinguish
         outcomes reads `status`; one that wants an exit code reads `ok`.
+
+        `on_progress` fires once per stage. `on_candidate` fires once per
+        candidate during a discovery sweep, and never in target mode -- Mode A
+        stops at the first verified occurrence, so there is no meaningful
+        progression to report between "detecting" and "done".
         """
-        tracker = _StageTracker(on_progress=on_progress)
+        tracker = _StageTracker(on_progress=on_progress, on_candidate=on_candidate)
         try:
             return self._run(request, tracker)
         except StageError as exc:
@@ -194,12 +249,31 @@ class Orchestrator:
     def _run(self, request: PipelineRequest, tracker: _StageTracker) -> PipelineOutcome:
         stages = self._stages
 
+        # Acquisition and normalization are cached as a pair, keyed by URL.
+        # Splitting them would defeat the point: the download is both the slow
+        # part and the part that gets rate-limited, so a cache that skipped only
+        # the re-encode would still hit the network every run.
         tracker.enter(StageName.INGESTION, f"acquiring {request.url}")
-        source = stages.source_for(request.url)
-        raw = source.acquire(request.url, self._work_dir)
+        manifest = media_cache.lookup(
+            self._cache, request.url, self._media_fingerprint, self._work_dir
+        )
 
-        tracker.enter(StageName.NORMALIZATION, "normalizing to CFR H.264 and 16 kHz WAV")
-        manifest = stages.normalizer.normalize(raw, self._work_dir)
+        if manifest is None:
+            source = stages.source_for(request.url)
+            raw = source.acquire(request.url, self._work_dir)
+
+            tracker.enter(
+                StageName.NORMALIZATION, "normalizing to CFR H.264 and 16 kHz WAV"
+            )
+            manifest = stages.normalizer.normalize(raw, self._work_dir)
+            media_cache.store(
+                self._cache, request.url, self._media_fingerprint, manifest
+            )
+            _discard_raw_download(raw.path, self._work_dir)
+        else:
+            tracker.enter(
+                StageName.NORMALIZATION, "reusing previously normalized media"
+            )
 
         tracker.enter(StageName.TRANSCRIPTION, "transcribing")
         transcript = stages.transcriber().transcribe(manifest.audio_path)
@@ -267,7 +341,7 @@ class Orchestrator:
             self._stages.extractor,
             target=target,
             work_dir=self._work_dir / "clips",
-            output_dir=self._output_dir,
+            output_dir=self._frames_dir,
             min_speaking_ms=request.min_speaking_ms,
             detect_scene_cuts=request.detect_scene_cuts,
         )
@@ -300,13 +374,14 @@ class Orchestrator:
             self._stages.asd(),
             self._stages.extractor,
             work_dir=self._work_dir / "clips",
-            output_dir=self._output_dir / "frames",
+            output_dir=self._frames_dir,
             budget=Budget(
                 max_candidates=request.max_candidates,
                 time_budget_seconds=request.time_budget_seconds,
             ),
             min_speaking_ms=request.min_speaking_ms,
             detect_scene_cuts=request.detect_scene_cuts,
+            on_candidate=tracker.on_candidate,
         )
 
         payload = result.to_dict()

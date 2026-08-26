@@ -183,7 +183,9 @@ def exit_code_for(outcome: PipelineOutcome) -> int:
     return EXIT_ANSWERED_NO
 
 
-def report(outcome: PipelineOutcome, *, quiet: bool, out_path: Path) -> None:
+def report(
+    outcome: PipelineOutcome, *, quiet: bool, out_path: Path, settings: Settings
+) -> None:
     """Print the result, and say where the frame image landed."""
     document = json.dumps(outcome.payload, indent=2)
 
@@ -204,7 +206,7 @@ def report(outcome: PipelineOutcome, *, quiet: bool, out_path: Path) -> None:
         print(f"\nwritten to {out_path}")
         image = outcome.payload.get("image")
         if isinstance(image, str):
-            print(f"frame image: {out_path.parent / image}")
+            print(f"frame image: {settings.output_dir / 'frames' / image}")
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -246,7 +248,7 @@ def main(argv: list[str] | None = None) -> int:
     outcome = orchestrator.run(request)
 
     out_path = args.out or (settings.output_dir / "result.json")
-    report(outcome, quiet=args.quiet, out_path=out_path)
+    report(outcome, quiet=args.quiet, out_path=out_path, settings=settings)
     return exit_code_for(outcome)
 
 

@@ -52,6 +52,20 @@ class Settings(BaseSettings):
     log_level: str = "INFO"
     use_cache: bool = True
 
+    cors_origins: str = ""
+    """Comma-separated origins allowed to call the API cross-origin.
+
+    Empty by default, and empty means the middleware is never installed at all
+    rather than installed permissively. In production the built frontend is
+    served by this same process, so requests are same-origin and no CORS is
+    involved; this exists only for `npm run dev`, where Vite serves the UI from
+    its own port. A wildcard is deliberately not supported -- an origin list
+    that has to be named is one that has to be thought about.
+    """
+
+    frontend_dist: Path = Path("frontend/dist")
+    """Where the built frontend lives, served at / when it exists."""
+
     min_speaking_ms: float = constants.MIN_SPEAKING_MS
     window_pad_seconds: float = constants.WINDOW_PAD_SECONDS
     chunk_max_seconds: float = constants.CHUNK_MAX_SECONDS
@@ -61,6 +75,36 @@ class Settings(BaseSettings):
 
     ffmpeg_path: str = "ffmpeg"
     ffprobe_path: str = "ffprobe"
+
+    # --- Getting past YouTube's bot wall -------------------------------------
+    # YouTube refuses anonymous downloads from an address it has decided is
+    # automated ("Sign in to confirm you're not a bot"). Two ways through, in
+    # increasing order of reliability and inconvenience.
+
+    ytdlp_player_clients: str = "default,android_vr,android"
+    """Which YouTube player clients to try, in order.
+
+    Clients are gated differently, and the ones YouTube blocks first are the
+    ones yt-dlp reaches for first. Measured against a video that was being
+    refused: the default set alone failed, `android_vr` and `android` got
+    through, and this list yields the full 1080p stream when the default set
+    works while still falling back to the Android clients (360p) when it does
+    not. Quality is preferred, availability is guaranteed.
+
+    Set empty to use yt-dlp's own defaults with no fallback.
+    """
+
+    ytdlp_cookies_from_browser: str = ""
+    """Take cookies from a local browser profile, e.g. "chrome" or "firefox".
+
+    The reliable answer when the client trick stops working, because a signed-in
+    request is not anonymous. Note the browser must be **closed**: Chrome holds
+    a lock on its cookie database and yt-dlp cannot copy it while it runs.
+    Optionally `browser:profile`, e.g. "firefox:default-release".
+    """
+
+    ytdlp_cookie_file: Path | None = None
+    """Path to a cookies.txt export, for when the browser cannot be closed."""
 
     @field_validator("log_level")
     @classmethod
@@ -112,6 +156,10 @@ class Settings(BaseSettings):
                 ),
             )
         return self.hf_token.get_secret_value()
+
+    def cors_origin_list(self) -> list[str]:
+        """The configured origins, parsed. Empty list means "install nothing"."""
+        return [o.strip() for o in self.cors_origins.split(",") if o.strip()]
 
     def ensure_dirs(self) -> None:
         for d in (self.output_dir, self.work_dir, self.cache_dir):

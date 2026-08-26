@@ -12,6 +12,7 @@ failure into a slow one that says the same thing.
 
 from __future__ import annotations
 
+import hashlib
 import re
 from contextlib import suppress
 from pathlib import Path
@@ -25,6 +26,7 @@ from dialogue_extractor.domain.errors import (
     FFmpegNotFoundError,
     GeoRestrictedError,
     IngestionError,
+    RateLimitedError,
 )
 from dialogue_extractor.domain.models import RawMedia
 from dialogue_extractor.infra.dns import detect_interference, doh_resolution
@@ -58,6 +60,19 @@ _GEO_PATTERNS = (
     "blocked in your country",
     "not available from your location",
 )
+_RATE_LIMIT_PATTERNS = (
+    # YouTube's phrasing when it decides a client is automated. It arrives as an
+    # ordinary download error, but it is neither transient nor worth retrying:
+    # each further attempt is another request from the address already under
+    # suspicion, which extends the block rather than getting past it.
+    "confirm you're not a bot",
+    "confirm you are not a bot",
+    "sign in to confirm",
+    "http error 429",
+    "too many requests",
+    "rate-limit",
+    "rate limit",
+)
 _DRM_PATTERNS = (
     "drm",
     "protected content",
@@ -75,6 +90,15 @@ _PERMANENT_PATTERNS = (
 )
 
 
+def _source_tag(url: str) -> str:
+    """A short, stable, filesystem-safe tag for one source.
+
+    Only has to distinguish one URL from another within a working directory,
+    so eight hex characters is ample and keeps the filename readable.
+    """
+    return hashlib.sha256(url.strip().encode("utf-8")).hexdigest()[:8]
+
+
 def classify_download_failure(message: str) -> IngestionError:
     """Map a yt-dlp error message to a specific, correctly-retryable error.
 
@@ -88,6 +112,19 @@ def classify_download_failure(message: str) -> IngestionError:
             "geo_restricted",
             f"The source refused the request on geographic grounds: {message.strip()[:400]}",
             remediation="This video is not available from this location. Try a local file instead.",
+        )
+    if any(p in lowered for p in _RATE_LIMIT_PATTERNS):
+        return RateLimitedError(
+            "rate_limited",
+            f"The source is refusing automated requests: {message.strip()[:400]}",
+            remediation=(
+                "YouTube is refusing anonymous downloads from this address. "
+                "Fastest fix: download the video yourself and pass the file "
+                "path instead of the URL -- that works immediately. Otherwise "
+                "close your browser and set YTDLP_COOKIES_FROM_BROWSER=chrome "
+                "in .env so the request is signed in, or simply wait a few "
+                "minutes. Videos already processed are cached and unaffected."
+            ),
         )
     if any(p in lowered for p in _DRM_PATTERNS):
         return DRMProtectedError(
@@ -122,26 +159,45 @@ class YtDlpSource(VideoSource):
         resolve_dns: bool = True,
         quiet: bool = True,
         dns_mode: str = "auto",
+        player_clients: str = "",
+        cookies_from_browser: str = "",
+        cookie_file: Path | None = None,
     ) -> None:
         """
         Args:
             dns_mode: "auto" retries via DoH when DNS interference is detected,
                 "doh" always resolves via DoH, "system" never does.
+            player_clients: YouTube clients to try, in order. See _build_options.
+            cookies_from_browser: browser to read cookies from, e.g. "chrome".
+            cookie_file: path to a cookies.txt export.
         """
         self._resolve_dns = resolve_dns
         self._quiet = quiet
         self._dns_mode = dns_mode
+        self._player_clients = player_clients
+        self._cookies_from_browser = cookies_from_browser
+        self._cookie_file = cookie_file
 
     def supports(self, uri: str) -> bool:
         return bool(re.match(r"^https?://", uri.strip(), re.IGNORECASE))
 
-    def _build_options(self, dest_dir: Path) -> dict[str, Any]:
+    def _build_options(self, dest_dir: Path, url: str) -> dict[str, Any]:
         options: dict[str, Any] = {
             "format": FORMAT_SELECTOR,
             # Filename only. yt-dlp joins this onto paths["home"], so an
             # absolute or dir-qualified template here produces a doubled path
             # (output/work/output/work/source.mp4).
-            "outtmpl": "source.%(ext)s",
+            #
+            # The name is scoped to the URL because yt-dlp skips a download
+            # whose destination already exists -- it reports "has already been
+            # downloaded" and hands back the existing file. With one shared
+            # `source.mp4`, asking for a second video returned the *first*
+            # one's bytes, which then flowed through normalization, caching and
+            # transcription as though it were the video that was requested.
+            "outtmpl": f"source_{_source_tag(url)}.%(ext)s",
+            # Belt and braces for the same failure: a stale or partial file
+            # under this name is replaced, never resumed or reused.
+            "overwrites": True,
             "merge_output_format": "mp4",
             "quiet": self._quiet,
             "no_warnings": self._quiet,
@@ -153,6 +209,30 @@ class YtDlpSource(VideoSource):
             # Never let a URL cause writes outside dest_dir.
             "paths": {"home": str(dest_dir)},
         }
+
+        # --- getting past YouTube's bot wall ---------------------------------
+        # "Sign in to confirm you're not a bot" is YouTube refusing an anonymous
+        # request. Nothing about the request is malformed, so there is no bug to
+        # fix here; the download simply needs to look less anonymous.
+
+        clients = [c.strip() for c in self._player_clients.split(",") if c.strip()]
+        if clients:
+            # Clients are gated differently and the plain web one is refused
+            # first. yt-dlp tries these in order and falls through, so listing
+            # alternatives costs nothing when the first already works.
+            options["extractor_args"] = {"youtube": {"player_client": clients}}
+
+        if self._cookie_file:
+            options["cookiefile"] = str(self._cookie_file)
+        elif self._cookies_from_browser:
+            # yt-dlp wants (browser, profile, keyring, container).
+            browser, _, profile = self._cookies_from_browser.partition(":")
+            options["cookiesfrombrowser"] = (
+                browser.strip().lower(),
+                profile.strip() or None,
+                None,
+                None,
+            )
 
         # yt-dlp finds ffmpeg on PATH, which is not necessarily a usable build --
         # it needs one for HLS and for muxing separate streams. Point it at the
@@ -188,7 +268,7 @@ class YtDlpSource(VideoSource):
                         raise
                     info = self._retry_via_doh_if_interfered(url, dest_dir, hostname, exc)
 
-        path = self._locate_output(info, dest_dir)
+        path = self._locate_output(info, dest_dir, _source_tag(url))
         return RawMedia(path=path, source_uri=url, title=info.get("title"))
 
     def _retry_via_doh_if_interfered(
@@ -231,7 +311,7 @@ class YtDlpSource(VideoSource):
         import yt_dlp
 
         try:
-            with yt_dlp.YoutubeDL(self._build_options(dest_dir)) as ydl:
+            with yt_dlp.YoutubeDL(self._build_options(dest_dir, url)) as ydl:
                 info = ydl.extract_info(url, download=True)
         except Exception as exc:  # yt-dlp raises several unrelated types
             # Some yt-dlp failures carry an empty message (a bare assertion, for
@@ -249,12 +329,21 @@ class YtDlpSource(VideoSource):
             raise DownloadError("no_metadata", "yt-dlp returned no information for this URL.")
         return dict(info)
 
-    def _locate_output(self, info: dict[str, Any], dest_dir: Path) -> Path:
-        """Find what was actually written.
+    def _locate_output(self, info: dict[str, Any], dest_dir: Path, tag: str) -> Path:
+        """Find what was actually written *for this URL*.
 
         yt-dlp's reported filename can predate a merge or a container change, so
         it is checked first and then the directory is searched.
+
+        Every candidate is required to carry this source's tag, and that
+        requirement is the point of the method rather than a detail of it. The
+        directory search used to glob a bare `source.*`, which matched whatever
+        a previous video had left behind: when yt-dlp reported no filename, the
+        previous film was handed back as though it were this one, and went on to
+        be normalized, transcribed and reported with full confidence. Returning
+        the wrong file is far worse than returning none, so a mismatch raises.
         """
+        expected = f"source_{tag}"
         candidates: list[Path] = []
 
         for key in ("filepath", "_filename"):
@@ -268,12 +357,16 @@ class YtDlpSource(VideoSource):
                 candidates.append(Path(value))
 
         for candidate in candidates:
-            if candidate.exists() and candidate.stat().st_size > 0:
+            if (
+                candidate.stem == expected
+                and candidate.exists()
+                and candidate.stat().st_size > 0
+            ):
                 return candidate
 
         media = [
             p
-            for p in dest_dir.glob("source.*")
+            for p in dest_dir.glob(f"{expected}.*")
             if p.is_file() and p.stat().st_size > 0 and p.suffix.lower() != ".part"
         ]
         if media:
@@ -281,6 +374,7 @@ class YtDlpSource(VideoSource):
 
         raise DownloadError(
             "output_missing",
-            "The download reported success but no media file was written.",
+            "The download reported success but no media file was written for "
+            "this URL.",
             remediation="Check available disk space and permissions on the output directory.",
         )

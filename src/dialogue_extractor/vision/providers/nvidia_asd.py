@@ -40,6 +40,7 @@ from dialogue_extractor.domain.errors import (
 )
 from dialogue_extractor.domain.models import ASDFrame, ASDResult, BoundingBox, Face
 from dialogue_extractor.infra.logging import get_logger, stage
+from dialogue_extractor.infra.retry import retry
 from dialogue_extractor.interfaces.ports import ASDProvider
 
 log = get_logger(__name__)
@@ -384,6 +385,53 @@ class NvidiaASDProvider(ASDProvider):
 
         return frame_detections
 
+    @retry(
+        attempts=3,
+        base_delay=2.0,
+        # Only the failures that another attempt can actually fix. A hosted
+        # endpoint returns the occasional INTERNAL or UNAVAILABLE for reasons
+        # that have nothing to do with the request -- and without a retry a
+        # single one of those ends a run that has already spent minutes
+        # downloading, transcribing and diarizing. Everything else is left
+        # alone: retrying rejected credentials or a malformed clip just fails
+        # three times as slowly.
+        retry_on=(ASDUnavailableError, ASDTimeoutError),
+    )
+    def _detect_with_retry(
+        self,
+        asd_grpc: Any,
+        clip_path: Path,
+        audio_path: Path | None,
+        diarization: dict[str, Any],
+    ) -> dict[int, list[dict[str, Any]]]:
+        """One attempt at the streaming RPC.
+
+        The whole channel is built inside the retry rather than outside it: a
+        connection that failed once is not one to reuse, and the request stream
+        is a generator that cannot be replayed.
+        """
+        import grpc
+
+        credentials = grpc.ssl_channel_credentials()
+        try:
+            with grpc.secure_channel(self._target, credentials) as channel:
+                stub = asd_grpc.ActiveSpeakerDetectionServiceStub(channel)
+                responses = stub.DetectActiveSpeaker(
+                    self._build_requests(clip_path, audio_path, diarization),
+                    metadata=self._metadata(),
+                    timeout=self._deadline,
+                )
+                return self._collect(responses)
+        except ASDError:
+            raise
+        except grpc.RpcError as exc:
+            raise classify_grpc_error(exc) from exc
+        except Exception as exc:
+            raise ASDError(
+                "detection_failed",
+                f"Active speaker detection failed: {type(exc).__name__}: {str(exc)[:300]}",
+            ) from exc
+
     def detect(
         self,
         clip_path: Path,
@@ -392,7 +440,6 @@ class NvidiaASDProvider(ASDProvider):
         clip_start_frame: int,
         fps: float,
     ) -> ASDResult:
-        import grpc
 
         self.health_check()
 
@@ -406,25 +453,9 @@ class NvidiaASDProvider(ASDProvider):
             clip=clip_path.name,
             clip_start_frame=clip_start_frame,
         ) as report:
-            credentials = grpc.ssl_channel_credentials()
-            try:
-                with grpc.secure_channel(self._target, credentials) as channel:
-                    stub = asd_grpc.ActiveSpeakerDetectionServiceStub(channel)
-                    responses = stub.DetectActiveSpeaker(
-                        self._build_requests(clip_path, audio_path, diarization),
-                        metadata=self._metadata(),
-                        timeout=self._deadline,
-                    )
-                    frame_detections = self._collect(responses)
-            except ASDError:
-                raise
-            except grpc.RpcError as exc:
-                raise classify_grpc_error(exc) from exc
-            except Exception as exc:
-                raise ASDError(
-                    "detection_failed",
-                    f"Active speaker detection failed: {type(exc).__name__}: {str(exc)[:300]}",
-                ) from exc
+            frame_detections = self._detect_with_retry(
+                asd_grpc, clip_path, audio_path, diarization
+            )
 
             report["frames"] = len(frame_detections)
 

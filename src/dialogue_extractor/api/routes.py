@@ -38,20 +38,26 @@ def _settings(request: Request) -> Settings:
 
 
 def resolve_frame_path(root: Path, filename: str) -> Path | None:
-    """Resolve a frame name under `root`, or None if it escapes or is not a PNG.
+    """Resolve a frame name under `root/frames`, or None if it is not servable.
 
     The one implementation of the traversal rule, so the route and its tests
     cannot check different things. `is_relative_to` runs on the *resolved* path
     -- comparing before resolution would accept `frames/../../.env`, which is
     the whole attack this exists to stop.
+
+    Exactly one directory is searched. It used to be two -- `root/frames` then
+    `root` -- because the two modes wrote to different places while naming files
+    only by frame number. That made the answer depend on lookup order: with a
+    `frame_144.png` in both, a target-mode result was served discovery's frame,
+    possibly from a different video entirely. Both modes now write here, so
+    there is nothing left to disambiguate.
     """
     root = root.resolve()
     if Path(filename).suffix.lower() != ".png":
         return None
-    for candidate in ((root / "frames" / filename), (root / filename)):
-        resolved = candidate.resolve()
-        if resolved.is_relative_to(root) and resolved.is_file():
-            return resolved
+    resolved = (root / "frames" / filename).resolve()
+    if resolved.is_relative_to(root) and resolved.is_file():
+        return resolved
     return None
 
 

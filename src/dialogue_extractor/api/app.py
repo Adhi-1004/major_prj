@@ -7,9 +7,13 @@ would make the HTTP layer untestable without credentials and a GPU.
 
 from __future__ import annotations
 
+from pathlib import Path
+
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from starlette.requests import Request
+from starlette.staticfiles import StaticFiles
 
 from dialogue_extractor.api.jobs import Job, JobStore, RunFn
 from dialogue_extractor.api.routes import build_router
@@ -38,6 +42,7 @@ def default_runner(orchestrator: Orchestrator) -> RunFn:
             on_progress=lambda stage, message: store.record_progress(
                 job, stage, message
             ),
+            on_candidate=lambda progress: store.record_candidate(job, progress),
         )
         store.record_result(job, outcome.payload, outcome.diagnostics)
 
@@ -91,6 +96,20 @@ def create_app(
     app.state.store = store
     app.state.settings = settings
 
+    origins = settings.cors_origin_list()
+    if origins:
+        # Installed only when origins are named. In production the frontend is
+        # served by this same process (below), so nothing is cross-origin and
+        # this stays absent entirely -- the safest configuration being the one
+        # that requires no configuration.
+        app.add_middleware(
+            CORSMiddleware,
+            allow_origins=origins,
+            allow_methods=["GET", "POST"],
+            allow_headers=["Content-Type"],
+        )
+        log.info("api.cors_enabled", origins=origins)
+
     app.include_router(build_router())
 
     @app.exception_handler(StageError)
@@ -117,4 +136,29 @@ def create_app(
             },
         )
 
+    _mount_frontend(app, settings)
     return app
+
+
+def _mount_frontend(app: FastAPI, settings: Settings) -> None:
+    """Serve the built frontend at / when one has been built.
+
+    Mounted last, after every API route is registered, because a mount at "/"
+    is a catch-all: registered first it would shadow /extract, /jobs, /health
+    and /docs. Starlette matches routes in order, so last means the API always
+    wins and only genuinely unmatched paths fall through to the static files.
+
+    The existence check is not optional politeness. Someone running the API with
+    no frontend built -- every backend test, every CLI-only user, the Docker
+    image if the node stage were skipped -- must get a working service, not a
+    startup crash about a missing directory.
+    """
+    dist = Path(settings.frontend_dist)
+    if not dist.is_dir():
+        log.debug("api.frontend_absent", path=str(dist))
+        return
+
+    # html=True serves index.html for the bare path, which is what makes the
+    # single-page app resolve at "/" rather than 404.
+    app.mount("/", StaticFiles(directory=dist, html=True), name="frontend")
+    log.info("api.frontend_mounted", path=str(dist.resolve()))

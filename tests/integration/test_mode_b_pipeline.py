@@ -448,3 +448,137 @@ class TestOffScreenLinesAreReported:
         provider = ScriptedProvider([{"speaking": True, "code": 1}])
         payload = discover(provider, manifest, tmp_path).to_dict()
         assert payload["not_on_screen"] == []
+
+
+class TestLiveProgress:
+    """A sweep reports each candidate as it is filed, not only at the end.
+
+    One network round-trip per candidate means a feature-length film is minutes
+    of silence otherwise. A caller with no way to tell a working run from a hung
+    one eventually kills a working one, so the sweep has to say what it is doing
+    while it does it.
+    """
+
+    def collect(
+        self, manifest: MediaManifest, tmp_path: Path, provider: ScriptedProvider
+    ):  # type: ignore[no-untyped-def]
+        seen: list[Any] = []
+        result = mode_b.run(
+            SCENE,
+            manifest,
+            tuple(w for c in SCENE for w in c.words),
+            provider,
+            PyAVFrameExtractor(),
+            work_dir=tmp_path / "work",
+            output_dir=tmp_path / "out",
+            detect_scene_cuts=False,
+            on_candidate=seen.append,
+        )
+        return seen, result
+
+    def test_it_fires_once_per_candidate(
+        self, manifest: MediaManifest, tmp_path: Path
+    ) -> None:
+        provider = ScriptedProvider([{"speaking": True, "code": 1}])
+        seen, result = self.collect(manifest, tmp_path, provider)
+
+        assert len(seen) == len(SCENE) == result.candidates_processed
+
+    def test_it_counts_up_as_it_goes(
+        self, manifest: MediaManifest, tmp_path: Path
+    ) -> None:
+        """"2 of 3" has to be readable straight off the record."""
+        provider = ScriptedProvider([{"speaking": True, "code": 1}])
+        seen, _ = self.collect(manifest, tmp_path, provider)
+
+        assert [p.processed for p in seen] == [1, 2, 3]
+        assert {p.total for p in seen} == {3}
+
+    def test_an_off_camera_finding_arrives_as_a_result_not_a_gap(
+        self, manifest: MediaManifest, tmp_path: Path
+    ) -> None:
+        """"Spoken off camera" is an answer, and the caller wants to watch it
+        arrive like any other."""
+        provider = ScriptedProvider([
+            {"speaking": True, "code": 1},
+            {"speaking": False},
+            {"speaking": True, "code": 1},
+        ])
+        seen, _ = self.collect(manifest, tmp_path, provider)
+
+        narration = seen[1]
+        assert narration.result is not None
+        assert narration.result.status is Status.NOT_ON_SCREEN
+        assert narration.error_reason is None
+
+    def test_a_failed_candidate_is_still_reported(
+        self, manifest: MediaManifest, tmp_path: Path
+    ) -> None:
+        """Silence on failure would look identical to a hang."""
+        provider = ScriptedProvider([
+            {"speaking": True, "code": 1},
+            {"error": True},
+            {"speaking": True, "code": 1},
+        ])
+        seen, _ = self.collect(manifest, tmp_path, provider)
+
+        assert len(seen) == 3
+        assert seen[1].result is None
+        assert seen[1].error_reason == "service_unavailable"
+
+    def test_what_it_reports_matches_what_it_returns(
+        self, manifest: MediaManifest, tmp_path: Path
+    ) -> None:
+        """The progress stream is the same answer, arriving earlier."""
+        provider = ScriptedProvider([
+            {"speaking": True, "code": 1},
+            {"speaking": False},
+            {"speaking": True, "code": 1},
+        ])
+        seen, result = self.collect(manifest, tmp_path, provider)
+
+        streamed = [p.result for p in seen if p.result is not None]
+        final = list(result.results + result.ambiguous + result.not_on_screen)
+        assert sorted(r.text or "" for r in streamed) == sorted(
+            r.text or "" for r in final
+        )
+
+    def test_it_carries_the_window_and_speaker(
+        self, manifest: MediaManifest, tmp_path: Path
+    ) -> None:
+        provider = ScriptedProvider([{"speaking": True, "code": 1}])
+        seen, _ = self.collect(manifest, tmp_path, provider)
+
+        assert seen[0].start == pytest.approx(SCENE[0].start)
+        assert seen[0].speaker_id == SCENE[0].speaker_id
+        assert seen[0].text == SCENE[0].text
+
+    def test_a_budget_stops_the_reporting_too(
+        self, manifest: MediaManifest, tmp_path: Path
+    ) -> None:
+        seen: list[Any] = []
+        mode_b.run(
+            SCENE,
+            manifest,
+            tuple(w for c in SCENE for w in c.words),
+            ScriptedProvider([{"speaking": True, "code": 1}]),
+            PyAVFrameExtractor(),
+            work_dir=tmp_path / "work",
+            output_dir=tmp_path / "out",
+            budget=Budget(max_candidates=2),
+            detect_scene_cuts=False,
+            on_candidate=seen.append,
+        )
+        assert len(seen) == 2
+
+    def test_omitting_the_callback_changes_nothing(
+        self, manifest: MediaManifest, tmp_path: Path
+    ) -> None:
+        """Every existing caller passes nothing and must be unaffected."""
+        provider_a = ScriptedProvider([{"speaking": True, "code": 1}])
+        provider_b = ScriptedProvider([{"speaking": True, "code": 1}])
+
+        without = discover(provider_a, manifest, tmp_path / "a")
+        _, with_cb = self.collect(manifest, tmp_path / "b", provider_b)
+
+        assert without.to_dict() == with_cb.to_dict()

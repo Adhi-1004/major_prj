@@ -1,0 +1,108 @@
+/*
+ * Dark editing-suite.
+ *
+ * The ground is a blue-biased deep neutral rather than black: 1920x1080 stills
+ * are the content, and they sit better on a ground that was chosen than on one
+ * that was defaulted to.
+ *
+ * One rule governs colour use, and it is what keeps the palette legible:
+ *
+ *   the brand accent never encodes status,
+ *   and status colours never appear on interactive chrome.
+ *
+ * Brand is buttons, focus rings, links. The four state hues appear only on
+ * chips, rails and bars, where they carry meaning. Because the two vocabularies
+ * never share a surface, they cannot be confused for one another.
+ */
+
+:root {
+  color-scheme: dark;
+
+  --ground: #0f1318;
+  --surface-1: #161c24;
+  --surface-2: #1e2630;
+  --surface-3: #27313d;
+  --surface-sunk: #0a0d11; /* letterbox behind frames, code wells */
+
+  --line: #2a333f;
+  --line-strong: #3d4857;
+
+  --text: #e4eaf2;
+  --text-dim: #93a1b3;
+  --text-faint: #6b7789;
+
+  /* Interactive only. Cool, so it never competes with the warm state hues. */
+  --brand: #7aa2f7;
+  --brand-hover: #9ab8f9;
+  --brand-press: #5b87e0;
+  --brand-wash: rgba(122, 162, 247, 0.12);
+  --brand-ring: rgba(122, 162, 247, 0.55);
+  --on-brand: #0b1220;
+
+  /* Meaning only. */
+  --verified: #4cc38a;
+  --verified-wash: rgba(76, 195, 138, 0.12);
+  --uncertain: #e0a040;
+  --uncertain-wash: rgba(224, 160, 64, 0.12);
+  --offcam: #8892a6;
+  --offcam-wash: rgba(136, 146, 166, 0.14);
+  --error: #e5565b;
+  --error-wash: rgba(229, 86, 91, 0.12);
+
+  /* Breakdown terms use a neutral ramp: a term is not a verdict. */
+  --term-a: #7fb8d8;
+  --term-b: #9c8fd4;
+  --term-c: #c99bc0;
+  --term-d: #8fa8b8;
+  --term-empty: #232b35;
+
+  --font-ui: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.8125rem;
+  --text-base: 0.9375rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 2rem;
+  --text-3xl: 2.75rem;
+
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s5: 24px;
+  --s6: 32px;
+  --s7: 48px;
+  --s8: 64px;
+
+  --r-sm: 3px;
+  --r-md: 6px;
+  --r-lg: 10px;
+  --r-pill: 999px;
+
+  --shell: 1100px;
+  --ease: cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+/*
+ * Set data-verdict once on a container and every descendant reads var(--v).
+ * A chip, a card rail and a timeline tick then cannot disagree about what
+ * colour a verdict is.
+ */
+[data-verdict="verified"] {
+  --v: var(--verified);
+  --v-wash: var(--verified-wash);
+}
+[data-verdict="uncertain"] {
+  --v: var(--uncertain);
+  --v-wash: var(--uncertain-wash);
+}
+[data-verdict="off_camera"] {
+  --v: var(--offcam);
+  --v-wash: var(--offcam-wash);
+}
+[data-verdict="not_found"] {
+  --v: var(--text-faint);
+  --v-wash: rgba(255, 255, 255, 0.05);
+}

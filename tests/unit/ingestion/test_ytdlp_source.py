@@ -18,9 +18,12 @@ from dialogue_extractor.domain.errors import (
     GeoRestrictedError,
     IngestionError,
     InvalidURLError,
+    RateLimitedError,
 )
 from dialogue_extractor.ingestion.ytdlp_source import (
     YtDlpSource,
+    _is_retryable,
+    _source_tag,
     classify_download_failure,
 )
 
@@ -183,7 +186,7 @@ class TestRetryPolicy:
         self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
     ) -> None:
         calls = {"n": 0}
-        media = tmp_path / "source.mp4"
+        media = tmp_path / f"source_{_source_tag('https://ok.ru/video/1')}.mp4"
 
         def flaky(url: str, dest: Path) -> dict[str, Any]:
             calls["n"] += 1
@@ -203,68 +206,91 @@ class TestRetryPolicy:
 
 
 class TestLocateOutput:
-    """yt-dlp's reported filename can predate a merge or container change."""
+    """yt-dlp's reported filename can predate a merge or container change.
+
+    Every lookup is scoped to the requesting URL's tag. See
+    TestLocateOutputNeverReturnsAnotherVideo for why that scoping exists.
+    """
+
+    URL = "https://youtu.be/CoBS_v70xbE"
+
+    def tagged(self, tmp_path: Path, suffix: str) -> Path:
+        from dialogue_extractor.ingestion.ytdlp_source import _source_tag
+
+        return tmp_path / f"source_{_source_tag(self.URL)}{suffix}"
+
+    def locate(self, info: dict, tmp_path: Path) -> Path:  # type: ignore[type-arg]
+        from dialogue_extractor.ingestion.ytdlp_source import _source_tag
+
+        return YtDlpSource()._locate_output(info, tmp_path, _source_tag(self.URL))
 
     def test_prefers_reported_filepath(self, tmp_path: Path) -> None:
-        actual = tmp_path / "source.mp4"
+        actual = self.tagged(tmp_path, ".mp4")
         actual.write_bytes(b"data")
-        found = YtDlpSource()._locate_output({"filepath": str(actual)}, tmp_path)
-        assert found == actual
+        assert self.locate({"filepath": str(actual)}, tmp_path) == actual
 
     def test_falls_back_to_requested_downloads(self, tmp_path: Path) -> None:
-        actual = tmp_path / "source.mp4"
+        actual = self.tagged(tmp_path, ".mp4")
         actual.write_bytes(b"data")
         info = {
-            "_filename": str(tmp_path / "source.webm"),  # stale, pre-merge
+            "_filename": str(self.tagged(tmp_path, ".webm")),  # stale, pre-merge
             "requested_downloads": [{"filepath": str(actual)}],
         }
-        assert YtDlpSource()._locate_output(info, tmp_path) == actual
+        assert self.locate(info, tmp_path) == actual
 
     def test_falls_back_to_scanning_the_directory(self, tmp_path: Path) -> None:
-        actual = tmp_path / "source.mkv"
+        actual = self.tagged(tmp_path, ".mkv")
         actual.write_bytes(b"data" * 100)
-        assert YtDlpSource()._locate_output({}, tmp_path) == actual
+        assert self.locate({}, tmp_path) == actual
 
     def test_ignores_part_files(self, tmp_path: Path) -> None:
-        (tmp_path / "source.mp4.part").write_bytes(b"x" * 10_000)
-        complete = tmp_path / "source.mp4"
-        complete.write_bytes(b"x" * 100)
-        assert YtDlpSource()._locate_output({}, tmp_path) == complete
+        complete = self.tagged(tmp_path, ".mp4")
+        complete.write_bytes(b"data" * 100)
+        self.tagged(tmp_path, ".mp4.part").write_bytes(b"x" * 5000)
+        assert self.locate({}, tmp_path) == complete
 
     def test_ignores_zero_byte_files(self, tmp_path: Path) -> None:
-        (tmp_path / "source.webm").write_bytes(b"")
-        real = tmp_path / "source.mp4"
-        real.write_bytes(b"data")
-        assert YtDlpSource()._locate_output({}, tmp_path) == real
+        real = self.tagged(tmp_path, ".mkv")
+        real.write_bytes(b"data" * 100)
+        self.tagged(tmp_path, ".mp4").write_bytes(b"")
+        assert self.locate({}, tmp_path) == real
 
     def test_raises_when_nothing_was_written(self, tmp_path: Path) -> None:
-        with pytest.raises(DownloadError) as excinfo:
-            YtDlpSource()._locate_output({}, tmp_path)
-        assert excinfo.value.reason == "output_missing"
+        with pytest.raises(DownloadError):
+            self.locate({}, tmp_path)
 
 
 class TestOptions:
     def test_format_selector_caps_resolution(self, tmp_path: Path) -> None:
         """Normalization re-encodes anyway, so a 4K source is wasted download time."""
-        options = YtDlpSource()._build_options(tmp_path)
+        options = YtDlpSource()._build_options(tmp_path, "https://youtu.be/CoBS_v70xbE")
         assert "height<=1080" in options["format"]
 
     def test_output_is_confined_to_dest_dir(self, tmp_path: Path) -> None:
-        options = YtDlpSource()._build_options(tmp_path)
+        options = YtDlpSource()._build_options(tmp_path, "https://youtu.be/CoBS_v70xbE")
         assert options["paths"]["home"] == str(tmp_path)
 
     def test_outtmpl_is_a_bare_filename(self, tmp_path: Path) -> None:
         """yt-dlp joins outtmpl onto paths["home"]. A dir-qualified template
-        here yields output/work/output/work/source.mp4."""
-        options = YtDlpSource()._build_options(tmp_path)
-        assert options["outtmpl"] == "source.%(ext)s"
-        assert str(tmp_path) not in options["outtmpl"]
+        here yields output/work/output/work/source.mp4.
+
+        The name is no longer the fixed "source.%(ext)s" it once was: sharing
+        one destination between videos made yt-dlp skip the second download and
+        return the first video's bytes. See TestDownloadsDoNotCollide.
+        """
+        options = YtDlpSource()._build_options(tmp_path, "https://youtu.be/CoBS_v70xbE")
+        template = str(options["outtmpl"])
+        assert template.startswith("source_")
+        assert template.endswith(".%(ext)s")
+        assert str(tmp_path) not in template
 
     def test_playlists_are_not_followed(self, tmp_path: Path) -> None:
-        assert YtDlpSource()._build_options(tmp_path)["noplaylist"] is True
+        options = YtDlpSource()._build_options(tmp_path, "https://youtu.be/X")
+        assert options["noplaylist"] is True
 
     def test_certificate_checking_is_on(self, tmp_path: Path) -> None:
-        assert YtDlpSource()._build_options(tmp_path)["nocheckcertificate"] is False
+        options = YtDlpSource()._build_options(tmp_path, "https://youtu.be/X")
+        assert options["nocheckcertificate"] is False
 
 
 class TestDnsFallback:
@@ -274,7 +300,7 @@ class TestDnsFallback:
 
     def _failing_then_ok(self, tmp_path: Path):  # type: ignore[no-untyped-def]
         calls = {"n": 0}
-        media = tmp_path / "source.mp4"
+        media = tmp_path / f"source_{_source_tag('https://ok.ru/video/1')}.mp4"
 
         def download(url: str, dest: Path) -> dict[str, Any]:
             calls["n"] += 1
@@ -359,7 +385,7 @@ class TestFfmpegLocation:
     def test_points_ytdlp_at_the_validated_binary(self, tmp_path: Path) -> None:
         """yt-dlp needs ffmpeg for HLS and muxing, and finds it on PATH --
         which is not necessarily a usable build."""
-        options = YtDlpSource()._build_options(tmp_path)
+        options = YtDlpSource()._build_options(tmp_path, "https://youtu.be/CoBS_v70xbE")
         assert "ffmpeg_location" in options
         assert Path(options["ffmpeg_location"]).exists()
 
@@ -369,7 +395,8 @@ class TestNoImpersonation:
         """curl_cffi resolves inside libcurl and never calls socket.getaddrinfo,
         so enabling impersonation silently bypasses the DoH fallback and breaks
         downloads on any network that interferes with DNS."""
-        assert "impersonate" not in YtDlpSource()._build_options(tmp_path)
+        options = YtDlpSource()._build_options(tmp_path, "https://youtu.be/X")
+        assert "impersonate" not in options
 
 
 class TestEmptyErrorMessages:
@@ -415,3 +442,180 @@ class TestEmptyErrorMessages:
             monkeypatch, RuntimeError("connection timed out"), tmp_path
         )
         assert "connection timed out" in error.detail
+
+
+class TestRateLimiting:
+    """Bot detection is not a transient download failure, and retrying it hurts.
+
+    It arrives looking ordinary -- YouTube phrases it as an error about signing
+    in -- but every retry is another request from the address already under
+    suspicion. Classified as a generic failure it was retried twice, which
+    deepened the block instead of getting past it.
+    """
+
+    @pytest.mark.parametrize(
+        "message",
+        [
+            "ERROR: [youtube] CoBS_v70xbE: Sign in to confirm you're not a bot. "
+            "Use --cookies-from-browser or --cookies for the authentication.",
+            "Sign in to confirm you are not a bot",
+            "HTTP Error 429: Too Many Requests",
+            "Requested format is not available; rate limit exceeded",
+        ],
+    )
+    def test_it_is_recognised(self, message: str) -> None:
+        error = classify_download_failure(message)
+        assert isinstance(error, RateLimitedError)
+        assert error.reason == "rate_limited"
+
+    def test_it_is_never_retried(self) -> None:
+        error = classify_download_failure("Sign in to confirm you're not a bot")
+        assert _is_retryable(error) is False
+
+    def test_a_genuine_blip_is_still_retried(self) -> None:
+        """The distinction has to cut both ways or a flaky network stops working."""
+        error = classify_download_failure("Unable to download webpage: timed out")
+        assert _is_retryable(error) is True
+
+    def test_the_remediation_names_a_way_out(self) -> None:
+        """"This may be transient, check your network" was actively misleading:
+        the network is fine, and the fixes are a local file, cookies, or time."""
+        error = classify_download_failure("Sign in to confirm you're not a bot")
+        assert error.remediation is not None
+        remediation = error.remediation.lower()
+        assert "file path" in remediation
+        assert "cookies" in remediation
+
+    def test_it_does_not_swallow_unrelated_failures(self) -> None:
+        for message, reason in [
+            ("Video unavailable", "unavailable"),
+            ("This video is not available in your country", "geo_restricted"),
+        ]:
+            assert classify_download_failure(message).reason == reason
+
+
+class TestDownloadsDoNotCollide:
+    """Two videos must never share a download destination.
+
+    yt-dlp skips a download whose target file already exists -- it reports
+    "has already been downloaded" and hands back what is there. With one shared
+    `source.mp4` in the working directory, requesting a second video returned
+    the *first* one's bytes, which then flowed through normalization, caching
+    and transcription as though it were the video that had been asked for. The
+    result was a transcript of the wrong film, reported with full confidence.
+    """
+
+    def options_for(self, url: str, tmp_path: Path) -> dict[str, object]:
+        return YtDlpSource()._build_options(tmp_path, url)
+
+    def test_different_urls_get_different_destinations(self, tmp_path: Path) -> None:
+        a = self.options_for("https://youtu.be/AAAAAAAAAAA", tmp_path)["outtmpl"]
+        b = self.options_for("https://youtu.be/BBBBBBBBBBB", tmp_path)["outtmpl"]
+        assert a != b
+
+    def test_the_same_url_is_stable_across_runs(self, tmp_path: Path) -> None:
+        """Stable, or a re-run could never reuse anything."""
+        url = "https://youtu.be/CoBS_v70xbE"
+        assert (
+            self.options_for(url, tmp_path)["outtmpl"]
+            == self.options_for(url, tmp_path)["outtmpl"]
+        )
+
+    def test_a_stale_file_is_replaced_not_reused(self, tmp_path: Path) -> None:
+        """The second guard: a partial or leftover file under the same name is
+        overwritten rather than resumed."""
+        assert self.options_for("https://youtu.be/X", tmp_path)["overwrites"] is True
+
+    def test_the_template_stays_a_bare_filename(self, tmp_path: Path) -> None:
+        """yt-dlp joins outtmpl onto paths["home"]; a directory here doubles it."""
+        template = str(self.options_for("https://youtu.be/X", tmp_path)["outtmpl"])
+        assert "/" not in template and "\\" not in template
+        assert template.endswith(".%(ext)s")
+
+    @pytest.mark.parametrize(
+        ("a", "b"),
+        [
+            ("https://youtu.be/AAA", "https://youtu.be/BBB"),
+            ("https://ok.ru/video/111", "https://ok.ru/video/222"),
+            ("https://youtu.be/AAA", "https://ok.ru/video/111"),
+        ],
+    )
+    def test_across_hosts_too(self, a: str, b: str, tmp_path: Path) -> None:
+        assert self.options_for(a, tmp_path) != self.options_for(b, tmp_path)
+
+
+class TestLocateOutputNeverReturnsAnotherVideo:
+    """The directory search must not pick up a previous video's leftovers.
+
+    This is the second half of the collision. Scoping the *download* filename
+    was not enough: when yt-dlp reported no filename of its own, `_locate_output`
+    fell back to globbing a bare `source.*` and returned whatever an earlier run
+    had left in the directory. That file was then normalized, transcribed and
+    reported as the requested video, with full confidence and a plausible frame.
+    Returning nothing is recoverable; returning the wrong film is not.
+    """
+
+    def locate(self, info: dict, dest: Path, url: str) -> Path:  # type: ignore[type-arg]
+        from dialogue_extractor.ingestion.ytdlp_source import _source_tag
+
+        return YtDlpSource()._locate_output(info, dest, _source_tag(url))
+
+    def test_a_previous_videos_file_is_not_returned(self, tmp_path: Path) -> None:
+        (tmp_path / "source.mp4").write_bytes(b"PREVIOUS VIDEO")
+        (tmp_path / "source_deadbeef.mp4").write_bytes(b"ANOTHER VIDEO")
+
+        with pytest.raises(DownloadError) as excinfo:
+            self.locate({}, tmp_path, "https://youtu.be/BRAND_NEW")
+        assert excinfo.value.reason == "output_missing"
+
+    def test_this_videos_file_is_found_by_search(self, tmp_path: Path) -> None:
+        from dialogue_extractor.ingestion.ytdlp_source import _source_tag
+
+        url = "https://youtu.be/CoBS_v70xbE"
+        mine = tmp_path / f"source_{_source_tag(url)}.mp4"
+        mine.write_bytes(b"MY VIDEO")
+        (tmp_path / "source.mp4").write_bytes(b"SOMEONE ELSE")
+
+        assert self.locate({}, tmp_path, url).read_bytes() == b"MY VIDEO"
+
+    def test_a_reported_path_for_a_different_source_is_refused(
+        self, tmp_path: Path
+    ) -> None:
+        """Even if yt-dlp names a real, non-empty file, a foreign one is wrong."""
+        stale = tmp_path / "source.mp4"
+        stale.write_bytes(b"PREVIOUS VIDEO")
+
+        with pytest.raises(DownloadError):
+            self.locate({"filepath": str(stale)}, tmp_path, "https://youtu.be/NEW")
+
+    def test_a_correctly_reported_path_is_used(self, tmp_path: Path) -> None:
+        from dialogue_extractor.ingestion.ytdlp_source import _source_tag
+
+        url = "https://youtu.be/CoBS_v70xbE"
+        mine = tmp_path / f"source_{_source_tag(url)}.mkv"
+        mine.write_bytes(b"MERGED OUTPUT")
+
+        got = self.locate({"filepath": str(mine)}, tmp_path, url)
+        assert got == mine
+
+    def test_requested_downloads_is_honoured_when_scoped(
+        self, tmp_path: Path
+    ) -> None:
+        from dialogue_extractor.ingestion.ytdlp_source import _source_tag
+
+        url = "https://youtu.be/X"
+        mine = tmp_path / f"source_{_source_tag(url)}.mp4"
+        mine.write_bytes(b"OK")
+
+        info = {"requested_downloads": [{"filepath": str(mine)}]}
+        assert self.locate(info, tmp_path, url) == mine
+
+    def test_partial_fragments_are_ignored(self, tmp_path: Path) -> None:
+        from dialogue_extractor.ingestion.ytdlp_source import _source_tag
+
+        url = "https://youtu.be/X"
+        tag = _source_tag(url)
+        (tmp_path / f"source_{tag}.mp4.part").write_bytes(b"HALF")
+
+        with pytest.raises(DownloadError):
+            self.locate({}, tmp_path, url)

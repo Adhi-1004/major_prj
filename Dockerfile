@@ -1,9 +1,24 @@
 # syntax=docker/dockerfile:1
 
-# Two stages, for one reason: the build needs compilers to install wheels that
-# have no manylinux build, and shipping those compilers would roughly double the
-# image while adding tools an inference service has no business carrying.
+# Three stages, each dropping something the next does not need: Node exists only
+# to build the frontend, and compilers exist only to install wheels with no
+# manylinux build. Shipping either would add hundreds of megabytes of tooling
+# that an inference service has no business carrying.
 
+# --- frontend ----------------------------------------------------------------
+FROM node:22-alpine AS frontend
+
+WORKDIR /ui
+# Copied separately so a source-only change does not invalidate the install
+# layer -- npm ci is by far the slowest step here.
+COPY frontend/package.json frontend/package-lock.json ./
+RUN npm ci
+
+COPY frontend/ ./
+RUN npm run build
+
+
+# --- python deps -------------------------------------------------------------
 FROM python:3.11-slim-bookworm AS builder
 
 ENV PIP_NO_CACHE_DIR=1 \
@@ -61,6 +76,11 @@ WORKDIR /app
 COPY --chown=extractor:extractor src/ ./src/
 COPY --chown=extractor:extractor main.py serve.py ./
 
+# Only the built assets cross over; node_modules never reaches this image.
+# The API mounts this directory at / when it exists, so the UI and the API are
+# served from one origin and nothing is cross-origin at runtime.
+COPY --from=frontend --chown=extractor:extractor /ui/dist ./frontend/dist
+
 RUN mkdir -p /app/output /app/.cache /home/extractor/.cache \
     && chown -R extractor:extractor /app /home/extractor
 
@@ -74,7 +94,8 @@ EXPOSE 8000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
     CMD python -c "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=4).status == 200 else 1)"
 
-# Defaults to the API. Override the entrypoint for a one-shot CLI run:
+# Defaults to the API, which now also serves the UI at http://localhost:8000.
+# Override the entrypoint for a one-shot CLI run:
 #   docker run --rm --env-file .env -v "$PWD/output:/app/output" \
 #     --entrypoint python IMAGE main.py --url URL --dialogue "a line"
 ENTRYPOINT ["python", "serve.py"]

@@ -78,6 +78,16 @@ class DRMProtectedError(IngestionError):
     """Source is DRM-protected and cannot be legally decoded."""
 
 
+class RateLimitedError(IngestionError):
+    """The source refused the request as automated traffic.
+
+    Distinct from DownloadError because it must not be retried. It arrives
+    looking like an ordinary failure -- YouTube says "Sign in to confirm you're
+    not a bot" -- but every retry is another request from the address already
+    under suspicion, so retrying extends the block instead of getting past it.
+    """
+
+
 # --- Validation / normalization ---------------------------------------------
 
 

@@ -57,8 +57,10 @@ class StubOrchestrator(Orchestrator):
         request: PipelineRequest,
         *,
         on_progress: Any = None,
+        on_candidate: Any = None,
     ) -> PipelineOutcome:
         self.seen.append(request)
+        self.saw_candidate_hook = on_candidate is not None
         for stage in self.stages:
             if on_progress is not None:
                 on_progress(stage, f"doing {stage.value}")
@@ -318,15 +320,42 @@ class TestFrames:
         assert response.status_code == 200
         assert response.headers["content-type"] == "image/png"
 
-    def test_a_frame_in_the_output_root_is_also_found(
+    def test_only_the_frames_directory_is_served(
         self, settings: Settings
     ) -> None:
-        """Mode A writes to the output root, Mode B to output/frames."""
+        """A stray PNG in the output root is not a frame, and is not served.
+
+        Both modes write to output/frames now. Serving the root as a fallback
+        is exactly what created the collision the next test guards against.
+        """
         settings.output_dir.mkdir(parents=True)
         (settings.output_dir / "frame_144.png").write_bytes(b"\x89PNG\r\n\x1a\n")
 
         client = client_for(settings, StubOrchestrator())
-        assert client.get("/frames/frame_144.png").status_code == 200
+        assert client.get("/frames/frame_144.png").status_code == 404
+
+    def test_a_root_png_can_never_shadow_a_real_frame(
+        self, settings: Settings
+    ) -> None:
+        """Regression guard for a real bug.
+
+        Target mode used to write output/frame_N.png while discovery wrote
+        output/frames/frame_N.png, and the resolver checked output/frames
+        first. Once both held the same frame number, a target-mode result was
+        served discovery's frame -- potentially from an entirely different
+        video, for the one output the brief actually asks for.
+        """
+        frames = settings.output_dir / "frames"
+        frames.mkdir(parents=True)
+        (settings.output_dir / "frame_144.png").write_bytes(b"WRONG-FILE")
+        (frames / "frame_144.png").write_bytes(b"\x89PNG\r\n\x1a\n" + b"RIGHT")
+
+        client = client_for(settings, StubOrchestrator())
+        response = client.get("/frames/frame_144.png")
+
+        assert response.status_code == 200
+        assert b"RIGHT" in response.content
+        assert b"WRONG-FILE" not in response.content
 
     def test_a_missing_frame_is_404(self, settings: Settings) -> None:
         settings.output_dir.mkdir(parents=True)
@@ -393,3 +422,86 @@ class TestOpenAPI:
         assert "/extract" in schema["paths"]
         assert "/jobs/{job_id}" in schema["paths"]
         assert "/health" in schema["paths"]
+
+
+class TestLiveDiscoveryProgress:
+    """A polling client sees a sweep advance instead of a frozen "running".
+
+    This is the whole reason `on_candidate` exists: without it a four-minute
+    discovery run reports one stage message and then nothing until it finishes.
+    """
+
+    def test_progress_and_partials_appear_while_running(
+        self, settings: Settings
+    ) -> None:
+        import threading
+
+        from dialogue_extractor.domain.enums import Status as PipelineStatus
+        from dialogue_extractor.domain.models import ExtractionResult
+        from dialogue_extractor.pipeline.mode_b import CandidateProgress
+
+        release = threading.Event()
+        reported = threading.Event()
+
+        class SweepingOrchestrator(StubOrchestrator):
+            def run(self, request: PipelineRequest, *, on_progress=None, **kw):  # type: ignore[no-untyped-def]
+                on_candidate = kw.get("on_candidate")
+                assert on_candidate is not None, "the API must pass on_candidate"
+                on_candidate(
+                    CandidateProgress(
+                        index=0,
+                        total=8,
+                        processed=1,
+                        start=5.6,
+                        end=9.3,
+                        speaker_id="SPEAKER_05",
+                        text="a line found early",
+                        result=ExtractionResult(
+                            status=PipelineStatus.SUCCESS,
+                            text="a line found early",
+                            timestamp=6.006,
+                            frame_number=144,
+                            confidence=0.88,
+                        ),
+                    )
+                )
+                reported.set()
+                release.wait(timeout=5)
+                return PipelineOutcome(payload={"status": "success", "results": []})
+
+        client = client_for(settings, SweepingOrchestrator())
+        job_id = client.post("/extract", json={"url": "https://e.com/v"}).json()["job_id"]
+
+        assert reported.wait(timeout=5)
+        body = client.get(f"/jobs/{job_id}").json()
+
+        assert body["state"] == "running"
+        assert body["progress"] == {"current": 1, "total": 8}
+        assert len(body["partial"]) == 1
+        assert body["partial"][0]["frame_number"] == 144
+
+        release.set()
+        poll(client, job_id)
+
+    def test_a_job_that_reports_nothing_omits_both_keys(
+        self, settings: Settings
+    ) -> None:
+        """Target mode never sweeps, so it must not grow empty scaffolding."""
+        client = client_for(settings, StubOrchestrator())
+        job_id = client.post(
+            "/extract", json={"url": "https://e.com/v", "dialogue": "a line"}
+        ).json()["job_id"]
+
+        body = poll(client, job_id)
+        assert "progress" not in body
+        assert "partial" not in body
+
+    def test_the_listing_stays_light(self, settings: Settings) -> None:
+        """`partial` can hold every result found so far; it has no place in a
+        listing whose job is to be scannable."""
+        client = client_for(settings, StubOrchestrator())
+        client.post("/extract", json={"url": "https://e.com/v"})
+
+        entry = client.get("/jobs").json()["jobs"][0]
+        assert "result" not in entry
+        assert "diagnostics" not in entry

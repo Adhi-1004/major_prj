@@ -122,3 +122,58 @@ class TestBothCapsTogether:
         for _ in range(processed):
             tracker.record()
         assert tracker.processed == processed
+
+
+class TestCandidateProgressRecord:
+    """The shape a caller watching a sweep receives per candidate."""
+
+    def test_it_carries_where_the_line_is(self) -> None:
+        from dialogue_extractor.pipeline.mode_b import CandidateProgress
+
+        progress = CandidateProgress(
+            index=3,
+            total=31,
+            processed=4,
+            start=12.5,
+            end=16.0,
+            speaker_id="SPEAKER_02",
+            text="a line",
+        )
+        assert (progress.start, progress.end) == (12.5, 16.0)
+        assert progress.speaker_id == "SPEAKER_02"
+
+    def test_index_is_zero_based_but_processed_counts_from_one(self) -> None:
+        """Both are needed: one addresses the candidate, the other reads as
+        "4 of 31" without the caller having to add anything."""
+        from dialogue_extractor.pipeline.mode_b import CandidateProgress
+
+        progress = CandidateProgress(
+            index=0, total=31, processed=1, start=0.0, end=1.0,
+            speaker_id=None, text="first",
+        )
+        assert progress.index == 0
+        assert progress.processed == 1
+
+    def test_a_failure_carries_a_reason_and_no_result(self) -> None:
+        from dialogue_extractor.pipeline.mode_b import CandidateProgress
+
+        progress = CandidateProgress(
+            index=1, total=5, processed=2, start=0.0, end=1.0,
+            speaker_id=None, text="x", error_reason="service_unavailable",
+        )
+        assert progress.result is None
+        assert progress.error_reason == "service_unavailable"
+
+    def test_it_is_immutable(self) -> None:
+        """It is handed to a caller's callback; that caller must not be able to
+        mutate the sweep's view of its own progress."""
+        import dataclasses
+
+        from dialogue_extractor.pipeline.mode_b import CandidateProgress
+
+        progress = CandidateProgress(
+            index=0, total=1, processed=1, start=0.0, end=1.0,
+            speaker_id=None, text="x",
+        )
+        with pytest.raises(dataclasses.FrozenInstanceError):
+            progress.index = 5  # type: ignore[misc]

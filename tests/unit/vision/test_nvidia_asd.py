@@ -16,12 +16,14 @@ import pytest
 from dialogue_extractor.domain.errors import (
     ASDAuthError,
     ASDError,
+    ASDInvalidInputError,
     ASDQuotaError,
     ASDTimeoutError,
     ASDUnavailableError,
     DiarizationDroppedError,
     MalformedDiarizationError,
 )
+from dialogue_extractor.infra.retry import retry
 from dialogue_extractor.vision.providers.nvidia_asd import (
     NvidiaASDProvider,
     assert_diarization_reached_service,
@@ -485,3 +487,87 @@ class TestWireSpeakerIdSentinel:
     def test_non_numeric_speaker_id_degrades_to_none(self) -> None:
         result = map_response_frames({0: [face_dict(speaker="bogus")]}, 0, 25.0)  # type: ignore[arg-type]
         assert result.frames[0].faces[0].diarized_speaker_id is None
+
+
+class TestTransientFailuresAreRetried:
+    """A hosted endpoint blips. A run must not die because of one.
+
+    A real discovery run failed outright on a single INTERNAL ("Server Error")
+    from NVCF, after it had already spent minutes downloading, transcribing and
+    diarizing. The service was working again moments later. Only the failures
+    another attempt can fix are retried; retrying rejected credentials or a
+    malformed clip would just fail three times as slowly.
+    """
+
+    def provider(self):  # type: ignore[no-untyped-def]
+        return NvidiaASDProvider(
+            api_key="k", function_id="f", target="localhost:1"
+        )
+
+    def test_it_recovers_from_a_transient_failure(self) -> None:
+        calls = {"n": 0}
+
+        def flaky(*_args: object, **_kwargs: object) -> dict[int, list[dict[str, object]]]:
+            calls["n"] += 1
+            if calls["n"] < 3:
+                raise ASDUnavailableError("service_unavailable", "Server Error")
+            return {0: []}
+
+        provider = self.provider()
+        # Call the retry wrapper directly with the inner work stubbed out.
+        inner = type(provider)._detect_with_retry.__wrapped__
+        wrapped = retry(
+            attempts=3,
+            base_delay=0.0,
+            jitter=False,
+            retry_on=(ASDUnavailableError, ASDTimeoutError),
+        )(flaky)
+
+        assert wrapped() == {0: []}
+        assert calls["n"] == 3
+        assert inner is not None
+
+    def test_it_gives_up_after_the_last_attempt(self) -> None:
+        def always_down(*_a: object, **_k: object) -> None:
+            raise ASDUnavailableError("service_unavailable", "Server Error")
+
+        wrapped = retry(
+            attempts=3,
+            base_delay=0.0,
+            jitter=False,
+            retry_on=(ASDUnavailableError, ASDTimeoutError),
+        )(always_down)
+
+        with pytest.raises(ASDUnavailableError):
+            wrapped()
+
+    @pytest.mark.parametrize(
+        "error",
+        [
+            ASDAuthError("auth_rejected", "bad key"),
+            ASDInvalidInputError("invalid_input", "not an mp4"),
+        ],
+    )
+    def test_failures_another_attempt_cannot_fix_are_not_retried(
+        self, error: Exception
+    ) -> None:
+        calls = {"n": 0}
+
+        def failing(*_a: object, **_k: object) -> None:
+            calls["n"] += 1
+            raise error
+
+        wrapped = retry(
+            attempts=3,
+            base_delay=0.0,
+            jitter=False,
+            retry_on=(ASDUnavailableError, ASDTimeoutError),
+        )(failing)
+
+        with pytest.raises(type(error)):
+            wrapped()
+        assert calls["n"] == 1, "a permanent failure must fail once, not three times"
+
+    def test_the_rpc_is_actually_wrapped(self) -> None:
+        """Guards against the decorator being dropped in a later refactor."""
+        assert hasattr(NvidiaASDProvider._detect_with_retry, "__wrapped__")

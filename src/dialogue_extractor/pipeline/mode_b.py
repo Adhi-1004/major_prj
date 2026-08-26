@@ -23,11 +23,18 @@ one carries its reason.
 **One candidate failing does not end the run.** A network blip on chunk 12 of 37
 costs chunk 12, not the other 36. Failures are collected and reported alongside
 the results.
+
+**Progress is reported per candidate, not per run.** A sweep of a feature-length
+film is minutes of silence otherwise, and a caller with no way to tell a working
+run from a hung one will kill a working one. `on_candidate` fires after every
+candidate is filed, carrying the result if there was one, so a UI can show the
+answer arriving rather than a spinner.
 """
 
 from __future__ import annotations
 
 import time
+from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -112,6 +119,37 @@ class BudgetTracker:
         return self.processed < self._total
 
 
+@dataclass(frozen=True, slots=True)
+class CandidateProgress:
+    """One candidate's outcome, reported the moment it is known.
+
+    `result` is None when the candidate produced no entry at all -- a detection
+    failure. An off-screen finding is *not* None: it is a real result with
+    `status="not_on_screen"`, because "this line is spoken off camera" is an
+    answer the caller wants to see arrive like any other.
+    """
+
+    index: int
+    """0-based position in the candidate list."""
+
+    total: int
+    """How many candidates the sweep will consider at most."""
+
+    processed: int
+    """How many have been filed so far, this one included."""
+
+    start: float
+    end: float
+    speaker_id: str | None
+    text: str
+    result: ExtractionResult | None = None
+    error_reason: str | None = None
+
+
+OnCandidate = Callable[[CandidateProgress], None]
+"""Called once per candidate, after it is filed into a bucket."""
+
+
 def run(
     candidates: tuple[Candidate, ...],
     manifest: MediaManifest,
@@ -125,8 +163,35 @@ def run(
     min_speaking_ms: float = MIN_SPEAKING_MS,
     detect_scene_cuts: bool = True,
     extract_frames: bool = True,
+    on_candidate: OnCandidate | None = None,
 ) -> DiscoveryResult:
-    """Verify every candidate, bucketing the results by confidence."""
+    """Verify every candidate, bucketing the results by confidence.
+
+    `on_candidate` is optional and defaults to reporting nothing, so every
+    existing caller is unaffected. Supply it to watch a long sweep progress.
+    """
+    def report(
+        index: int,
+        candidate: Candidate,
+        result: ExtractionResult | None = None,
+        error_reason: str | None = None,
+    ) -> None:
+        if on_candidate is None:
+            return
+        on_candidate(
+            CandidateProgress(
+                index=index,
+                total=len(candidates),
+                processed=tracker.processed,
+                start=candidate.start,
+                end=candidate.end,
+                speaker_id=candidate.speaker_id,
+                text=candidate.text,
+                result=result,
+                error_reason=error_reason,
+            )
+        )
+
     budget = budget or Budget()
     tracker = BudgetTracker(budget, len(candidates))
 
@@ -181,6 +246,7 @@ def run(
                 }
             )
             tracker.record()
+            report(index, candidate, error_reason=exc.reason)
             continue
 
         tracker.record()
@@ -195,11 +261,11 @@ def run(
             # spoken off camera" is a finding, not an absence of one. On the
             # sample video these are the film's internal-monologue scenes, which
             # is precisely the judgement a caller would want to check.
-            off_screen.append(
-                result_builder.build_not_on_screen(
-                    candidate, outcome, with_timestamp=True
-                )
+            off_camera = result_builder.build_not_on_screen(
+                candidate, outcome, with_timestamp=True
             )
+            off_screen.append(off_camera)
+            report(index, candidate, result=off_camera)
             log.debug(
                 "mode_b.not_on_screen",
                 candidate=index + 1,
@@ -221,6 +287,8 @@ def run(
             verified.append(result)
         else:
             uncertain.append(result)
+
+        report(index, candidate, result=result)
 
         log.info(
             "mode_b.found",

@@ -27,6 +27,7 @@ from typing import Any
 
 from dialogue_extractor.domain.enums import StageName, Status
 from dialogue_extractor.infra.logging import get_logger
+from dialogue_extractor.pipeline.mode_b import CandidateProgress
 from dialogue_extractor.pipeline.orchestrator import PipelineRequest
 
 log = get_logger(__name__)
@@ -58,6 +59,8 @@ class Job:
     message: str | None = None
     result: dict[str, Any] | None = None
     diagnostics: dict[str, Any] = field(default_factory=dict)
+    progress: dict[str, int] | None = None
+    partial: list[dict[str, Any]] = field(default_factory=list)
     created_at: datetime = field(default_factory=lambda: datetime.now(UTC))
     started_at: datetime | None = None
     finished_at: datetime | None = None
@@ -83,6 +86,10 @@ class Job:
             payload["elapsed_seconds"] = round(
                 (self.finished_at - (self.started_at or self.created_at)).total_seconds(), 2
             )
+        if self.progress is not None:
+            payload["progress"] = dict(self.progress)
+        if self.partial:
+            payload["partial"] = list(self.partial)
         if self.result is not None:
             payload["result"] = self.result
         if self.diagnostics:
@@ -194,6 +201,26 @@ class JobStore:
         with self._lock:
             job.stage = stage.value
             job.message = message
+
+    def record_candidate(self, job: Job, progress: CandidateProgress) -> None:
+        """File one candidate's outcome while the sweep is still running.
+
+        A discovery sweep is one network round-trip per candidate and can run
+        for minutes. Without this the only thing a client could report for that
+        whole span is "running", which is indistinguishable from hung -- and a
+        user who cannot tell those apart kills the working run.
+
+        `partial` deliberately holds only results, not failures: a caller
+        watching lines arrive wants the answers, and the failures are reported
+        in full on the finished document.
+        """
+        with self._lock:
+            job.progress = {
+                "current": progress.processed,
+                "total": progress.total,
+            }
+            if progress.result is not None:
+                job.partial.append(progress.result.to_dict())
 
     def record_result(
         self, job: Job, result: dict[str, Any], diagnostics: dict[str, Any]
