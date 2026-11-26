@@ -924,3 +924,100 @@ body {
     transition-duration: 0.001ms !important;
   }
 }
+
+/* --- Check it yourself (demo of human evaluation) ------------------------- */
+
+.check__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--s4);
+  margin-bottom: var(--s4);
+}
+
+.check__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: var(--s5);
+}
+
+@media (max-width: 860px) {
+  .check__body { grid-template-columns: 1fr; }
+}
+
+.check__video {
+  width: 100%;
+  max-height: 52vh;
+  background: #000;
+  border-radius: var(--r-md);
+}
+
+.check__line { margin: var(--s3) 0; }
+
+.check__answers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+  align-items: center;
+  margin-bottom: var(--s3);
+}
+
+.check__sep { width: 1px; align-self: stretch; background: var(--line); margin: 0 var(--s2); }
+
+.check__reveal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s3);
+  align-items: baseline;
+  padding: var(--s3) var(--s4);
+  border-radius: var(--r-md);
+  border-left: 4px solid var(--v, var(--line-strong));
+  background: var(--v-wash, var(--surface-2));
+  margin-bottom: var(--s3);
+}
+
+.check__reveal[data-verdict="verified"] { --v: var(--verified); --v-wash: var(--verified-wash); }
+.check__reveal[data-verdict="off_camera"] { --v: var(--offcam); --v-wash: var(--offcam-wash); }
+.check__reveal[data-verdict="uncertain"] { --v: var(--uncertain); --v-wash: var(--uncertain-wash); }
+
+.check__agree { color: var(--verified); font-weight: 600; }
+.check__disagree { color: var(--error); font-weight: 600; }
+
+.check__score { border-left: 1px solid var(--line); padding-left: var(--s5); }
+
+@media (max-width: 860px) {
+  .check__score { border-left: none; padding-left: 0; }
+}
+
+.check__stats { display: grid; grid-template-columns: 1fr; gap: var(--s1); margin: var(--s4) 0; }
+.check__stats dt { color: var(--text-dim); font-size: var(--text-sm); }
+.check__stats dd { margin: 0 0 var(--s2); }
+
+.check__list {
+  list-style: none;
+  padding: 0;
+  margin: var(--s4) 0 0;
+  max-height: 40vh;
+  overflow: auto;
+  border-top: 1px solid var(--line);
+}
+
+.check__list button {
+  display: grid;
+  grid-template-columns: 44px 1fr 16px;
+  gap: var(--s2);
+  width: 100%;
+  padding: var(--s2) 0;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: var(--text-sm);
+  text-align: left;
+  cursor: pointer;
+}
+
+.check__list li.is-current button { color: var(--brand); }
+
+.check__text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

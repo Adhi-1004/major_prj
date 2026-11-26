@@ -392,6 +392,94 @@ class TestDiagnostics:
                 assert outcome.detail, f"no explanation for {spec!r}"
 
 
+class TestOnsetConstraint:
+    """Speech in the lead-in padding belongs to the previous sentence. With the
+    same speaker talking straight into the queried line, an unconstrained search
+    reports a frame from before the line began."""
+
+    def test_unconstrained_search_starts_in_the_lead_in(self) -> None:
+        """The failure the constraint exists to remove (ablation A5)."""
+        outcome = select_frame(result(pattern("SSSSSSSSSS")), speaker_code=1)
+        assert outcome.hit is not None
+        assert outcome.hit.global_frame == 0
+
+    def test_run_is_cut_at_the_onset(self) -> None:
+        outcome = select_frame(
+            result(pattern("SSSSSSSSSS")), speaker_code=1, onset_frame=4
+        )
+        assert outcome.hit is not None
+        assert outcome.hit.global_frame == 4
+        assert outcome.hit.run_length == 6
+
+    def test_onset_is_clip_relative_and_offset_applies_after(self) -> None:
+        outcome = select_frame(
+            result(pattern("SSSSSSSS"), clip_start_frame=100),
+            speaker_code=1,
+            onset_frame=3,
+        )
+        assert outcome.hit is not None
+        assert outcome.hit.global_frame == 103
+
+    def test_a_run_starting_after_the_onset_is_unaffected(self) -> None:
+        outcome = select_frame(
+            result(pattern("......SSSSS")), speaker_code=1, onset_frame=2
+        )
+        assert outcome.hit is not None
+        assert outcome.hit.global_frame == 6
+
+    def test_remaining_run_after_onset_must_still_be_long_enough(self) -> None:
+        """Only two speaking frames remain after the onset at 25 fps (k=3)."""
+        outcome = select_frame(
+            result(pattern("SSSSSS....")), speaker_code=1, onset_frame=4
+        )
+        assert not outcome.found
+        assert outcome.reason is AmbiguityReason.SHORT_SPEAKING_RUN
+
+    def test_speech_only_before_the_onset_is_named(self) -> None:
+        outcome = select_frame(
+            result(pattern("SSSSS......")), speaker_code=1, onset_frame=6
+        )
+        assert not outcome.found
+        assert outcome.reason is AmbiguityReason.SPOKEN_BEFORE_ONSET
+        assert "before the queried words" in outcome.detail
+
+    def test_other_speaker_before_onset_is_still_a_mismatch(self) -> None:
+        """The new reason is only for the *expected* speaker's earlier speech."""
+        outcome = select_frame(
+            result(pattern("SSSSS......", speaker=2)), speaker_code=1, onset_frame=6
+        )
+        assert not outcome.found
+        assert outcome.reason is AmbiguityReason.SPEAKER_MISMATCH
+
+    def test_onset_at_zero_matches_no_constraint(self) -> None:
+        frames = pattern("..SSSSS..")
+        free = select_frame(result(frames), speaker_code=1)
+        pinned = select_frame(result(frames), speaker_code=1, onset_frame=0)
+        assert free.hit is not None and pinned.hit is not None
+        assert free.hit.global_frame == pinned.hit.global_frame
+
+
+class TestSpeakerCheckAblation:
+    """Ablation A1: accept any speaking face. Used only for evaluation."""
+
+    def test_another_speaker_is_accepted_when_the_check_is_off(self) -> None:
+        outcome = select_frame(
+            result(pattern("SSSSSS", speaker=2)), speaker_code=1, match_speaker=False
+        )
+        assert outcome.found
+
+    def test_ablation_does_not_flag_the_result_as_unverified(self) -> None:
+        """The ablation measures the rule, so it must not add its own penalty."""
+        outcome = select_frame(
+            result(pattern("SSSSSS", speaker=2)), speaker_code=1, match_speaker=False
+        )
+        assert outcome.reason is None
+
+    def test_production_default_still_rejects_the_wrong_speaker(self) -> None:
+        outcome = select_frame(result(pattern("SSSSSS", speaker=2)), speaker_code=1)
+        assert not outcome.found
+
+
 class TestDeterminism:
     def test_repeated_calls_agree(self) -> None:
         frames = pattern(".S..SSSSS.SSS")

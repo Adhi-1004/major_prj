@@ -7,6 +7,7 @@ would make the HTTP layer untestable without credentials and a GPU.
 
 from __future__ import annotations
 
+import shutil
 from pathlib import Path
 
 from fastapi import FastAPI
@@ -18,7 +19,7 @@ from starlette.staticfiles import StaticFiles
 from dialogue_extractor.api.jobs import Job, JobStore, RunFn
 from dialogue_extractor.api.routes import build_router
 from dialogue_extractor.config.settings import Settings
-from dialogue_extractor.domain.enums import Status
+from dialogue_extractor.domain.enums import Mode, Status
 from dialogue_extractor.domain.errors import StageError
 from dialogue_extractor.infra.logging import configure_logging, get_logger
 from dialogue_extractor.pipeline.orchestrator import Orchestrator
@@ -44,9 +45,33 @@ def default_runner(orchestrator: Orchestrator) -> RunFn:
             ),
             on_candidate=lambda progress: store.record_candidate(job, progress),
         )
+        if (
+            job.request.mode is Mode.DISCOVERY
+            and outcome.manifest is not None
+            and outcome.status != Status.ERROR.value
+        ):
+            _keep_video(store, job, outcome.manifest.video_path, orchestrator.output_dir)
         store.record_result(job, outcome.payload, outcome.diagnostics)
 
     return run
+
+
+def _keep_video(store: JobStore, job: Job, normalized: Path, output_dir: Path) -> None:
+    """Copy the job's normalized video aside for the "check it yourself" demo.
+
+    A copy, not a link: the working file is overwritten in place by the next
+    run (and by a media-cache restore), so a link would start playing a
+    different video. Failing to keep it never fails the job -- the demo is an
+    extra, the result is the product.
+    """
+    try:
+        dest_dir = output_dir / "videos"
+        dest_dir.mkdir(parents=True, exist_ok=True)
+        dest = dest_dir / f"{job.id}.mp4"
+        shutil.copyfile(normalized, dest)
+        store.record_video(job, dest)
+    except OSError as exc:
+        log.warning("api.video_not_kept", job_id=job.id, error=type(exc).__name__)
 
 
 def deferred_runner(settings: Settings) -> RunFn:

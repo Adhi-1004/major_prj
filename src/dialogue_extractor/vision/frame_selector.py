@@ -30,6 +30,11 @@ the answer can be wrong:
    A gap in frame ids means the detector returned nothing for those frames, and
    treating the two sides as continuous assumes something unobserved.
 
+5. **The run must start at or after the line's onset** (when an onset is given).
+   The candidate window is padded on both sides. If the same speaker is already
+   talking in the lead-in, an unconstrained search returns a frame from their
+   *previous* sentence -- the right person, the wrong line.
+
 When no run qualifies, the reason is reported rather than a bare failure -- the
 brief asks specifically that uncertain results be explained.
 """
@@ -106,8 +111,13 @@ def _find_runs(
     frames: tuple[ASDFrame, ...],
     speaker_code: int | None,
     cut_frames: frozenset[int],
+    onset_frame: int | None = None,
 ) -> list[_Run]:
-    """Maximal runs of consecutive frames where the target speaker is speaking."""
+    """Maximal runs of consecutive frames where the target speaker is speaking.
+
+    Frames before `onset_frame` never join a run: speech there belongs to
+    whatever was said before the queried line.
+    """
     runs: list[_Run] = []
     current_frames: list[ASDFrame] = []
     current_faces: list[Face] = []
@@ -124,7 +134,8 @@ def _find_runs(
             )
 
     for index, frame in enumerate(frames):
-        face = _qualifying_face(frame, speaker_code)
+        before_onset = onset_frame is not None and frame.frame_id < onset_frame
+        face = None if before_onset else _qualifying_face(frame, speaker_code)
 
         if face is None:
             flush()
@@ -157,6 +168,8 @@ def select_frame(
     min_speaking_ms: float = MIN_SPEAKING_MS,
     cut_frames: frozenset[int] = frozenset(),
     max_speakers: int = ASD_MAX_SPEAKERS,
+    onset_frame: int | None = None,
+    match_speaker: bool = True,
 ) -> SelectionOutcome:
     """Pick the first frame where the target speaker is visibly speaking.
 
@@ -164,6 +177,12 @@ def select_frame(
         speaker_code: The wire code for the diarized speaker of the matched
             line. None accepts any speaking face, and says so in the outcome.
         cut_frames: Clip-relative frames on which a shot changes.
+        onset_frame: Clip-relative frame at which the line begins (already
+            widened by the onset tolerance). Runs may not start before it.
+            None disables the constraint, which is ablation A5.
+        match_speaker: False accepts any speaking face without flagging the
+            result -- the speaker-agnostic configuration of ablation A1. The
+            production pipeline never sets it.
 
     Returns:
         The earliest qualifying run's *first* frame -- the question is where the
@@ -171,6 +190,9 @@ def select_frame(
     """
     frames = result.frames
     required = k_frames_for(result.fps, min_speaking_ms)
+    expected_speaker = speaker_code
+    if not match_speaker:
+        speaker_code = None
 
     codes_seen = tuple(
         sorted(
@@ -228,11 +250,28 @@ def select_frame(
             "No face was visible anywhere in this window.",
         )
 
-    runs = _find_runs(frames, speaker_code, cut_frames)
+    runs = _find_runs(frames, speaker_code, cut_frames, onset_frame)
     target_frames = sum(run.length for run in runs)
     longest = max((run.length for run in runs), default=0)
 
     if not runs:
+        spoke_before_onset = onset_frame is not None and any(
+            frame.frame_id < onset_frame
+            and _qualifying_face(frame, speaker_code) is not None
+            for frame in frames
+        )
+        if spoke_before_onset:
+            return outcome(
+                None,
+                AmbiguityReason.SPOKEN_BEFORE_ONSET,
+                (
+                    "The expected speaker was seen speaking only before the queried "
+                    f"words begin (clip frame {onset_frame}); while the line itself "
+                    "is spoken they are not detected speaking."
+                ),
+                target_frames=target_frames,
+                longest=longest,
+            )
         if frames_with_any_speaker == 0:
             return outcome(
                 None,
@@ -290,7 +329,7 @@ def select_frame(
 
     reason: AmbiguityReason | None = None
     detail = ""
-    if speaker_code is None:
+    if expected_speaker is None and match_speaker:
         reason = AmbiguityReason.SPEAKER_MISMATCH
         detail = (
             "No diarized speaker was available for this line, so any speaking face "

@@ -1,0 +1,115 @@
+{
+  "clip_id": "interview_scott_kelly",
+  "title": "Interview with Scott Kelly, One Year Crew Member (NASA)",
+  "genre": "interview",
+  "fps": 59.94,
+  "frame_count": 15671,
+  "duration": 261.5,
+  "video_file": "interview_scott_kelly.mp4",
+  "lines": [
+    {
+      "line_id": "interview_scott_kelly-L000",
+      "line_start": 0.0,
+      "line_end": 4.38,
+      "speaker": "SPEAKER_01",
+      "text": "NASA astronaut Scott Kelly at the Baikonur Cosmodrome. Scott, you're",
+      "ask_onset": true
+    },
+    {
+      "line_id": "interview_scott_kelly-L001",
+      "line_start": 4.38,
+      "line_end": 16.04,
+      "speaker": "SPEAKER_00",
+      "text": "back at the launch site and now just six months away from 12 months away from the planet. Is the reality of the magnitude of the mission starting to strike home, starting to really sink in?",
+      "ask_onset": true
+    },
+    {
+      "line_id": "interview_scott_kelly-L002",
+      "line_start": 16.44,
+      "line_end": 37.26,
+      "speaker": "SPEAKER_01",
+      "text": "Yeah, I think so. Being here in Baikonur, it's the first step to get into space. And my training has not been all that busy. since I started about a year and a half, two years ago. It's been a pretty nice pace, but I think now is when it really starts to pick up.",
+      "ask_onset": true
+    },
+    {
+      "line_id": "interview_scott_kelly-L003",
+      "line_start": 38.58,
+      "line_end": 56.16,
+      "speaker": "SPEAKER_01",
+      "text": "With the final exams we had as a backup crew and then coming here and then going back to Houston, I anticipate having a lot more events scheduled and then a lot more travel leading up to coming back to Russia and then back here in February and March. So",
+      "ask_onset": false
+    },
+    {
+      "line_id": "interview_scott_kelly-L004",
+      "line_start": 56.16,
+      "line_end": 71.0,
+      "speaker": "SPEAKER_00",
+      "text": "from this point on, what is the most difficult part of the training? Is it the training itself or tending to personal issues to get your family support, your loved ones in a position where you know you're not going to see them for a year?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "interview_scott_kelly-L005",
+      "line_start": 72.66,
+      "line_end": 95.64,
+      "speaker": "SPEAKER_01",
+      "text": "You know, the training is not much different than what I did last time. There's certainly more payload training because I'll be on the space station longer. The Soyuz training is a little bit different in that we do it with Gennady Padalka for ASSET and then Sergey Volkov we'll be coming home with a year later.",
+      "ask_onset": true
+    },
+    {
+      "line_id": "interview_scott_kelly-L006",
+      "line_start": 97.22,
+      "line_end": 118.86,
+      "speaker": "SPEAKER_01",
+      "text": "But I think mostly it'll be more of a challenge in that I am getting ready to be gone for about, It will be really about 14 months, which is a pretty long time for me, you know, leaving from home and leaving a 19 -year -old at home in my house. So that's going to be a little bit more challenging this time.",
+      "ask_onset": true
+    },
+    {
+      "line_id": "interview_scott_kelly-L007",
+      "line_start": 119.38,
+      "line_end": 127.14,
+      "speaker": "SPEAKER_00",
+      "text": "Do you look at this as a marathon, Scott? And if so, how do you and Mikhail Kornienko control the pacing of such a long mission?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "interview_scott_kelly-L008",
+      "line_start": 128.46,
+      "line_end": 163.16,
+      "speaker": "SPEAKER_01",
+      "text": "You know, I've talked to some guys that have been on the space station recently, and they recognize that this will be a challenge. When I asked them, hey, could you stay another nine months, how would you feel about staying another six months, depending on where they are in the flight, they definitely recognize the challenge of it. But I think going into it with the mindset right from the beginning that I'm going to be there for a whole year is going to make it easier than certainly if you were on the space station and had been there for six months and then you were told you have to stay another six for some reason. and that would certainly be a lot harder.",
+      "ask_onset": true
+    },
+    {
+      "line_id": "interview_scott_kelly-L009",
+      "line_start": 164.5,
+      "line_end": 174.4,
+      "speaker": "SPEAKER_01",
+      "text": "So I think it is in some ways a mental thing, you know, preparing yourself for, you know, the long haul. And as far as controlling the pace, we've discussed that.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "interview_scott_kelly-L010",
+      "line_start": 175.48,
+      "line_end": 199.72,
+      "speaker": "SPEAKER_01",
+      "text": "I think I'm going to have to have a little bit different pace or perspective on the whole thing this time than I did last time. You know, they say the long -duration flight is like a marathon and the shuttle flight is like a sprint. What I say, especially for my last flight, is like, was that the last flight actually kind of felt like a long shuttle flight, except you had a little bit more time on the weekend. So it was like a long sprint.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "interview_scott_kelly-L011",
+      "line_start": 200.74,
+      "line_end": 213.28,
+      "speaker": "SPEAKER_00",
+      "text": "And finally, Scott, this is the first time humans will have spent a year in space in almost two decades. What do you think is ultimately going to be the significance that we'll take away from this mission?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "interview_scott_kelly-L012",
+      "line_start": 213.78,
+      "line_end": 260.3,
+      "speaker": "SPEAKER_01",
+      "text": "Well, someday we're going to go to Mars. And we have the facilities on board the space station to really study the effects of space on longer duration space flights. I mean, six months is a long time, but going to Mars is going to take a lot longer than that. So having the capability that the International Space Station provides to study the human element of this is going to be, you know, I think significantly better than what we've, in our previous experience that the Russians and the Soviets experienced on the Mir space station just because of how technology has progressed and their hardware has improved over this period of time.",
+      "ask_onset": false
+    }
+  ]
+}

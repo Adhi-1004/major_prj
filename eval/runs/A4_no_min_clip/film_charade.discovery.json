@@ -1,0 +1,1564 @@
+{
+  "clip_id": "film_charade",
+  "genre": "film",
+  "config": "A4_no_min_clip",
+  "overrides": {
+    "min_clip_seconds": 0.0
+  },
+  "run_at": "2026-11-18T16:50:56.703510+00:00",
+  "status": "success",
+  "error": null,
+  "diagnostics": {
+    "mode": "discovery",
+    "fps": 23.98,
+    "duration": 420.058,
+    "frame_count": 10073,
+    "resolution": "888x480",
+    "words": 718,
+    "segments": 95,
+    "speakers": 4,
+    "candidates": 75,
+    "verified_seconds": 248.3
+  },
+  "elapsed_seconds": 140.641,
+  "stage_seconds": {
+    "ingestion": 0.047,
+    "normalization": 0.0,
+    "transcription": 0.031,
+    "diarization": 0.016,
+    "alignment": 0.0,
+    "active_speaker_detection": 140.547
+  },
+  "asd_requests_sent": 58,
+  "asd_cache_hits": 17,
+  "cold_run": false,
+  "lines": [
+    {
+      "index": 0,
+      "line_start": 0.0,
+      "line_end": 9.4,
+      "window": [
+        0.0,
+        9.4
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "Can't he do something constructive, like start an avalanche or something? Va jouer, mon ch\u00e9ri. When you start to it like this, something is the matter.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 0,
+      "confidence": 0.8762,
+      "reason": null,
+      "breakdown": {
+        "score": 0.8762,
+        "terms": {
+          "asr": 0.9034,
+          "face": 0.7995,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 1,
+      "line_start": 12.78,
+      "line_end": 27.14,
+      "window": [
+        12.78,
+        27.14
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "Sylvie, I'm getting a divorce. What? From Charles? He's the only husband I have. I've tried to make it work, really, I have, but... But what? Oh, I can't explain. It's just that I'm too miserable to go on any longer like this.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 310,
+      "confidence": 0.9261,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9261,
+        "terms": {
+          "asr": 0.9713,
+          "face": 0.8514,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 2,
+      "line_start": 29.66,
+      "line_end": 39.08,
+      "window": [
+        29.66,
+        39.08
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "It is infuriating that your unhappiness does not turn to fat. I don't understand. Why do you want a divorce?",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 722,
+      "confidence": 0.9469,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9469,
+        "terms": {
+          "asr": 0.9454,
+          "face": 0.9272,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 3,
+      "line_start": 39.96,
+      "line_end": 42.46,
+      "window": [
+        39.96,
+        42.46
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "Because I don't love him, and he obviously doesn't love me.",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 4,
+      "line_start": 43.0,
+      "line_end": 48.14,
+      "window": [
+        43.0,
+        48.14
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "That's no reason to get a divorce. With a rich husband and this year's close, you",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 5,
+      "line_start": 48.14,
+      "line_end": 53.2,
+      "window": [
+        48.14,
+        53.2
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "won't find it difficult to make some new friends. Look, I admit I came to Paris to escape American provincial,",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 1219,
+      "confidence": 0.8483,
+      "reason": null,
+      "breakdown": {
+        "score": 0.8483,
+        "terms": {
+          "asr": 0.952,
+          "face": 0.684,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 6,
+      "line_start": 53.42,
+      "line_end": 55.18,
+      "window": [
+        53.42,
+        55.18
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "but that doesn't mean I'm ready for French traditional.",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 7,
+      "line_start": 56.34,
+      "line_end": 74.96,
+      "window": [
+        56.34,
+        74.96
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "I loathe the whole idea of divorce, Sylvie. But if only Charles had been honest with me. That's all I ask of anybody, the simple truth. Both. But with Charles, everything is secrecy and lies. He's hiding something from me, Sylvie. Something terrible. And it frightens me.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 1363,
+      "confidence": 0.901,
+      "reason": null,
+      "breakdown": {
+        "score": 0.901,
+        "terms": {
+          "asr": 0.9699,
+          "face": 0.7925,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 8,
+      "line_start": 75.48,
+      "line_end": 76.58,
+      "window": [
+        75.48,
+        76.58
+      ],
+      "speaker": "SPEAKER_01",
+      "text": "Does he belong to you?",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 9,
+      "line_start": 78.26,
+      "line_end": 80.58,
+      "window": [
+        78.26,
+        80.58
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "Well, it's hers. Where'd you find him? Robbing a bank?",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 10,
+      "line_start": 80.84,
+      "line_end": 82.52,
+      "window": [
+        80.84,
+        82.52
+      ],
+      "speaker": "SPEAKER_01",
+      "text": "He was throwing snowballs at Baron Rothschild.",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 11,
+      "line_start": 82.9,
+      "line_end": 83.16,
+      "window": [
+        82.9,
+        83.16
+      ],
+      "speaker": null,
+      "text": "Oh,",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 12,
+      "line_start": 83.26,
+      "line_end": 83.96,
+      "window": [
+        83.26,
+        83.96
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "thank you.",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 13,
+      "line_start": 84.68,
+      "line_end": 85.68,
+      "window": [
+        84.68,
+        85.68
+      ],
+      "speaker": "SPEAKER_01",
+      "text": "Do we know each other?",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 14,
+      "line_start": 86.16,
+      "line_end": 87.46,
+      "window": [
+        86.16,
+        87.46
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "Why, do you think we're going to?",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 15,
+      "line_start": 87.98,
+      "line_end": 89.26,
+      "window": [
+        87.98,
+        89.26
+      ],
+      "speaker": "SPEAKER_01",
+      "text": "I don't know. How would I know?",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 16,
+      "line_start": 89.6,
+      "line_end": 94.44,
+      "window": [
+        89.6,
+        94.44
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "Because I already know an awful lot of people. and until one of them dies, I couldn't possibly meet anyone else.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 2159,
+      "confidence": 0.9296,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9296,
+        "terms": {
+          "asr": 0.938,
+          "face": 0.893,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 17,
+      "line_start": 94.82,
+      "line_end": 98.16,
+      "window": [
+        94.82,
+        98.16
+      ],
+      "speaker": "SPEAKER_01",
+      "text": "Well, if anyone goes on the critical list, let me know.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 2311,
+      "confidence": 0.9291,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9291,
+        "terms": {
+          "asr": 0.9223,
+          "face": 0.9077,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 18,
+      "line_start": 99.08,
+      "line_end": 102.02,
+      "window": [
+        99.08,
+        102.02
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "Quitter. You give up awfully",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 19,
+      "line_start": 102.02,
+      "line_end": 107.54,
+      "window": [
+        102.02,
+        107.54
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "easily, don't you? Bien, Jean -Louis, let us make a walk. I've never seen a Rothschild before.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 2517,
+      "confidence": 0.9277,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9277,
+        "terms": {
+          "asr": 0.9539,
+          "face": 0.8727,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 20,
+      "line_start": 115.53,
+      "line_end": 119.01,
+      "window": [
+        115.53,
+        119.01
+      ],
+      "speaker": "SPEAKER_01",
+      "text": "Clever fellow. Almost missed me. Thank you.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 2777,
+      "confidence": 0.9524,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9524,
+        "terms": {
+          "asr": 0.9639,
+          "face": 0.922,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 21,
+      "line_start": 120.59,
+      "line_end": 121.83,
+      "window": [
+        120.59,
+        121.83
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "You're blocking my view.",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 22,
+      "line_start": 122.27,
+      "line_end": 125.39,
+      "window": [
+        122.27,
+        125.39
+      ],
+      "speaker": "SPEAKER_01",
+      "text": "Oh, which view would you prefer?",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 2960,
+      "confidence": 0.9317,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9317,
+        "terms": {
+          "asr": 0.9264,
+          "face": 0.9098,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 23,
+      "line_start": 125.67,
+      "line_end": 130.85,
+      "window": [
+        125.67,
+        130.85
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "The one you're blocking. It's my last chance. I'm flying back to Paris this afternoon. What's your name?",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 3088,
+      "confidence": 0.9399,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9399,
+        "terms": {
+          "asr": 0.9537,
+          "face": 0.9021,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 24,
+      "line_start": 131.37,
+      "line_end": 131.99,
+      "window": [
+        131.37,
+        131.99
+      ],
+      "speaker": "SPEAKER_01",
+      "text": "Peter Joshua.",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 25,
+      "line_start": 132.49,
+      "line_end": 133.89,
+      "window": [
+        132.49,
+        133.89
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "Oh, mine's Regina Lampert.",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 26,
+      "line_start": 134.57,
+      "line_end": 135.73,
+      "window": [
+        134.57,
+        135.73
+      ],
+      "speaker": "SPEAKER_01",
+      "text": "Is there a Mr. Lampert?",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 27,
+      "line_start": 135.83,
+      "line_end": 135.99,
+      "window": [
+        135.83,
+        135.99
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "Yes.",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 28,
+      "line_start": 136.17,
+      "line_end": 136.69,
+      "window": [
+        136.17,
+        136.69
+      ],
+      "speaker": "SPEAKER_01",
+      "text": "Good for you.",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 29,
+      "line_start": 136.85,
+      "line_end": 138.13,
+      "window": [
+        136.85,
+        138.13
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "No, it isn't. I'm getting a divorce.",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 30,
+      "line_start": 138.43,
+      "line_end": 139.65,
+      "window": [
+        138.43,
+        139.65
+      ],
+      "speaker": "SPEAKER_01",
+      "text": "Please, not on my account.",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 31,
+      "line_start": 139.91,
+      "line_end": 141.55,
+      "window": [
+        139.91,
+        141.55
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "Oh, no. You see, I don't really love him.",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 32,
+      "line_start": 141.75,
+      "line_end": 142.67,
+      "window": [
+        141.75,
+        142.67
+      ],
+      "speaker": "SPEAKER_01",
+      "text": "Well, at least you're honest.",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 33,
+      "line_start": 143.27,
+      "line_end": 144.63,
+      "window": [
+        143.27,
+        144.63
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "Is there a Mrs. Joshua?",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 34,
+      "line_start": 145.71,
+      "line_end": 147.05,
+      "window": [
+        145.71,
+        147.05
+      ],
+      "speaker": "SPEAKER_01",
+      "text": "Yes, but we're divorced.",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 35,
+      "line_start": 147.63,
+      "line_end": 149.51,
+      "window": [
+        147.63,
+        149.51
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "Oh, that wasn't a proposal. I'm just curious.",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 36,
+      "line_start": 150.67,
+      "line_end": 151.83,
+      "window": [
+        150.67,
+        151.83
+      ],
+      "speaker": "SPEAKER_01",
+      "text": "Is your husband with you?",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 37,
+      "line_start": 152.09,
+      "line_end": 154.69,
+      "window": [
+        152.09,
+        154.69
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "Oh, no. Charles is never with me. What do people call you? Pete?",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 38,
+      "line_start": 155.71,
+      "line_end": 158.91,
+      "window": [
+        155.71,
+        158.91
+      ],
+      "speaker": "SPEAKER_01",
+      "text": "Mr. Joshua. I've enjoyed talking with you.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 3752,
+      "confidence": 0.9424,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9424,
+        "terms": {
+          "asr": 0.9628,
+          "face": 0.899,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 39,
+      "line_start": 159.19,
+      "line_end": 160.37,
+      "window": [
+        159.19,
+        160.37
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "Oh, now you're angry.",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 40,
+      "line_start": 160.67,
+      "line_end": 164.13,
+      "window": [
+        160.67,
+        164.13
+      ],
+      "speaker": "SPEAKER_01",
+      "text": "No, no, I'm not angry. I just have a lot of packing to do. I'm going back to Paris too.",
+      "status": "ambiguous",
+      "error_reason": null,
+      "frame_number": 3872,
+      "confidence": 0.9368,
+      "reason": "max_speakers_reached",
+      "breakdown": {
+        "score": 0.9368,
+        "terms": {
+          "asr": 0.9597,
+          "face": 0.8885,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 41,
+      "line_start": 164.39,
+      "line_end": 169.03,
+      "window": [
+        164.39,
+        169.03
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "Well, wasn't it Shakespeare who said when strangers do meet and fire off lands, they should ere long see each other again?",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 3945,
+      "confidence": 0.9201,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9201,
+        "terms": {
+          "asr": 0.9276,
+          "face": 0.8806,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 42,
+      "line_start": 169.85,
+      "line_end": 174.35,
+      "window": [
+        169.85,
+        174.35
+      ],
+      "speaker": "SPEAKER_01",
+      "text": "Shakespeare never said that. How do you know? It's terrible. You just made it up.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 4076,
+      "confidence": 0.9608,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9608,
+        "terms": {
+          "asr": 0.9995,
+          "face": 0.9064,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 43,
+      "line_start": 174.53,
+      "line_end": 174.77,
+      "window": [
+        174.53,
+        174.77
+      ],
+      "speaker": null,
+      "text": "Well,",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 44,
+      "line_start": 174.83,
+      "line_end": 176.25,
+      "window": [
+        174.83,
+        176.25
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "it sounds right. You going to call me?",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 45,
+      "line_start": 176.55,
+      "line_end": 177.17,
+      "window": [
+        176.55,
+        177.17
+      ],
+      "speaker": "SPEAKER_01",
+      "text": "Are you in the book?",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 46,
+      "line_start": 177.53,
+      "line_end": 178.39,
+      "window": [
+        177.53,
+        178.39
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "Well, Charles is.",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 47,
+      "line_start": 178.77,
+      "line_end": 180.47,
+      "window": [
+        178.77,
+        180.47
+      ],
+      "speaker": "SPEAKER_01",
+      "text": "Is there only one Charles Lampert? hmm",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 48,
+      "line_start": 180.47,
+      "line_end": 182.53,
+      "window": [
+        180.47,
+        182.53
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "lord",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 49,
+      "line_start": 182.53,
+      "line_end": 185.05,
+      "window": [
+        182.53,
+        185.05
+      ],
+      "speaker": "SPEAKER_01",
+      "text": "i hope so goodbye",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 50,
+      "line_start": 197.98,
+      "line_end": 210.98,
+      "window": [
+        197.98,
+        210.98
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "sylvie and thanks when you get your divorce are you going back to america well don't you want me to stay yes of course but if you went back and wrote me a letter you could have the stamps i'll get you some here okay okay goodbye",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 4785,
+      "confidence": 0.9169,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9169,
+        "terms": {
+          "asr": 0.9828,
+          "face": 0.8178,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 51,
+      "line_start": 291.7,
+      "line_end": 298.56,
+      "window": [
+        291.7,
+        298.56
+      ],
+      "speaker": "SPEAKER_00",
+      "text": "i'm inspector edward grandpierre of the police judiciaire would you be so kind as to come with positive",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 7002,
+      "confidence": 0.9157,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9157,
+        "terms": {
+          "asr": 0.8989,
+          "face": 0.8988,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 52,
+      "line_start": 326.44,
+      "line_end": 353.18,
+      "window": [
+        326.44,
+        353.18
+      ],
+      "speaker": "SPEAKER_00",
+      "text": "you loved him we discovered your husband's body lying next to the tracks of the paris bordeaux railroad line he",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 7829,
+      "confidence": 0.9257,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9257,
+        "terms": {
+          "asr": 0.9091,
+          "face": 0.9125,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 53,
+      "line_start": 354.78,
+      "line_end": 361.8,
+      "window": [
+        354.78,
+        361.8
+      ],
+      "speaker": "SPEAKER_00",
+      "text": "was dressed only in his pajamas do you know of any reason why he might have wanted to leave france leave",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 8509,
+      "confidence": 0.9635,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9635,
+        "terms": {
+          "asr": 0.9891,
+          "face": 0.9232,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 54,
+      "line_start": 361.8,
+      "line_end": 364.72,
+      "window": [
+        361.8,
+        364.72
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "no your",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 55,
+      "line_start": 364.72,
+      "line_end": 372.56,
+      "window": [
+        364.72,
+        372.56
+      ],
+      "speaker": "SPEAKER_00",
+      "text": "husband possessed a ticket of passage on the maranguape it sailed for venezuela this morning at seven i'm",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 8746,
+      "confidence": 0.9534,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9534,
+        "terms": {
+          "asr": 0.9584,
+          "face": 0.9296,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 56,
+      "line_start": 372.56,
+      "line_end": 374.72,
+      "window": [
+        372.56,
+        374.72
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "very confused he",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 57,
+      "line_start": 374.72,
+      "line_end": 376.46,
+      "window": [
+        374.72,
+        376.46
+      ],
+      "speaker": "SPEAKER_00",
+      "text": "was american Your husband Swiss",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 58,
+      "line_start": 376.46,
+      "line_end": 377.38,
+      "window": [
+        376.46,
+        377.38
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "a",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 59,
+      "line_start": 377.38,
+      "line_end": 379.36,
+      "window": [
+        377.38,
+        379.36
+      ],
+      "speaker": "SPEAKER_00",
+      "text": "Swiss his profession.",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 60,
+      "line_start": 379.86,
+      "line_end": 381.82,
+      "window": [
+        379.86,
+        381.82
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "He didn't have one He",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 61,
+      "line_start": 381.82,
+      "line_end": 382.78,
+      "window": [
+        381.82,
+        382.78
+      ],
+      "speaker": "SPEAKER_00",
+      "text": "was a wealthy man.",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 62,
+      "line_start": 383.02,
+      "line_end": 385.34,
+      "window": [
+        383.02,
+        385.34
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "I suppose so. I don't know about",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 63,
+      "line_start": 385.34,
+      "line_end": 386.52,
+      "window": [
+        385.34,
+        386.52
+      ],
+      "speaker": "SPEAKER_00",
+      "text": "how wealthy would you say?",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 64,
+      "line_start": 386.68,
+      "line_end": 387.58,
+      "window": [
+        386.68,
+        387.58
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "I don't know",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 65,
+      "line_start": 388.22,
+      "line_end": 389.64,
+      "window": [
+        388.22,
+        389.64
+      ],
+      "speaker": "SPEAKER_00",
+      "text": "Where did he keep his money?",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 66,
+      "line_start": 390.48,
+      "line_end": 391.52,
+      "window": [
+        390.48,
+        391.52
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "I? Don't know",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 67,
+      "line_start": 392.54,
+      "line_end": 394.82,
+      "window": [
+        392.54,
+        394.82
+      ],
+      "speaker": "SPEAKER_00",
+      "text": "Beside yourself who is his nearest relative?",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 68,
+      "line_start": 395.9,
+      "line_end": 396.9,
+      "window": [
+        395.9,
+        396.9
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "I? Don't know",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 69,
+      "line_start": 397.76,
+      "line_end": 399.98,
+      "window": [
+        397.76,
+        399.98
+      ],
+      "speaker": "SPEAKER_00",
+      "text": "That's absurd madam. Don't tell not absurd.",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 70,
+      "line_start": 400.7,
+      "line_end": 402.92,
+      "window": [
+        400.7,
+        402.92
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "I know I'm sorry.",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 71,
+      "line_start": 403.12,
+      "line_end": 403.98,
+      "window": [
+        403.12,
+        403.98
+      ],
+      "speaker": "SPEAKER_00",
+      "text": "It is all right",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 72,
+      "line_start": 405.02,
+      "line_end": 406.36,
+      "window": [
+        405.02,
+        406.36
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "I wish you wouldn't.",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 73,
+      "line_start": 406.5,
+      "line_end": 407.02,
+      "window": [
+        406.5,
+        407.02
+      ],
+      "speaker": null,
+      "text": "Les",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 74,
+      "line_start": 411.98,
+      "line_end": 419.66,
+      "window": [
+        411.98,
+        419.66
+      ],
+      "speaker": "SPEAKER_00",
+      "text": "effets de l 'enfer. On Wednesday last, your husband sold the entire contents of the apartment at public auction.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 9880,
+      "confidence": 0.8962,
+      "reason": null,
+      "breakdown": {
+        "score": 0.8962,
+        "terms": {
+          "asr": 0.9624,
+          "face": 0.7884,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    }
+  ]
+}

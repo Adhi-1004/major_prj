@@ -1,0 +1,145 @@
+{
+  "description": "Evaluation clips. Every source is public domain or Creative Commons and was checked against its archive.org / blender.org listing on 2026-11-18. Media is processed locally for research and never redistributed; only annotations, timestamps and these URLs are published. Segments were chosen from the listings without viewing -- if a segment turns out to hold little dialogue, adjust start/end before labelling, never after.",
+  "clips": [
+    {
+      "id": "film_charade",
+      "title": "Charade (1963)",
+      "genre": "film",
+      "source": "https://archive.org/download/charade_202604/Charade.ia.mp4",
+      "license": "Public Domain Mark 1.0",
+      "license_url": "https://creativecommons.org/publicdomain/mark/1.0/",
+      "start": 240, "end": 660,
+      "notes": "US public domain (no valid copyright notice). Music copyright is separate; not relevant to processing."
+    },
+    {
+      "id": "film_his_girl_friday",
+      "title": "His Girl Friday (1940)",
+      "genre": "film",
+      "source": "https://archive.org/download/HisGirlFriday-1940/CaryGrant-1940-HisGirlFriday.mp4",
+      "license": "Public domain (copyright not renewed)",
+      "license_url": "https://archive.org/details/HisGirlFriday-1940",
+      "start": 120, "end": 540,
+      "notes": "Fast overlapping dialogue: stress test for diarization and simultaneous speakers."
+    },
+    {
+      "id": "film_night_living_dead",
+      "title": "Night of the Living Dead (1968)",
+      "genre": "film",
+      "source": "https://archive.org/download/Night.Of.The.Living.Dead_1080p/NightOfTheLivingDead_720p.mp4",
+      "license": "Public Domain",
+      "license_url": "http://creativecommons.org/licenses/publicdomain/",
+      "start": 60, "end": 480,
+      "notes": "Opening car scene includes a radio broadcast: diegetic off-screen speech."
+    },
+    {
+      "id": "film_tears_of_steel",
+      "title": "Tears of Steel (2012)",
+      "genre": "film",
+      "source": "https://download.blender.org/demo/movies/ToS/tears_of_steel_720p.mov",
+      "license": "CC BY 3.0 (Blender Foundation | mango.blender.org); soundtrack CC BY-ND 3.0",
+      "license_url": "https://mango.blender.org/about",
+      "start": 30, "end": 480,
+      "notes": "Modern live action with VFX; attribution required in the paper."
+    },
+    {
+      "id": "tv_beverly_hillbillies",
+      "title": "The Beverly Hillbillies, S01E01 'The Clampetts Strike Oil' (1962)",
+      "genre": "tv",
+      "source": "https://archive.org/download/Beverly_Hillbillies_Ep01_The_Clampetts_Strike_Oil/BH01_The_Clampetts_Strike_Oil.mp4",
+      "license": "Public Domain",
+      "license_url": "http://creativecommons.org/licenses/publicdomain/",
+      "start": 60, "end": 480,
+      "notes": "Season 1 is public domain (copyright not renewed)."
+    },
+    {
+      "id": "tv_dragnet",
+      "title": "Dragnet, 'The Big Lamp' (1950s)",
+      "genre": "tv",
+      "source": "https://archive.org/download/DragnetTheBigLamp/Dragnet-theBigLamp.mp4",
+      "license": "Public Domain Mark 1.0",
+      "license_url": "http://creativecommons.org/publicdomain/mark/1.0/",
+      "start": 30, "end": 450,
+      "notes": "Detective narration over action: voice-over by an on-screen character."
+    },
+    {
+      "id": "doc_duck_and_cover",
+      "title": "Duck and Cover (1951)",
+      "genre": "documentary",
+      "source": "https://archive.org/download/DuckandC1951/DuckandC1951.mp4",
+      "license": "Public Domain (Prelinger Archives)",
+      "license_url": "http://creativecommons.org/licenses/publicdomain/",
+      "start": null, "end": null,
+      "notes": "Narrator over animation and live action: mostly off-camera speech."
+    },
+    {
+      "id": "doc_dating_dos_donts",
+      "title": "Dating: Do's and Don'ts (1949)",
+      "genre": "documentary",
+      "source": "https://archive.org/download/DatingDo1949/DatingDo1949.mp4",
+      "license": "Public Domain (Prelinger Archives)",
+      "license_url": "http://creativecommons.org/licenses/publicdomain/",
+      "start": 0, "end": 480,
+      "notes": "Narrator plus on-screen dialogue between actors."
+    },
+    {
+      "id": "lecture_mit_1806",
+      "title": "MIT 18.06 Linear Algebra, Lecture 1 (G. Strang, 2005)",
+      "genre": "lecture",
+      "source": "https://archive.org/download/MIT18.06S05_MP4/01.mp4",
+      "license": "CC BY-NC-SA 3.0 US (MIT OpenCourseWare)",
+      "license_url": "http://creativecommons.org/licenses/by-nc-sa/3.0/us/",
+      "start": 300, "end": 720,
+      "notes": "Speaker often faces the board: tests 'visible but mouth not visible'."
+    },
+    {
+      "id": "lecture_mit_801",
+      "title": "MIT 8.01 Physics I, Lecture 1 (W. Lewin, 1999)",
+      "genre": "lecture",
+      "source": "https://archive.org/download/MIT8.01F99/01.mp4",
+      "license": "CC BY-NC-SA 3.0 US (MIT OpenCourseWare)",
+      "license_url": "http://creativecommons.org/licenses/by-nc-sa/3.0/us/",
+      "start": 300, "end": 720,
+      "notes": "Camera cuts between lecturer and demonstrations."
+    },
+    {
+      "id": "interview_scott_kelly",
+      "title": "Interview with Scott Kelly, One Year Crew Member (NASA)",
+      "genre": "interview",
+      "source": "https://archive.org/download/InterviewWithScottKellyOneYearCrewMember/Interview%20with%20Scott%20Kelly%20-%20One%20Year%20Crew%20Member.mp4",
+      "license": "Public Domain Mark 1.0 (NASA)",
+      "license_url": "http://creativecommons.org/publicdomain/mark/1.0/",
+      "start": null, "end": null,
+      "notes": "Short sit-down interview."
+    },
+    {
+      "id": "interview_john_glenn",
+      "title": "John Glenn Raw Interview, part 1",
+      "genre": "interview",
+      "source": "https://archive.org/download/glenn-1/glenn-1.mp4",
+      "license": "Public Domain Mark 1.0",
+      "license_url": "http://creativecommons.org/publicdomain/mark/1.0/",
+      "start": 120, "end": 540,
+      "notes": "Raw interview footage: interviewer likely off camera."
+    },
+    {
+      "id": "news_sts51a_press",
+      "title": "STS-51A Post-Mission Press Conference (NASA, 1984)",
+      "genre": "news",
+      "source": "https://archive.org/download/PostMissionPressConferenceSpaceShuttleDiscoverySTS51ASTS14complete/STS1451AComplete_512kb.mp4",
+      "license": "Public Domain",
+      "license_url": "http://creativecommons.org/licenses/publicdomain/",
+      "start": 120, "end": 540,
+      "notes": "Panel on camera, reporters' questions from off camera."
+    },
+    {
+      "id": "news_jfk_press",
+      "title": "President Kennedy's Press Conference on South Vietnam (National Archives)",
+      "genre": "news",
+      "source": "https://archive.org/download/gov.archives.arc.1697857/gov.archives.arc.1697857.mp4",
+      "license": "CC0 1.0 (US National Archives)",
+      "license_url": "http://creativecommons.org/publicdomain/zero/1.0/",
+      "start": null, "end": null,
+      "notes": "Podium speaker on camera; questions from the floor."
+    }
+  ]
+}

@@ -55,6 +55,10 @@ class ExtractRequest(BaseModel):
         default=constants.MIN_SPEAKING_MS, gt=0, le=5000
     )
     detect_scene_cuts: bool = True
+    onset_constraint: bool = Field(
+        default=True,
+        description="Require the speaking run to start at or after the line's onset.",
+    )
 
     @field_validator("url")
     @classmethod
@@ -104,6 +108,7 @@ class ExtractRequest(BaseModel):
             window_pad_seconds=self.window_pad_seconds,
             min_speaking_ms=self.min_speaking_ms,
             detect_scene_cuts=self.detect_scene_cuts,
+            onset_constraint=self.onset_constraint,
         )
 
 

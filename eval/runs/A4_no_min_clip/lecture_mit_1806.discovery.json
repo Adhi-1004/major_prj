@@ -1,0 +1,28 @@
+{
+  "clip_id": "lecture_mit_1806",
+  "genre": "lecture",
+  "config": "A4_no_min_clip",
+  "overrides": {
+    "min_clip_seconds": 0.0
+  },
+  "run_at": "2026-11-18T17:47:00.941004+00:00",
+  "status": "error",
+  "error": {
+    "status": "error",
+    "stage": "transcription",
+    "reason": "model_load_failed",
+    "detail": "Could not load Whisper model 'large-v3': mkl_malloc: failed to allocate memory",
+    "remediation": "Check disk space and network access for the model download."
+  },
+  "diagnostics": {},
+  "elapsed_seconds": 13.828,
+  "stage_seconds": {
+    "ingestion": 0.062,
+    "normalization": 0.0,
+    "transcription": 13.766
+  },
+  "asd_requests_sent": 0,
+  "asd_cache_hits": 0,
+  "cold_run": false,
+  "lines": []
+}

@@ -48,3 +48,6 @@ Thumbs.db
 node_modules/
 frontend/dist/
 *.tsbuildinfo
+
+# Evaluation media: research processing only, never redistributed
+eval/data/

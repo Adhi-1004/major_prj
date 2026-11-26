@@ -1,0 +1,28 @@
+{
+  "clip_id": "tv_beverly_hillbillies",
+  "genre": "tv",
+  "config": "A5_no_onset",
+  "overrides": {
+    "onset_constraint": false
+  },
+  "run_at": "2026-11-18T17:38:48.135852+00:00",
+  "status": "error",
+  "error": {
+    "status": "error",
+    "stage": "transcription",
+    "reason": "model_load_failed",
+    "detail": "Could not load Whisper model 'large-v3': mkl_malloc: failed to allocate memory",
+    "remediation": "Check disk space and network access for the model download."
+  },
+  "diagnostics": {},
+  "elapsed_seconds": 22.687,
+  "stage_seconds": {
+    "ingestion": 0.156,
+    "normalization": 0.0,
+    "transcription": 22.531
+  },
+  "asd_requests_sent": 0,
+  "asd_cache_hits": 0,
+  "cold_run": false,
+  "lines": []
+}

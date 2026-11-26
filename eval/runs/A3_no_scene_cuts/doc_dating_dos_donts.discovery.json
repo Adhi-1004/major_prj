@@ -1,0 +1,28 @@
+{
+  "clip_id": "doc_dating_dos_donts",
+  "genre": "documentary",
+  "config": "A3_no_scene_cuts",
+  "overrides": {
+    "detect_scene_cuts": false
+  },
+  "run_at": "2026-11-18T17:45:05.693134+00:00",
+  "status": "error",
+  "error": {
+    "status": "error",
+    "stage": "transcription",
+    "reason": "model_load_failed",
+    "detail": "Could not load Whisper model 'large-v3': mkl_malloc: failed to allocate memory",
+    "remediation": "Check disk space and network access for the model download."
+  },
+  "diagnostics": {},
+  "elapsed_seconds": 10.969,
+  "stage_seconds": {
+    "ingestion": 0.094,
+    "normalization": 0.0,
+    "transcription": 10.875
+  },
+  "asd_requests_sent": 0,
+  "asd_cache_hits": 0,
+  "cold_run": false,
+  "lines": []
+}

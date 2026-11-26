@@ -56,7 +56,8 @@ export type KnownAmbiguityReason =
   | "multiple_simultaneous_speakers"
   | "max_speakers_reached"
   | "speaker_mismatch"
-  | "no_face_detected";
+  | "no_face_detected"
+  | "spoken_before_onset";
 
 export type AmbiguityReason = KnownAmbiguityReason | (string & {});
 
@@ -198,6 +199,25 @@ export interface JobSnapshot {
   result?: WireResult;
   /** Absent when empty, which is always the case on an error path. */
   diagnostics?: WireDiagnostics;
+  /** Discovery only, once finished: every line with its time span and verdict. */
+  lines?: WireLine[];
+  /** Discovery only: path of the normalized video, for the "check it yourself" demo. */
+  video?: string;
+}
+
+/** One line of a finished discovery sweep. Times are raw seconds. */
+export interface WireLine {
+  index: number;
+  start: number;
+  end: number;
+  text: string;
+  speaker: string | null;
+  /** "error" when detection failed for this line. */
+  status: ResultStatus;
+  frame_number: number | null;
+  timestamp: string | null;
+  confidence: number | null;
+  reason: string | null;
 }
 
 export interface HealthResponse {

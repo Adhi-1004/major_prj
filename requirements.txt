@@ -2,7 +2,7 @@
 # Pinned for the Reproducibility / Portability NFRs in docs/approach.md.
 
 # Ingestion
-yt-dlp==2026.8.19
+yt-dlp==2026.10.26
 curl-cffi==0.16.1
 
 # ASR  (ctranslate2 is faster-whisper's backend; pinned so the CUDA ABI is stable)

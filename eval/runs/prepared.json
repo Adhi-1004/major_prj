@@ -1,0 +1,128 @@
+{
+  "film_charade": {
+    "source": "https://archive.org/download/charade_202604/Charade.ia.mp4",
+    "start": 240,
+    "end": 660,
+    "duration": 420.058,
+    "fps": 23.98,
+    "resolution": "888x480",
+    "sha256": "f28e649e0487bc49c36dbf399e7689f134f720ee244c696e15850c345753c308"
+  },
+  "film_his_girl_friday": {
+    "source": "https://archive.org/download/HisGirlFriday-1940/CaryGrant-1940-HisGirlFriday.mp4",
+    "start": 120,
+    "end": 540,
+    "duration": 420.0,
+    "fps": 25.0,
+    "resolution": "640x480",
+    "sha256": "8d1811aa38cb7713cdbd591eafdbc1c983d6a94eb04c3619fe9b39366b668d28"
+  },
+  "film_night_living_dead": {
+    "source": "https://archive.org/download/Night.Of.The.Living.Dead_1080p/NightOfTheLivingDead_720p.mp4",
+    "start": 60,
+    "end": 480,
+    "duration": 420.017,
+    "fps": 23.98,
+    "resolution": "640x480",
+    "sha256": "0b9d07eef127a2175e27f60a54357793cfe284fc63ba4d7d250057639bd11d5b"
+  },
+  "film_tears_of_steel": {
+    "source": "https://download.blender.org/demo/movies/ToS/tears_of_steel_720p.mov",
+    "start": 30,
+    "end": 480,
+    "duration": 450.0,
+    "fps": 24.0,
+    "resolution": "1280x534",
+    "sha256": "04a2af1fbffc16825078ef50b6cf7d788c4427ea23aba7cdebe5075193db2e84"
+  },
+  "tv_beverly_hillbillies": {
+    "source": "https://archive.org/download/Beverly_Hillbillies_Ep01_The_Clampetts_Strike_Oil/BH01_The_Clampetts_Strike_Oil.mp4",
+    "start": 60,
+    "end": 480,
+    "duration": 420.017,
+    "fps": 23.98,
+    "resolution": "512x384",
+    "sha256": "41deea95a3c27a29b460a1180e950abf2176484f5ee525709f0b36e69e8164e9"
+  },
+  "tv_dragnet": {
+    "source": "https://archive.org/download/DragnetTheBigLamp/Dragnet-theBigLamp.mp4",
+    "start": 30,
+    "end": 450,
+    "duration": 420.053,
+    "fps": 29.97,
+    "resolution": "640x480",
+    "sha256": "fc13e53bc99a2acec5ef356e9d50250a7241abb9d0fcecdc759f13b6482d7894"
+  },
+  "doc_duck_and_cover": {
+    "source": "https://archive.org/download/DuckandC1951/DuckandC1951.mp4",
+    "start": null,
+    "end": null,
+    "duration": 554.988,
+    "fps": 23.558023,
+    "resolution": "368x480",
+    "sha256": "499e7ebe799fce1c0c8f151d60f2764c5633bcbab37f0d8a17d1c808ae0d36c7"
+  },
+  "doc_dating_dos_donts": {
+    "source": "https://archive.org/download/DatingDo1949/DatingDo1949.mp4",
+    "start": 0,
+    "end": 480,
+    "duration": 480.013,
+    "fps": 29.97003,
+    "resolution": "640x480",
+    "sha256": "fd6a5a2047ca9dfbbcaf93581340c0a474fc16dc4f3328c04fd206e675e44c82"
+  },
+  "lecture_mit_1806": {
+    "source": "https://archive.org/download/MIT18.06S05_MP4/01.mp4",
+    "start": 300,
+    "end": 720,
+    "duration": 420.053,
+    "fps": 29.97003,
+    "resolution": "480x360",
+    "sha256": "3bbd30bddf1f210809048e59be708cd6830971fb5b4614868ab8c35e2b08e120"
+  },
+  "lecture_mit_801": {
+    "source": "https://archive.org/download/MIT8.01F99/01.mp4",
+    "start": 300,
+    "end": 720,
+    "duration": 420.0,
+    "fps": 15.0,
+    "resolution": "320x240",
+    "sha256": "2435eedaaedc2eccd2d8b975f3ce41e52b0e4397a0513e8f91c3bafc949c0e9c"
+  },
+  "interview_scott_kelly": {
+    "source": "https://archive.org/download/InterviewWithScottKellyOneYearCrewMember/Interview%20with%20Scott%20Kelly%20-%20One%20Year%20Crew%20Member.mp4",
+    "start": null,
+    "end": null,
+    "duration": 261.5,
+    "fps": 59.94,
+    "resolution": "640x360",
+    "sha256": "55e8726ab042109072c740693f8d43e3b941fb8f3cad86379aedbacb25164898"
+  },
+  "interview_john_glenn": {
+    "source": "https://archive.org/download/glenn-1/glenn-1.mp4",
+    "start": 120,
+    "end": 540,
+    "duration": 420.053,
+    "fps": 29.97003,
+    "resolution": "720x480",
+    "sha256": "d0cd38b6895321d756153aa7851ed6ca2c28e620322120cd5e8f13494c0f4a15"
+  },
+  "news_sts51a_press": {
+    "source": "https://archive.org/download/PostMissionPressConferenceSpaceShuttleDiscoverySTS51ASTS14complete/STS1451AComplete_512kb.mp4",
+    "start": 120,
+    "end": 540,
+    "duration": 420.053,
+    "fps": 29.97,
+    "resolution": "320x240",
+    "sha256": "ad9950a6d0eccfd1bfe638458b576b36e5027ba4626326e0492b06cdf4e44cee"
+  },
+  "news_jfk_press": {
+    "source": "https://archive.org/download/gov.archives.arc.1697857/gov.archives.arc.1697857.mp4",
+    "start": null,
+    "end": null,
+    "duration": 269.803,
+    "fps": 29.97,
+    "resolution": "640x480",
+    "sha256": "44c804efd45dec7b39e6ee1719e2a6286a9e3d964cdc3460fea1fa320fd8d2e5"
+  }
+}

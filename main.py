@@ -108,6 +108,30 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Do not split candidate windows at scene cuts.",
     )
+    tuning.add_argument(
+        "--no-onset-constraint",
+        action="store_true",
+        help=(
+            "Allow the reported speaking run to start before the line's first "
+            "word (minus a small tolerance). The constraint is on by default; "
+            "this flag removes it, for ablation."
+        ),
+    )
+
+    ablation = parser.add_argument_group(
+        "ablation (evaluation only -- leave unset for normal use)"
+    )
+    ablation.add_argument(
+        "--no-speaker-check",
+        action="store_true",
+        help="Accept any speaking face, not only the diarized speaker of the line.",
+    )
+    ablation.add_argument(
+        "--min-clip-seconds",
+        type=float,
+        default=constants.ASD_MIN_CLIP_SECONDS,
+        help="Shortest clip sent for detection. 0 disables padding short windows.",
+    )
 
     runtime = parser.add_argument_group("runtime")
     runtime.add_argument(
@@ -129,6 +153,14 @@ def build_parser() -> argparse.ArgumentParser:
         default=None,
         choices=("auto", "cuda", "cpu"),
         help="Compute device for transcription and diarization.",
+    )
+    runtime.add_argument(
+        "--language",
+        default=None,
+        help=(
+            'Spoken language: an ISO code such as "en", "hi", "fr", or "auto" to '
+            "detect it. Defaults to English."
+        ),
     )
     runtime.add_argument(
         "--dns",
@@ -172,6 +204,8 @@ def settings_from(args: argparse.Namespace) -> Settings:
         overrides["asd_provider"] = args.asd_provider
     if args.no_cache:
         overrides["use_cache"] = False
+    if args.language is not None:
+        overrides["language"] = args.language
     return Settings(**overrides)  # type: ignore[arg-type]
 
 
@@ -240,6 +274,9 @@ def main(argv: list[str] | None = None) -> int:
         window_pad_seconds=args.pad,
         min_speaking_ms=args.min_speaking_ms,
         detect_scene_cuts=not args.no_scene_cuts,
+        onset_constraint=not args.no_onset_constraint,
+        speaker_check=not args.no_speaker_check,
+        min_clip_seconds=args.min_clip_seconds,
     )
 
     orchestrator = build_orchestrator(

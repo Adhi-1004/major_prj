@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dialogue Labeller</title>
+<style>
+  :root {
+    --bg: #f7f7f5; --panel: #ffffff; --ink: #1d1d1f; --muted: #6b6b70; --line: #e2e2de;
+    --accent: #2457c5; --on: #1f8a4c; --off: #b3361f; --mixed: #a06a00; --unclear: #6b6b70;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #151517; --panel: #1f1f22; --ink: #ededee; --muted: #a0a0a6; --line: #333338;
+            --accent: #6f9cff; --on: #4cc27e; --off: #ff7a5c; --mixed: #e0a63a; --unclear: #a0a0a6; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.45 system-ui, sans-serif; }
+  header { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; padding: 10px 16px;
+           border-bottom: 1px solid var(--line); background: var(--panel); }
+  header h1 { font-size: 15px; margin: 0 12px 0 0; }
+  label.file { cursor: pointer; padding: 5px 10px; border: 1px solid var(--line); border-radius: 6px; }
+  label.file input { display: none; }
+  input[type=text] { background: var(--bg); color: var(--ink); border: 1px solid var(--line);
+                     border-radius: 6px; padding: 5px 8px; }
+  button { cursor: pointer; background: var(--panel); color: var(--ink); border: 1px solid var(--line);
+           border-radius: 6px; padding: 6px 10px; font: inherit; }
+  button.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  button:disabled { opacity: .45; cursor: default; }
+  main { display: grid; grid-template-columns: 300px 1fr; height: calc(100vh - 54px); }
+  @media (max-width: 860px) { main { grid-template-columns: 1fr; height: auto; } }
+  #list { overflow: auto; border-right: 1px solid var(--line); background: var(--panel); }
+  .row { padding: 7px 12px; border-bottom: 1px solid var(--line); cursor: pointer; display: flex; gap: 8px; }
+  .row.active { outline: 2px solid var(--accent); outline-offset: -2px; }
+  .row .t { color: var(--muted); font-variant-numeric: tabular-nums; min-width: 52px; }
+  .row .x { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .chip { font-size: 11px; padding: 1px 6px; border-radius: 10px; border: 1px solid currentColor; height: fit-content; }
+  .on { color: var(--on); } .off { color: var(--off); } .mixed { color: var(--mixed); }
+  .unclear, .not_speech { color: var(--unclear); }
+  #work { overflow: auto; padding: 14px 18px; }
+  video { width: 100%; max-height: 52vh; background: #000; border-radius: 6px; }
+  .bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 10px 0; }
+  .mono { font-family: ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+  .line-text { font-size: 17px; margin: 6px 0 2px; }
+  .muted { color: var(--muted); }
+  .labels button.sel { outline: 2px solid currentColor; }
+  details { margin-top: 14px; color: var(--muted); }
+  kbd { border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4px; padding: 0 4px; font-size: 12px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Dialogue Labeller</h1>
+  <input id="annotator" type="text" placeholder="Your name (required)" size="16">
+  <label class="file">Load labelling file (.json)<input id="jsonFile" type="file" accept=".json"></label>
+  <label class="file">Load clip video (.mp4)<input id="videoFile" type="file" accept="video/*"></label>
+  <span id="progress" class="muted"></span>
+  <button id="save" class="primary" disabled>Save labels</button>
+</header>
+<main>
+  <div id="list"></div>
+  <div id="work">
+    <video id="video" controls preload="auto"></video>
+    <div class="bar mono">
+      <span>frame <b id="frame">–</b></span><span>t = <span id="time">–</span> s</span>
+      <button id="back10" title="Shift+←">−10</button><button id="back1" title="←">−1</button>
+      <button id="fwd1" title="→">+1</button><button id="fwd10" title="Shift+→">+10</button>
+      <button id="play" title="Space">Play line</button>
+    </div>
+    <div id="current"></div>
+    <details>
+      <summary>Instructions and shortcuts</summary>
+      <p>Watch each line and decide whether the person <b>saying it</b> is visibly speaking it.
+         You never see the system's answer — decide only from the video.</p>
+      <ul>
+        <li><b>On</b> <kbd>1</kbd> — the speaker of the line is on screen and their mouth is producing it.</li>
+        <li><b>Mixed</b> <kbd>2</kbd> — on screen for part of the line (e.g. a cut mid-sentence).</li>
+        <li><b>Off</b> <kbd>3</kbd> — the line is heard but the speaker is not visibly saying it
+            (voice-over, narration, off-camera, someone else's face, back to camera).</li>
+        <li><b>Unclear</b> <kbd>4</kbd> — you cannot decide. <b>Not speech</b> <kbd>5</kbd> — not a real line.</li>
+        <li>Lines marked <b>“onset requested”</b>: if On or Mixed, step frame by frame (<kbd>←</kbd>/<kbd>→</kbd>,
+            <kbd>Shift</kbd> for ±10) to the <b>first frame where the speaker is visibly saying this line</b>,
+            press <kbd>O</kbd>, and check the query text matches what is said.</li>
+        <li><kbd>Space</kbd> play/replay line · <kbd>N</kbd>/<kbd>P</kbd> next/previous line · work saves in this browser automatically; press <b>Save labels</b> to download the file.</li>
+      </ul>
+    </details>
+  </div>
+</main>
+<script>
+"use strict";
+const $ = (id) => document.getElementById(id);
+const video = $("video");
+const LABELS = [["on", "On", "1"], ["mixed", "Mixed", "2"], ["off", "Off", "3"],
+                ["unclear", "Unclear", "4"], ["not_speech", "Not speech", "5"]];
+let data = null, state = {}, idx = 0, fps = 25, mediaTime = null, stopAt = null;
+
+function storageKey() { return data ? `labeller:${data.clip_id}:${$("annotator").value.trim()}` : null; }
+function persist() {
+  try { const k = storageKey(); if (k) localStorage.setItem(k, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+}
+function restore() {
+  try { const k = storageKey(); const raw = k && localStorage.getItem(k); if (raw) state = JSON.parse(raw); } catch (e) { state = {}; }
+}
+
+function currentFrame() {
+  const t = mediaTime ?? video.currentTime;
+  return mediaTime !== null ? Math.round(t * fps) : Math.floor(t * fps + 1e-6);
+}
+function seekFrame(f) { video.pause(); mediaTime = null; video.currentTime = (Math.max(0, f) + 0.5) / fps; }
+function fmt(s) { const m = Math.floor(s / 60); return `${m}:${(s - 60 * m).toFixed(2).padStart(5, "0")}`; }
+
+function tick() {
+  $("frame").textContent = data ? currentFrame() : "–";
+  $("time").textContent = video.currentTime.toFixed(3);
+  if (stopAt !== null && video.currentTime >= stopAt) { video.pause(); stopAt = null; }
+}
+if ("requestVideoFrameCallback" in HTMLVideoElement.prototype) {
+  const loop = (_now, md) => { mediaTime = md.mediaTime; tick(); video.requestVideoFrameCallback(loop); };
+  video.requestVideoFrameCallback(loop);
+}
+video.addEventListener("timeupdate", tick);
+video.addEventListener("seeked", () => { mediaTime = null; tick(); });
+
+function entry(i) {
+  const line = data.lines[i];
+  if (!state[line.line_id]) state[line.line_id] = { label: null, onset_frame: null, query: line.text, note: "" };
+  return state[line.line_id];
+}
+
+function renderList() {
+  const list = $("list"); list.innerHTML = "";
+  data.lines.forEach((line, i) => {
+    const e = entry(i), row = document.createElement("div");
+    row.className = "row" + (i === idx ? " active" : "");
+    row.innerHTML = `<span class="t mono">${fmt(line.line_start)}</span><span class="x"></span>` +
+      (e.label ? `<span class="chip ${e.label}">${e.label}</span>` : "") +
+      (line.ask_onset ? `<span class="chip" title="onset requested">⏱</span>` : "");
+    row.querySelector(".x").textContent = line.text;
+    row.onclick = () => select(i);
+    list.appendChild(row);
+  });
+  const done = data.lines.filter((_, i) => entry(i).label).length;
+  const onsetNeeded = data.lines.filter((l, i) => l.ask_onset && ["on", "mixed"].includes(entry(i).label));
+  const onsetDone = onsetNeeded.filter((l) => state[l.line_id].onset_frame !== null).length;
+  $("progress").textContent = `${done}/${data.lines.length} labelled · onsets ${onsetDone}/${onsetNeeded.length}`;
+}
+
+function renderCurrent() {
+  const line = data.lines[idx], e = entry(idx), box = $("current");
+  const needsOnset = line.ask_onset && ["on", "mixed"].includes(e.label);
+  box.innerHTML = `
+    <div class="muted mono">${line.line_id} · ${fmt(line.line_start)}–${fmt(line.line_end)} · speaker ${line.speaker ?? "—"}</div>
+    <div class="line-text"></div>
+    <div class="bar labels">${LABELS.map(([v, n, k]) =>
+      `<button data-v="${v}" class="${v}${e.label === v ? " sel" : ""}">${n} <kbd>${k}</kbd></button>`).join("")}</div>
+    ${line.ask_onset ? `<div class="bar"><b>Onset requested.</b>
+      <button id="markOnset" ${["on","mixed"].includes(e.label) ? "" : "disabled"}>Mark onset at this frame <kbd>O</kbd></button>
+      <button id="gotoOnset" ${e.onset_frame === null ? "disabled" : ""}>Go to onset</button>
+      <span class="mono">onset frame: <b>${e.onset_frame ?? "—"}</b></span></div>
+      <div class="bar">Query (exact words of the line): <input id="query" type="text" size="60"></div>` : ""}
+    <div class="bar">Note: <input id="note" type="text" size="60" placeholder="optional"></div>
+    ${needsOnset && e.onset_frame === null ? `<div class="off">This line still needs its onset frame.</div>` : ""}`;
+  box.querySelector(".line-text").textContent = line.text;
+  box.querySelectorAll(".labels button").forEach((b) => b.onclick = () => setLabel(b.dataset.v));
+  if ($("markOnset")) $("markOnset").onclick = markOnset;
+  if ($("gotoOnset")) $("gotoOnset").onclick = () => seekFrame(e.onset_frame);
+  if ($("query")) { $("query").value = e.query ?? ""; $("query").oninput = (ev) => { e.query = ev.target.value; persist(); }; }
+  $("note").value = e.note ?? ""; $("note").oninput = (ev) => { e.note = ev.target.value; persist(); };
+}
+
+function select(i) { idx = Math.max(0, Math.min(data.lines.length - 1, i)); renderList(); renderCurrent(); playLine(); }
+function playLine() {
+  const line = data.lines[idx]; if (!video.src) return;
+  video.currentTime = Math.max(0, line.line_start - 0.7); stopAt = line.line_end + 0.5; video.play();
+}
+function setLabel(v) {
+  const e = entry(idx); e.label = v;
+  if (!["on", "mixed"].includes(v)) e.onset_frame = null;
+  persist(); renderList(); renderCurrent();
+}
+function markOnset() {
+  const e = entry(idx);
+  if (!data.lines[idx].ask_onset || !["on", "mixed"].includes(e.label)) return;
+  e.onset_frame = currentFrame(); persist(); renderList(); renderCurrent();
+}
+
+$("jsonFile").onchange = async (ev) => {
+  const file = ev.target.files[0]; if (!file) return;
+  data = JSON.parse(await file.text()); fps = Number(data.fps) || 25;
+  if (!$("annotator").value.trim()) { alert("Enter your name first, then load the file again."); data = null; return; }
+  state = {}; restore(); idx = 0; $("save").disabled = false; renderList(); renderCurrent();
+};
+$("videoFile").onchange = (ev) => { const f = ev.target.files[0]; if (f) video.src = URL.createObjectURL(f); };
+$("play").onclick = playLine;
+$("back1").onclick = () => seekFrame(currentFrame() - 1);
+$("fwd1").onclick = () => seekFrame(currentFrame() + 1);
+$("back10").onclick = () => seekFrame(currentFrame() - 10);
+$("fwd10").onclick = () => seekFrame(currentFrame() + 10);
+
+$("save").onclick = () => {
+  const annotator = $("annotator").value.trim();
+  if (!annotator || !data) return;
+  const out = {
+    clip_id: data.clip_id, annotator, tool: "eval/labeler v1", saved_at: new Date().toISOString(),
+    fps: data.fps,
+    lines: data.lines.map((l, i) => { const e = entry(i);
+      return { line_id: l.line_id, label: e.label, onset_frame: e.onset_frame,
+               query: l.ask_onset ? (e.query || null) : null, note: e.note || "" }; }),
+  };
+  const blob = new Blob([JSON.stringify(out, null, 2)], { type: "application/json" });
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
+  a.download = `${data.clip_id}__${annotator.replace(/[^A-Za-z0-9_-]/g, "_")}.json`; a.click();
+};
+
+document.addEventListener("keydown", (ev) => {
+  if (!data || ev.target.tagName === "INPUT") return;
+  const k = ev.key.toLowerCase();
+  const hit = LABELS.find(([, , key]) => key === ev.key);
+  if (hit) { setLabel(hit[0]); ev.preventDefault(); }
+  else if (k === " ") { playLine(); ev.preventDefault(); }
+  else if (k === "arrowleft") { seekFrame(currentFrame() - (ev.shiftKey ? 10 : 1)); ev.preventDefault(); }
+  else if (k === "arrowright") { seekFrame(currentFrame() + (ev.shiftKey ? 10 : 1)); ev.preventDefault(); }
+  else if (k === "o") { markOnset(); }
+  else if (k === "n") { select(idx + 1); }
+  else if (k === "p") { select(idx - 1); }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,2980 @@
+{
+  "clip_id": "film_his_girl_friday",
+  "genre": "film",
+  "config": "full",
+  "overrides": {},
+  "run_at": "2026-11-18T17:18:27.552933+00:00",
+  "status": "success",
+  "error": null,
+  "diagnostics": {
+    "mode": "discovery",
+    "fps": 25.0,
+    "duration": 420.0,
+    "frame_count": 10500,
+    "resolution": "640x480",
+    "words": 1604,
+    "segments": 134,
+    "speakers": 4,
+    "candidates": 109,
+    "verified_seconds": 511.09
+  },
+  "elapsed_seconds": 1604.625,
+  "stage_seconds": {
+    "ingestion": 0.063,
+    "normalization": 25.562,
+    "transcription": 510.313,
+    "diarization": 581.359,
+    "alignment": 0.031,
+    "active_speaker_detection": 487.297
+  },
+  "asd_requests_sent": 109,
+  "asd_cache_hits": 0,
+  "cold_run": true,
+  "lines": [
+    {
+      "index": 0,
+      "line_start": 0.0,
+      "line_end": 1.16,
+      "window": [
+        0.0,
+        3.5
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "See, you did very little spoiling.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 0,
+      "confidence": 0.8358,
+      "reason": null,
+      "breakdown": {
+        "score": 0.8358,
+        "terms": {
+          "asr": 0.7716,
+          "face": 0.8343,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 1,
+      "line_start": 1.24,
+      "line_end": 6.2,
+      "window": [
+        1.24,
+        6.2
+      ],
+      "speaker": "SPEAKER_01",
+      "text": "I'd like to spoil him just once. Sure you don't want me to go in with you? No, no, I can handle it. Well, things get rough. Remember, I'm here.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 40,
+      "confidence": 0.9316,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9316,
+        "terms": {
+          "asr": 0.951,
+          "face": 0.8849,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 2,
+      "line_start": 6.38,
+      "line_end": 12.06,
+      "window": [
+        6.38,
+        12.06
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "I'll come running, partner. Well, hello, Jim. Hello, Hildy. How are you? Hi, Hildy.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 161,
+      "confidence": 0.8931,
+      "reason": null,
+      "breakdown": {
+        "score": 0.8931,
+        "terms": {
+          "asr": 0.8923,
+          "face": 0.8511,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 3,
+      "line_start": 12.06,
+      "line_end": 16.76,
+      "window": [
+        12.06,
+        16.76
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "Welcome back. Hello, Hildy. How have you been? Hi, Hildy. Hello, Hildy.",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 4,
+      "line_start": 17.4,
+      "line_end": 22.96,
+      "window": [
+        17.4,
+        22.96
+      ],
+      "speaker": "SPEAKER_00",
+      "text": "Hello, Beatrice. How's advice to the love lawn? Fine. My cat just had kittens again. Her own fault. Yeah, hello, Hildy. Glad to see you back. Glad to",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 5,
+      "line_start": 22.96,
+      "line_end": 27.66,
+      "window": [
+        22.96,
+        27.66
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "see you. What? Hi, Jim. Hello, Hildy. You still around? A little",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 6,
+      "line_start": 28.94,
+      "line_end": 29.88,
+      "window": [
+        27.66,
+        31.16
+      ],
+      "speaker": "SPEAKER_01",
+      "text": "more round the chin, boss.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 730,
+      "confidence": 0.8398,
+      "reason": null,
+      "breakdown": {
+        "score": 0.8398,
+        "terms": {
+          "asr": 0.7089,
+          "face": 0.9067,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 7,
+      "line_start": 31.08,
+      "line_end": 31.76,
+      "window": [
+        29.67,
+        33.17
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "What do you want?",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 8,
+      "line_start": 32.04,
+      "line_end": 33.6,
+      "window": [
+        31.07,
+        34.57
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "Your ex -wife is here. Do you want to see her?",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 809,
+      "confidence": 0.8304,
+      "reason": null,
+      "breakdown": {
+        "score": 0.8304,
+        "terms": {
+          "asr": 0.9708,
+          "face": 0.6222,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 9,
+      "line_start": 35.3,
+      "line_end": 37.5,
+      "window": [
+        34.65,
+        38.15
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "Well... Well, hello, Hildy.",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 10,
+      "line_start": 38.0,
+      "line_end": 38.68,
+      "window": [
+        36.59,
+        40.09
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "Hello, Walter.",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "speaker_mismatch",
+      "breakdown": null
+    },
+    {
+      "index": 11,
+      "line_start": 38.82,
+      "line_end": 39.42,
+      "window": [
+        37.370000000000005,
+        40.870000000000005
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "Hi, Hildy.",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 12,
+      "line_start": 40.5,
+      "line_end": 42.74,
+      "window": [
+        39.870000000000005,
+        43.370000000000005
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "Oh, hello, Louie. How's the big slot machine king?",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 13,
+      "line_start": 43.04,
+      "line_end": 54.08,
+      "window": [
+        43.04,
+        54.08
+      ],
+      "speaker": "SPEAKER_01",
+      "text": "Oh, I ain't doing that no more. I'm retired. You know what I mean? Say, Walter. I'm busy, Duffy. Oh, hello, Hildy. Hello, Duffy. Listen, Walter. Keep going. I'm busy. I thought you ought to know that the governor didn't sign that reprieve. What? And tomorrow morning, Earl Williams dies and makes a sucker out of us.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 1081,
+      "confidence": 0.9269,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9269,
+        "terms": {
+          "asr": 0.9284,
+          "face": 0.8962,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 14,
+      "line_start": 54.98,
+      "line_end": 55.3,
+      "window": [
+        53.39,
+        56.89
+      ],
+      "speaker": null,
+      "text": "Well,",
+      "status": "ambiguous",
+      "error_reason": null,
+      "frame_number": 1404,
+      "confidence": 0.871,
+      "reason": "speaker_mismatch",
+      "breakdown": {
+        "score": 0.871,
+        "terms": {
+          "asr": 0.8171,
+          "face": 0.8733,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 15,
+      "line_start": 56.16,
+      "line_end": 61.16,
+      "window": [
+        56.16,
+        61.16
+      ],
+      "speaker": "SPEAKER_01",
+      "text": "what are you going to do? Get the governor on the phone. I can't why not can't locate him is out fishing How",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 1404,
+      "confidence": 0.8476,
+      "reason": null,
+      "breakdown": {
+        "score": 0.8476,
+        "terms": {
+          "asr": 0.7753,
+          "face": 0.8589,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 16,
+      "line_start": 61.16,
+      "line_end": 62.12,
+      "window": [
+        59.89,
+        63.39
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "many places to fish",
+      "status": "ambiguous",
+      "error_reason": null,
+      "frame_number": 1530,
+      "confidence": 0.9236,
+      "reason": "multiple_simultaneous_speakers",
+      "breakdown": {
+        "score": 0.9236,
+        "terms": {
+          "asr": 0.9788,
+          "face": 0.8379,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 17,
+      "line_start": 62.12,
+      "line_end": 64.42,
+      "window": [
+        61.519999999999996,
+        65.02
+      ],
+      "speaker": "SPEAKER_01",
+      "text": "are there at least to the Atlantic and Pacific?",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 1552,
+      "confidence": 0.8848,
+      "reason": null,
+      "breakdown": {
+        "score": 0.8848,
+        "terms": {
+          "asr": 0.8604,
+          "face": 0.8632,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 18,
+      "line_start": 64.62,
+      "line_end": 66.36,
+      "window": [
+        63.74000000000001,
+        67.24000000000001
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "All right, that simplifies it doesn't it? And",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "speaker_mismatch",
+      "breakdown": null
+    },
+    {
+      "index": 19,
+      "line_start": 66.36,
+      "line_end": 67.72,
+      "window": [
+        65.28999999999999,
+        68.78999999999999
+      ],
+      "speaker": "SPEAKER_01",
+      "text": "tell him what",
+      "status": "ambiguous",
+      "error_reason": null,
+      "frame_number": 1659,
+      "confidence": 0.9043,
+      "reason": "multiple_simultaneous_speakers",
+      "breakdown": {
+        "score": 0.9043,
+        "terms": {
+          "asr": 0.8961,
+          "face": 0.8744,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 20,
+      "line_start": 67.72,
+      "line_end": 69.06,
+      "window": [
+        66.64,
+        70.14
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "right Duffy he's thinking",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 1713,
+      "confidence": 0.8486,
+      "reason": null,
+      "breakdown": {
+        "score": 0.8486,
+        "terms": {
+          "asr": 0.7653,
+          "face": 0.8712,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 21,
+      "line_start": 70.5,
+      "line_end": 77.26,
+      "window": [
+        70.5,
+        77.26
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "Tell him if you're repriever Williams will support him for senator I tell him the morning post to be behind him hook line and sinker But you can't do why not",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 1774,
+      "confidence": 0.8832,
+      "reason": null,
+      "breakdown": {
+        "score": 0.8832,
+        "terms": {
+          "asr": 0.8167,
+          "face": 0.903,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 22,
+      "line_start": 77.26,
+      "line_end": 81.96,
+      "window": [
+        77.26,
+        81.96
+      ],
+      "speaker": "SPEAKER_01",
+      "text": "because we've been a democratic paper for over 20 years All right after we get the reprieve we'll",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 1933,
+      "confidence": 0.9125,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9125,
+        "terms": {
+          "asr": 0.9063,
+          "face": 0.8838,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 23,
+      "line_start": 81.96,
+      "line_end": 89.3,
+      "window": [
+        81.96,
+        89.3
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "be democratic again. Go on Duffy get going Remember, the Morning Post expects every city editor to do his duty. You two, Louie, get out of here. Okay, boy.",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 24,
+      "line_start": 93.04,
+      "line_end": 93.36,
+      "window": [
+        91.45,
+        94.95
+      ],
+      "speaker": null,
+      "text": "Well,",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 25,
+      "line_start": 95.04,
+      "line_end": 96.5,
+      "window": [
+        94.02000000000001,
+        97.52000000000001
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "Walter, I see you're still at it.",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 26,
+      "line_start": 96.98,
+      "line_end": 99.62,
+      "window": [
+        96.55000000000001,
+        100.05000000000001
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "It's the first time I ever dove across the governor. What can I do for you?",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 27,
+      "line_start": 100.34,
+      "line_end": 101.78,
+      "window": [
+        99.31,
+        102.81
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "Well, would you mind if I sat down?",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 2513,
+      "confidence": 0.9288,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9288,
+        "terms": {
+          "asr": 0.935,
+          "face": 0.8942,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 28,
+      "line_start": 102.1,
+      "line_end": 104.4,
+      "window": [
+        101.5,
+        105.0
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "There's been a lamp burning in the window for you, honey. Here.",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 29,
+      "line_start": 105.1,
+      "line_end": 120.53,
+      "window": [
+        105.1,
+        120.53
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "Oh, I jumped out that window a long time ago, Walter. Oh, may I have one of those? Sure. And the match. Thank you.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 2634,
+      "confidence": 0.9285,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9285,
+        "terms": {
+          "asr": 0.9612,
+          "face": 0.8673,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 30,
+      "line_start": 120.95,
+      "line_end": 121.27,
+      "window": [
+        119.36,
+        122.86
+      ],
+      "speaker": null,
+      "text": "How",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "spoken_before_onset",
+      "breakdown": null
+    },
+    {
+      "index": 31,
+      "line_start": 126.58,
+      "line_end": 127.12,
+      "window": [
+        125.1,
+        128.6
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "long is it?",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 3166,
+      "confidence": 0.9181,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9181,
+        "terms": {
+          "asr": 0.9998,
+          "face": 0.8037,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 32,
+      "line_start": 127.64,
+      "line_end": 128.34,
+      "window": [
+        126.24000000000001,
+        129.74
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "How long is what?",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "speaker_mismatch",
+      "breakdown": null
+    },
+    {
+      "index": 33,
+      "line_start": 128.6,
+      "line_end": 131.38,
+      "window": [
+        128.24,
+        131.74
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "You know what. How long is it since we've seen each other?",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 3217,
+      "confidence": 0.9618,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9618,
+        "terms": {
+          "asr": 0.9709,
+          "face": 0.9375,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 34,
+      "line_start": 132.94,
+      "line_end": 140.42,
+      "window": [
+        132.94,
+        140.42
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "Oh, well, let's see. I spent six weeks in Reno, then Bermuda. About four months, I guess. Seems like yesterday to me.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 3330,
+      "confidence": 0.9476,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9476,
+        "terms": {
+          "asr": 0.9846,
+          "face": 0.8897,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 35,
+      "line_start": 141.28,
+      "line_end": 144.34,
+      "window": [
+        141.06,
+        144.56
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "Maybe it was yesterday, Hildy. Been seeing me in your dreams?",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 3540,
+      "confidence": 0.9618,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9618,
+        "terms": {
+          "asr": 0.993,
+          "face": 0.9153,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 36,
+      "line_start": 145.16,
+      "line_end": 148.62,
+      "window": [
+        145.14,
+        148.64
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "No, no, Mama doesn't dream about you anymore, Walter. You wouldn't know the old girl now. Ah,",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 3646,
+      "confidence": 0.9073,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9073,
+        "terms": {
+          "asr": 0.92,
+          "face": 0.8574,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 37,
+      "line_start": 148.62,
+      "line_end": 151.96,
+      "window": [
+        148.54000000000002,
+        152.04000000000002
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "yes, I would. I'd know you any time, any place. Any",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 3735,
+      "confidence": 0.9254,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9254,
+        "terms": {
+          "asr": 0.9839,
+          "face": 0.8372,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 38,
+      "line_start": 151.96,
+      "line_end": 156.52,
+      "window": [
+        151.96,
+        156.52
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "place, anywhere. Ah, you're repeating yourself, Walter. That's the speech you made the night you proposed. Yeah,",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 3863,
+      "confidence": 0.8724,
+      "reason": null,
+      "breakdown": {
+        "score": 0.8724,
+        "terms": {
+          "asr": 0.9203,
+          "face": 0.7734,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 39,
+      "line_start": 156.52,
+      "line_end": 157.58,
+      "window": [
+        155.3,
+        158.8
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "I know that you still remember it.",
+      "status": "ambiguous",
+      "error_reason": null,
+      "frame_number": 3914,
+      "confidence": 0.9084,
+      "reason": "multiple_simultaneous_speakers",
+      "breakdown": {
+        "score": 0.9084,
+        "terms": {
+          "asr": 0.8689,
+          "face": 0.9111,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 40,
+      "line_start": 157.6,
+      "line_end": 159.94,
+      "window": [
+        157.01999999999998,
+        160.51999999999998
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "Of course I remember it. If I didn't remember it, I wouldn't have divorced you.",
+      "status": "ambiguous",
+      "error_reason": null,
+      "frame_number": 3940,
+      "confidence": 0.9384,
+      "reason": "multiple_simultaneous_speakers",
+      "breakdown": {
+        "score": 0.9384,
+        "terms": {
+          "asr": 0.9599,
+          "face": 0.8924,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 41,
+      "line_start": 160.36,
+      "line_end": 169.0,
+      "window": [
+        160.36,
+        169.0
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "Yeah, I sort of wish you hadn't done that, Hildy. Done what? Divorced me. Makes a fellow lose all faith in himself. Gives him a... almost gives him a feeling he wasn't wanted. Oh,",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 4071,
+      "confidence": 0.9246,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9246,
+        "terms": {
+          "asr": 0.8994,
+          "face": 0.9197,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 42,
+      "line_start": 169.0,
+      "line_end": 170.78,
+      "window": [
+        168.14,
+        171.64
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "now, look, Junior, that's what divorces are for.",
+      "status": "ambiguous",
+      "error_reason": null,
+      "frame_number": 4225,
+      "confidence": 0.9252,
+      "reason": "multiple_simultaneous_speakers",
+      "breakdown": {
+        "score": 0.9252,
+        "terms": {
+          "asr": 0.9914,
+          "face": 0.8291,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 43,
+      "line_start": 171.14,
+      "line_end": 182.56,
+      "window": [
+        171.14,
+        182.56
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "Nonsense. You've got an old -fashioned idea. Divorce is something that lasts forever, till death do us part. Why, divorce doesn't mean anything nowadays, Hildy. Just a few words, mumbled over you by a judge. We've got something between us nothing can change.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 4412,
+      "confidence": 0.926,
+      "reason": null,
+      "breakdown": {
+        "score": 0.926,
+        "terms": {
+          "asr": 0.9627,
+          "face": 0.8596,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 44,
+      "line_start": 183.56,
+      "line_end": 186.12,
+      "window": [
+        183.09,
+        186.59
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "Oh, well, I suppose you're right in a way, Walter. Sure",
+      "status": "ambiguous",
+      "error_reason": null,
+      "frame_number": 4605,
+      "confidence": 0.9059,
+      "reason": "multiple_simultaneous_speakers",
+      "breakdown": {
+        "score": 0.9059,
+        "terms": {
+          "asr": 0.8709,
+          "face": 0.9034,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 45,
+      "line_start": 186.12,
+      "line_end": 186.62,
+      "window": [
+        184.62,
+        188.12
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "I'm right.",
+      "status": "ambiguous",
+      "error_reason": null,
+      "frame_number": 4653,
+      "confidence": 0.8916,
+      "reason": "multiple_simultaneous_speakers",
+      "breakdown": {
+        "score": 0.8916,
+        "terms": {
+          "asr": 0.8476,
+          "face": 0.8922,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 46,
+      "line_start": 186.84,
+      "line_end": 188.32,
+      "window": [
+        185.82999999999998,
+        189.32999999999998
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "I am fond of you, you know.",
+      "status": "ambiguous",
+      "error_reason": null,
+      "frame_number": 4664,
+      "confidence": 0.9436,
+      "reason": "multiple_simultaneous_speakers",
+      "breakdown": {
+        "score": 0.9436,
+        "terms": {
+          "asr": 0.9954,
+          "face": 0.8693,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 47,
+      "line_start": 188.58,
+      "line_end": 189.26,
+      "window": [
+        187.17000000000002,
+        190.67000000000002
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "And the girl?",
+      "status": "ambiguous",
+      "error_reason": null,
+      "frame_number": 4721,
+      "confidence": 0.7011,
+      "reason": "multiple_simultaneous_speakers",
+      "breakdown": {
+        "score": 0.7011,
+        "terms": {
+          "asr": 0.5382,
+          "face": 0.7445,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 48,
+      "line_start": 189.74,
+      "line_end": 191.5,
+      "window": [
+        188.87,
+        192.37
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "I often wish you weren't such a stinker.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 4752,
+      "confidence": 0.9592,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9592,
+        "terms": {
+          "asr": 0.9952,
+          "face": 0.907,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 49,
+      "line_start": 193.4,
+      "line_end": 197.2,
+      "window": [
+        193.4,
+        197.2
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "Latin, I suppose. You must come up and meet my mother. Why on earth did you",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 4858,
+      "confidence": 0.8576,
+      "reason": null,
+      "breakdown": {
+        "score": 0.8576,
+        "terms": {
+          "asr": 0.936,
+          "face": 0.7222,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 50,
+      "line_start": 197.2,
+      "line_end": 201.0,
+      "window": [
+        197.2,
+        201.0
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "promise not to fight the divorce and do everything you possibly could to gum up the whole works?",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 4931,
+      "confidence": 0.95,
+      "reason": null,
+      "breakdown": {
+        "score": 0.95,
+        "terms": {
+          "asr": 0.9824,
+          "face": 0.8977,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 51,
+      "line_start": 201.14,
+      "line_end": 205.76,
+      "window": [
+        201.14,
+        205.76
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "Well, I meant to let you go, Hildy, but you know how it is. You never miss the water till the well runs dry. Oh,",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 5029,
+      "confidence": 0.9683,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9683,
+        "terms": {
+          "asr": 0.9897,
+          "face": 0.9342,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 52,
+      "line_start": 205.78,
+      "line_end": 215.08,
+      "window": [
+        205.78,
+        215.08
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "big fat lummox like you hiring an aeroplane to write. Hildy, don't be hasty. Remember my dimple, Walter. Delayed our divorce 20 minutes while the judge went out to watch it.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 5145,
+      "confidence": 0.9119,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9119,
+        "terms": {
+          "asr": 0.9012,
+          "face": 0.8874,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 53,
+      "line_start": 215.18,
+      "line_end": 222.72,
+      "window": [
+        215.18,
+        222.72
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "Well, I don't want to brag, but I've still got the dimple and in the same place. Look, Hildy, I only acted like any husband who didn't want to see his home broken up. What",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 5389,
+      "confidence": 0.9194,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9194,
+        "terms": {
+          "asr": 0.9363,
+          "face": 0.8702,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 54,
+      "line_start": 222.72,
+      "line_end": 223.38,
+      "window": [
+        221.3,
+        224.8
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "home? What",
+      "status": "ambiguous",
+      "error_reason": null,
+      "frame_number": 5568,
+      "confidence": 0.9405,
+      "reason": "multiple_simultaneous_speakers",
+      "breakdown": {
+        "score": 0.9405,
+        "terms": {
+          "asr": 0.9547,
+          "face": 0.9025,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 55,
+      "line_start": 223.38,
+      "line_end": 225.38,
+      "window": [
+        222.63,
+        226.13
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "home? Don't you remember the home I promised you? Sure",
+      "status": "ambiguous",
+      "error_reason": null,
+      "frame_number": 5584,
+      "confidence": 0.9442,
+      "reason": "multiple_simultaneous_speakers",
+      "breakdown": {
+        "score": 0.9442,
+        "terms": {
+          "asr": 0.9963,
+          "face": 0.8697,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 56,
+      "line_start": 225.38,
+      "line_end": 230.04,
+      "window": [
+        225.38,
+        230.04
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "I do. That was the one we were to have right after the honeymoon. That honeymoon.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 5635,
+      "confidence": 0.9541,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9541,
+        "terms": {
+          "asr": 0.9811,
+          "face": 0.9087,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 57,
+      "line_start": 230.52,
+      "line_end": 237.3,
+      "window": [
+        230.52,
+        237.3
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "Oh, was it my fault? Did I know that coal mine was gonna have another cave -in? I intended to be with you on our honeymoon, Hildy. Honest, I did. All",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 5763,
+      "confidence": 0.9408,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9408,
+        "terms": {
+          "asr": 0.9556,
+          "face": 0.9024,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 58,
+      "line_start": 237.3,
+      "line_end": 244.58,
+      "window": [
+        237.3,
+        244.58
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "I know is that instead of two weeks in Atlantic City with my bridegroom... I spent two weeks in a coal mine with John Krupski. You don't deny that, do you, Walter?",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 5934,
+      "confidence": 0.9329,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9329,
+        "terms": {
+          "asr": 0.9575,
+          "face": 0.8814,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 59,
+      "line_start": 244.74,
+      "line_end": 248.16,
+      "window": [
+        244.7,
+        248.2
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "Deny it? I'm proud of it. We've beaten the whole country on that story. Well, suppose we",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 6118,
+      "confidence": 0.9341,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9341,
+        "terms": {
+          "asr": 0.9288,
+          "face": 0.9129,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 60,
+      "line_start": 248.16,
+      "line_end": 258.56,
+      "window": [
+        248.16,
+        258.56
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "did. That isn't what I got married for. Oh, what is the good of... Look, now, look, Walter. What I came up here to tell you is that you must stop phoning me a dozen times a day, sending me 20 telegrams. I",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 6290,
+      "confidence": 0.9431,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9431,
+        "terms": {
+          "asr": 0.9918,
+          "face": 0.8715,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 61,
+      "line_start": 258.56,
+      "line_end": 260.88,
+      "window": [
+        257.97,
+        261.47
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "write a beautiful telegram, don't I? Everybody says so. Are you",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 6464,
+      "confidence": 0.9578,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9578,
+        "terms": {
+          "asr": 0.9983,
+          "face": 0.9004,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 62,
+      "line_start": 260.88,
+      "line_end": 262.0,
+      "window": [
+        259.69,
+        263.19
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "going to listen to what I have to say?",
+      "status": "ambiguous",
+      "error_reason": null,
+      "frame_number": 6526,
+      "confidence": 0.8997,
+      "reason": "multiple_simultaneous_speakers",
+      "breakdown": {
+        "score": 0.8997,
+        "terms": {
+          "asr": 0.9798,
+          "face": 0.7794,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 63,
+      "line_start": 262.24,
+      "line_end": 272.12,
+      "window": [
+        262.24,
+        272.12
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "Look, look, what's the use of fighting, Hildy? I'll tell you what you do. You come back to work on the paper. If we find we can't get along in a friendly fashion, we'll get married again. What? Certainly. I haven't any hard feelings.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 6562,
+      "confidence": 0.9342,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9342,
+        "terms": {
+          "asr": 0.9498,
+          "face": 0.8922,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 64,
+      "line_start": 273.2,
+      "line_end": 278.84,
+      "window": [
+        273.2,
+        278.84
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "Oh, Walter, you're wonderful in a loathsome sort of way. Now, will you please be quiet just long enough for me to tell you what I came up here to say?",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 6835,
+      "confidence": 0.9371,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9371,
+        "terms": {
+          "asr": 0.958,
+          "face": 0.8912,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 65,
+      "line_start": 279.34,
+      "line_end": 281.96,
+      "window": [
+        278.9,
+        282.4
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "I have a lunch date already. I cannot",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 6984,
+      "confidence": 0.9152,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9152,
+        "terms": {
+          "asr": 0.9418,
+          "face": 0.8548,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 66,
+      "line_start": 281.96,
+      "line_end": 282.38,
+      "window": [
+        280.41999999999996,
+        283.91999999999996
+      ],
+      "speaker": "SPEAKER_00",
+      "text": "break it.",
+      "status": "ambiguous",
+      "error_reason": null,
+      "frame_number": 7049,
+      "confidence": 0.9458,
+      "reason": "multiple_simultaneous_speakers",
+      "breakdown": {
+        "score": 0.9458,
+        "terms": {
+          "asr": 0.9733,
+          "face": 0.8967,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 67,
+      "line_start": 282.6,
+      "line_end": 283.56,
+      "window": [
+        281.33000000000004,
+        284.83000000000004
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "Will you take your hands",
+      "status": "ambiguous",
+      "error_reason": null,
+      "frame_number": 7069,
+      "confidence": 0.8911,
+      "reason": "multiple_simultaneous_speakers",
+      "breakdown": {
+        "score": 0.8911,
+        "terms": {
+          "asr": 0.8456,
+          "face": 0.8929,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 68,
+      "line_start": 283.56,
+      "line_end": 284.68,
+      "window": [
+        282.37,
+        285.87
+      ],
+      "speaker": "SPEAKER_00",
+      "text": "off me? What are you playing, osteopath?",
+      "status": "ambiguous",
+      "error_reason": null,
+      "frame_number": 7105,
+      "confidence": 0.9249,
+      "reason": "multiple_simultaneous_speakers",
+      "breakdown": {
+        "score": 0.9249,
+        "terms": {
+          "asr": 0.9506,
+          "face": 0.8691,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 69,
+      "line_start": 284.84,
+      "line_end": 291.48,
+      "window": [
+        284.84,
+        291.48
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "Temper, temper. Oh, listen, Walter. You are no longer my husband and no longer my boss. And you're not going to be my boss.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 7155,
+      "confidence": 0.9482,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9482,
+        "terms": {
+          "asr": 0.9889,
+          "face": 0.8869,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 70,
+      "line_start": 291.76,
+      "line_end": 292.84,
+      "window": [
+        290.54999999999995,
+        294.04999999999995
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "What's that supposed to mean?",
+      "status": "ambiguous",
+      "error_reason": null,
+      "frame_number": 7299,
+      "confidence": 0.9686,
+      "reason": "multiple_simultaneous_speakers",
+      "breakdown": {
+        "score": 0.9686,
+        "terms": {
+          "asr": 0.9996,
+          "face": 0.9251,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 71,
+      "line_start": 293.14,
+      "line_end": 294.08,
+      "window": [
+        291.86,
+        295.36
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "Just what I say.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 7332,
+      "confidence": 0.9566,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9566,
+        "terms": {
+          "asr": 0.9996,
+          "face": 0.8962,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 72,
+      "line_start": 294.38,
+      "line_end": 296.0,
+      "window": [
+        293.44,
+        296.94
+      ],
+      "speaker": "SPEAKER_01",
+      "text": "You mean you're not coming back to work on the paper?",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 7364,
+      "confidence": 0.9685,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9685,
+        "terms": {
+          "asr": 0.9994,
+          "face": 0.9251,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 73,
+      "line_start": 296.14,
+      "line_end": 298.1,
+      "window": [
+        295.37,
+        298.87
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "You are right, Mr. Burns, for the first time today. Ah,",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 7404,
+      "confidence": 0.9224,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9224,
+        "terms": {
+          "asr": 0.9052,
+          "face": 0.9086,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 74,
+      "line_start": 298.54,
+      "line_end": 300.4,
+      "window": [
+        297.72,
+        301.22
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "got a better offer, huh? You",
+      "status": "ambiguous",
+      "error_reason": null,
+      "frame_number": 7479,
+      "confidence": 0.9407,
+      "reason": "multiple_simultaneous_speakers",
+      "breakdown": {
+        "score": 0.9407,
+        "terms": {
+          "asr": 0.9311,
+          "face": 0.9266,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 75,
+      "line_start": 300.4,
+      "line_end": 301.54,
+      "window": [
+        299.22,
+        302.72
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "bet I've got a better offer. All",
+      "status": "ambiguous",
+      "error_reason": null,
+      "frame_number": 7510,
+      "confidence": 0.9539,
+      "reason": "multiple_simultaneous_speakers",
+      "breakdown": {
+        "score": 0.9539,
+        "terms": {
+          "asr": 0.967,
+          "face": 0.9222,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 76,
+      "line_start": 301.54,
+      "line_end": 309.64,
+      "window": [
+        301.54,
+        309.64
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "right, go on, take it, work for somebody else. That's the gratitude I get. Oh, I wish you'd stop panting. What were you when you came here five years ago? A little college girl from a school of journalism. I took a doll -faced hick.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 7539,
+      "confidence": 0.9552,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9552,
+        "terms": {
+          "asr": 0.9713,
+          "face": 0.9211,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 77,
+      "line_start": 309.8,
+      "line_end": 311.64,
+      "window": [
+        308.97,
+        312.47
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "Well, you wouldn't take me if I hadn't been doll -faced. Oh,",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 7746,
+      "confidence": 0.9626,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9626,
+        "terms": {
+          "asr": 0.9915,
+          "face": 0.9188,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 78,
+      "line_start": 311.7,
+      "line_end": 318.98,
+      "window": [
+        311.7,
+        318.98
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "why should I? I told you a novelty. You'd have a face around here a man could look at without shuddering. Listen, Walter, please. Listen, I made a great reporter out of you, Hildy, but you won't be half as good on any other paper, and you know it. We're a team.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 7793,
+      "confidence": 0.9443,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9443,
+        "terms": {
+          "asr": 0.949,
+          "face": 0.9174,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 79,
+      "line_start": 319.12,
+      "line_end": 325.0,
+      "window": [
+        319.12,
+        325.0
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "That's what we are. You need me, and I need you, and the paper needs... Listen, Walter, please.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 7992,
+      "confidence": 0.9074,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9074,
+        "terms": {
+          "asr": 0.8561,
+          "face": 0.9216,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 80,
+      "line_start": 325.68,
+      "line_end": 326.0,
+      "window": [
+        324.09000000000003,
+        327.59000000000003
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "The",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "speaker_mismatch",
+      "breakdown": null
+    },
+    {
+      "index": 81,
+      "line_start": 326.0,
+      "line_end": 330.2,
+      "window": [
+        326.0,
+        330.2
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "paper's going to have to get along without me. So will you. It just didn't work out, Walter.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 8150,
+      "confidence": 0.9154,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9154,
+        "terms": {
+          "asr": 0.9116,
+          "face": 0.8854,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 82,
+      "line_start": 330.52,
+      "line_end": 336.5,
+      "window": [
+        330.52,
+        336.5
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "Well, it would have worked out if you'd been satisfied with just being editor and reporter, but not you. You had to marry me, spoil everything.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 8278,
+      "confidence": 0.9616,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9616,
+        "terms": {
+          "asr": 0.9801,
+          "face": 0.9279,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 83,
+      "line_start": 336.74,
+      "line_end": 339.34,
+      "window": [
+        336.28999999999996,
+        339.78999999999996
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "I wasn't satisfied. I suppose I proposed to you.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 8419,
+      "confidence": 0.957,
+      "reason": null,
+      "breakdown": {
+        "score": 0.957,
+        "terms": {
+          "asr": 0.9979,
+          "face": 0.8988,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 84,
+      "line_start": 339.66,
+      "line_end": 348.42,
+      "window": [
+        339.66,
+        348.42
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "Well, you practically did, making goo -goo eyes at me for two years until I broke down. Oh, Walter. And I still claim I was tight the night I proposed to you. If you'd have been the gentleman, you'd have forgotten all about it, but not you.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 8496,
+      "confidence": 0.9568,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9568,
+        "terms": {
+          "asr": 0.9729,
+          "face": 0.9233,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 85,
+      "line_start": 348.54,
+      "line_end": 348.98,
+      "window": [
+        347.01,
+        350.51
+      ],
+      "speaker": "SPEAKER_00",
+      "text": "Why, you...",
+      "status": "ambiguous",
+      "error_reason": null,
+      "frame_number": 8715,
+      "confidence": 0.7629,
+      "reason": "multiple_simultaneous_speakers",
+      "breakdown": {
+        "score": 0.7629,
+        "terms": {
+          "asr": 0.6152,
+          "face": 0.8158,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 86,
+      "line_start": 349.38,
+      "line_end": 351.58,
+      "window": [
+        348.73,
+        352.23
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "You're losing your eye. You used to be at a pitch better than that.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 8744,
+      "confidence": 0.8885,
+      "reason": null,
+      "breakdown": {
+        "score": 0.8885,
+        "terms": {
+          "asr": 0.8539,
+          "face": 0.8784,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 87,
+      "line_start": 351.66,
+      "line_end": 355.4,
+      "window": [
+        351.66,
+        355.4
+      ],
+      "speaker": "SPEAKER_01",
+      "text": "Hello? Yeah? What? Sweeney? What can I do for you?",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 8794,
+      "confidence": 0.9379,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9379,
+        "terms": {
+          "asr": 0.9451,
+          "face": 0.906,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 88,
+      "line_start": 355.64,
+      "line_end": 355.88,
+      "window": [
+        354.01,
+        357.51
+      ],
+      "speaker": null,
+      "text": "What?",
+      "status": "ambiguous",
+      "error_reason": null,
+      "frame_number": 8918,
+      "confidence": 0.8484,
+      "reason": "speaker_mismatch",
+      "breakdown": {
+        "score": 0.8484,
+        "terms": {
+          "asr": 0.7849,
+          "face": 0.8512,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 89,
+      "line_start": 356.48,
+      "line_end": 363.58,
+      "window": [
+        356.48,
+        363.58
+      ],
+      "speaker": "SPEAKER_01",
+      "text": "Wait a minute. I'm not Sweeney. I'm Duffy. Listen, Sweeney, you can't do that to me. Not today of all days. What's the matter with you? Are you loony?",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 8917,
+      "confidence": 0.9292,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9292,
+        "terms": {
+          "asr": 0.9903,
+          "face": 0.8397,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 90,
+      "line_start": 365.3,
+      "line_end": 367.04,
+      "window": [
+        364.42,
+        367.92
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "Jumping, Jehoshaphat. Now, listen, Sweeney, this",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 9132,
+      "confidence": 0.9462,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9462,
+        "terms": {
+          "asr": 0.9643,
+          "face": 0.9066,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 91,
+      "line_start": 367.04,
+      "line_end": 369.12,
+      "window": [
+        366.33000000000004,
+        369.83000000000004
+      ],
+      "speaker": "SPEAKER_01",
+      "text": "is no time...",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "speaker_mismatch",
+      "breakdown": null
+    },
+    {
+      "index": 92,
+      "line_start": 369.12,
+      "line_end": 373.14,
+      "window": [
+        369.12,
+        373.14
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "Oh, all right, I suppose so. Yes, if you have to, you have to.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 9259,
+      "confidence": 0.9477,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9477,
+        "terms": {
+          "asr": 0.9844,
+          "face": 0.89,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 93,
+      "line_start": 373.94,
+      "line_end": 374.56,
+      "window": [
+        372.5,
+        376.0
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "He had to.",
+      "status": "ambiguous",
+      "error_reason": null,
+      "frame_number": 9354,
+      "confidence": 0.9596,
+      "reason": "multiple_simultaneous_speakers",
+      "breakdown": {
+        "score": 0.9596,
+        "terms": {
+          "asr": 0.9974,
+          "face": 0.9056,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 94,
+      "line_start": 374.76,
+      "line_end": 378.94,
+      "window": [
+        374.76,
+        378.94
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "How do you like that? Everything happens to me. 365 days in a year, and this has to be the day.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 9372,
+      "confidence": 0.9582,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9582,
+        "terms": {
+          "asr": 0.9983,
+          "face": 0.9012,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 95,
+      "line_start": 379.78,
+      "line_end": 380.52,
+      "window": [
+        378.4,
+        381.9
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "What's the matter, Walter?",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 9498,
+      "confidence": 0.8336,
+      "reason": null,
+      "breakdown": {
+        "score": 0.8336,
+        "terms": {
+          "asr": 0.6926,
+          "face": 0.9082,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 96,
+      "line_start": 380.9,
+      "line_end": 381.18,
+      "window": [
+        379.28999999999996,
+        382.78999999999996
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "Sweeney.",
+      "status": "ambiguous",
+      "error_reason": null,
+      "frame_number": 9523,
+      "confidence": 0.8433,
+      "reason": "multiple_simultaneous_speakers",
+      "breakdown": {
+        "score": 0.8433,
+        "terms": {
+          "asr": 0.8196,
+          "face": 0.8042,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 97,
+      "line_start": 381.28,
+      "line_end": 381.52,
+      "window": [
+        379.65,
+        383.15
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "Dead?",
+      "status": "ambiguous",
+      "error_reason": null,
+      "frame_number": 9525,
+      "confidence": 0.9016,
+      "reason": "multiple_simultaneous_speakers",
+      "breakdown": {
+        "score": 0.9016,
+        "terms": {
+          "asr": 0.8634,
+          "face": 0.9005,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 98,
+      "line_start": 382.12,
+      "line_end": 385.58,
+      "window": [
+        382.1,
+        385.6
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "Ah, he might just as well be. The only man on the paper that can write, and he picks today to have a baby.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 9561,
+      "confidence": 0.9219,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9219,
+        "terms": {
+          "asr": 0.8983,
+          "face": 0.9142,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 99,
+      "line_start": 385.86,
+      "line_end": 387.48,
+      "window": [
+        384.92,
+        388.42
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "Well, he didn't do it on purpose, did he? I",
+      "status": "ambiguous",
+      "error_reason": null,
+      "frame_number": 9649,
+      "confidence": 0.9445,
+      "reason": "multiple_simultaneous_speakers",
+      "breakdown": {
+        "score": 0.9445,
+        "terms": {
+          "asr": 0.9898,
+          "face": 0.8769,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 100,
+      "line_start": 387.48,
+      "line_end": 393.94,
+      "window": [
+        387.48,
+        393.94
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "don't care whether he did or not. He's supposed to be covering the Earl Williams case. And where is he? Walking up and down in the hospital. Is there no sense of honor in this country? Well,",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 9687,
+      "confidence": 0.9481,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9481,
+        "terms": {
+          "asr": 0.9691,
+          "face": 0.9063,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 101,
+      "line_start": 394.0,
+      "line_end": 395.0,
+      "window": [
+        392.75,
+        396.25
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "haven't you got anybody else?",
+      "status": "ambiguous",
+      "error_reason": null,
+      "frame_number": 9865,
+      "confidence": 0.9264,
+      "reason": "multiple_simultaneous_speakers",
+      "breakdown": {
+        "score": 0.9264,
+        "terms": {
+          "asr": 0.9869,
+          "face": 0.8365,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 102,
+      "line_start": 395.3,
+      "line_end": 407.08,
+      "window": [
+        395.3,
+        407.08
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "No. No, there's nobody else on the paper that can write. This'll break me. Unless... He'll be. I'm busy. Now, look how he... Oh, please,",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 9911,
+      "confidence": 0.9286,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9286,
+        "terms": {
+          "asr": 0.9166,
+          "face": 0.9119,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 103,
+      "line_start": 407.22,
+      "line_end": 407.84,
+      "window": [
+        405.78,
+        409.28
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "save your breath. Look, darling,",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 10185,
+      "confidence": 0.7876,
+      "reason": null,
+      "breakdown": {
+        "score": 0.7876,
+        "terms": {
+          "asr": 0.7196,
+          "face": 0.7707,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 104,
+      "line_start": 407.98,
+      "line_end": 410.1,
+      "window": [
+        407.29,
+        410.79
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "this'll bring us back together again. Just the way we used to be. That's just what",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 10208,
+      "confidence": 0.905,
+      "reason": null,
+      "breakdown": {
+        "score": 0.905,
+        "terms": {
+          "asr": 0.9651,
+          "face": 0.8068,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 105,
+      "line_start": 410.1,
+      "line_end": 411.68,
+      "window": [
+        409.14,
+        412.64
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "I'm afraid of any time, any place, anywhere.",
+      "status": "ambiguous",
+      "error_reason": null,
+      "frame_number": 10257,
+      "confidence": 0.8716,
+      "reason": "multiple_simultaneous_speakers",
+      "breakdown": {
+        "score": 0.8716,
+        "terms": {
+          "asr": 0.9168,
+          "face": 0.7751,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 106,
+      "line_start": 411.86,
+      "line_end": 415.44,
+      "window": [
+        411.86,
+        415.44
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "Don't mock me. This is bigger than anything that ever happened to us. Don't do it for me. Do it for the paper. It's grants,",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 10298,
+      "confidence": 0.9449,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9449,
+        "terms": {
+          "asr": 0.9505,
+          "face": 0.9172,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 107,
+      "line_start": 415.6,
+      "line_end": 416.12,
+      "window": [
+        414.11,
+        417.61
+      ],
+      "speaker": "SPEAKER_03",
+      "text": "then, golly.",
+      "status": "ambiguous",
+      "error_reason": null,
+      "frame_number": 10390,
+      "confidence": 0.8626,
+      "reason": "multiple_simultaneous_speakers",
+      "breakdown": {
+        "score": 0.8626,
+        "terms": {
+          "asr": 0.7726,
+          "face": 0.8977,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 108,
+      "line_start": 416.22,
+      "line_end": 419.94,
+      "window": [
+        416.22,
+        419.94
+      ],
+      "speaker": "SPEAKER_02",
+      "text": "If you won't do it for love, how about money? Forget the other offer. I'll raise you $20 ,000.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 10414,
+      "confidence": 0.9322,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9322,
+        "terms": {
+          "asr": 0.9581,
+          "face": 0.8793,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    }
+  ]
+}

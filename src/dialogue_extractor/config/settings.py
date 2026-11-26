@@ -41,6 +41,15 @@ class Settings(BaseSettings):
     # --- Compute -------------------------------------------------------------
     device: DeviceChoice = "auto"
     whisper_model: str = constants.DEFAULT_WHISPER_MODEL
+    language: str = "en"
+    """Spoken language for transcription: an ISO code ("en", "hi", "fr", ...) or
+    "auto" to let Whisper detect it.
+
+    English is the default because naming the language stops a short English
+    clip being misdetected. Set "auto" (or the right code) for any other video:
+    left at "en", Whisper transcribes foreign speech as poor English, and the
+    phrase match fails for a line that is really there.
+    """
 
     # --- Paths ---------------------------------------------------------------
     output_dir: Path = Path("output")
@@ -105,6 +114,11 @@ class Settings(BaseSettings):
 
     ytdlp_cookie_file: Path | None = None
     """Path to a cookies.txt export, for when the browser cannot be closed."""
+
+    def whisper_language(self) -> str | None:
+        """The language to pass to Whisper; None means auto-detect."""
+        value = self.language.strip().lower()
+        return None if value in ("", "auto") else value
 
     @field_validator("log_level")
     @classmethod

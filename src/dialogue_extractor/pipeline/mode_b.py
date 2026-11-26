@@ -144,6 +144,14 @@ class CandidateProgress:
     text: str
     result: ExtractionResult | None = None
     error_reason: str | None = None
+    line_start: float | None = None
+    """When the line's first word starts -- the window is padded around it.
+
+    The window bounds move with padding settings; the line does not. Evaluation
+    joins human labels to system output on this, so ablations that change
+    windows still compare like with like.
+    """
+    line_end: float | None = None
 
 
 OnCandidate = Callable[[CandidateProgress], None]
@@ -164,6 +172,8 @@ def run(
     detect_scene_cuts: bool = True,
     extract_frames: bool = True,
     on_candidate: OnCandidate | None = None,
+    onset_constraint: bool = True,
+    speaker_check: bool = True,
 ) -> DiscoveryResult:
     """Verify every candidate, bucketing the results by confidence.
 
@@ -189,6 +199,8 @@ def run(
                 text=candidate.text,
                 result=result,
                 error_reason=error_reason,
+                line_start=candidate.words[0].start if candidate.words else None,
+                line_end=candidate.words[-1].end if candidate.words else None,
             )
         )
 
@@ -229,6 +241,8 @@ def run(
                 name=f"chunk{index:03d}",
                 min_speaking_ms=min_speaking_ms,
                 detect_scene_cuts=detect_scene_cuts,
+                onset_constraint=onset_constraint,
+                speaker_check=speaker_check,
             )
         except ASDError as exc:
             log.warning(

@@ -1,0 +1,26 @@
+{
+  "clip_id": "news_sts51a_press",
+  "genre": "news",
+  "config": "full",
+  "overrides": {},
+  "run_at": "2026-11-18T17:53:39.513695+00:00",
+  "status": "error",
+  "error": {
+    "status": "error",
+    "stage": "transcription",
+    "reason": "model_load_failed",
+    "detail": "Could not load Whisper model 'large-v3': mkl_malloc: failed to allocate memory",
+    "remediation": "Check disk space and network access for the model download."
+  },
+  "diagnostics": {},
+  "elapsed_seconds": 39.578,
+  "stage_seconds": {
+    "ingestion": 0.062,
+    "normalization": 24.641,
+    "transcription": 14.875
+  },
+  "asd_requests_sent": 0,
+  "asd_cache_hits": 0,
+  "cold_run": true,
+  "lines": []
+}

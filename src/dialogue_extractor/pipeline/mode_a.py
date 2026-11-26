@@ -21,7 +21,7 @@ from dialogue_extractor.audio.diarization_export import (
     SpeakerCodec,
     to_nvidia_diarization,
 )
-from dialogue_extractor.config.constants import MIN_SPEAKING_MS
+from dialogue_extractor.config.constants import MIN_SPEAKING_MS, ONSET_TOLERANCE_SECONDS
 from dialogue_extractor.domain.errors import ASDError, StageError
 from dialogue_extractor.domain.models import (
     Candidate,
@@ -29,10 +29,11 @@ from dialogue_extractor.domain.models import (
     MediaManifest,
     Word,
 )
+from dialogue_extractor.domain.timing import first_frame_at_or_after
 from dialogue_extractor.infra.logging import get_logger
 from dialogue_extractor.interfaces.ports import ASDProvider, FrameExtractor
 from dialogue_extractor.pipeline import result_builder
-from dialogue_extractor.vision.clip_builder import build_clip
+from dialogue_extractor.vision.clip_builder import Clip, build_clip
 from dialogue_extractor.vision.frame_selector import SelectionOutcome, select_frame
 from dialogue_extractor.vision.pyav_extractor import frame_filename
 from dialogue_extractor.vision.scene_detector import cut_frames, detect_cuts
@@ -57,6 +58,25 @@ class CandidateAttempt:
         return self.outcome is not None and self.outcome.found
 
 
+def onset_frame_for(
+    candidate: Candidate,
+    clip: Clip,
+    *,
+    tolerance: float = ONSET_TOLERANCE_SECONDS,
+) -> int | None:
+    """Clip-relative frame at which the candidate's line begins.
+
+    The first matched word's ASR start, moved earlier by `tolerance` to absorb
+    timestamp jitter, never earlier than the clip itself. None when the
+    candidate carries no words to anchor on.
+    """
+    if not candidate.words:
+        return None
+    onset_seconds = max(clip.start, candidate.words[0].start - tolerance)
+    global_onset = first_frame_at_or_after(onset_seconds, clip.fps)
+    return max(0, global_onset - clip.clip_start_frame)
+
+
 def verify_candidate(
     candidate: Candidate,
     manifest: MediaManifest,
@@ -67,8 +87,14 @@ def verify_candidate(
     name: str,
     min_speaking_ms: float = MIN_SPEAKING_MS,
     detect_scene_cuts: bool = True,
+    onset_constraint: bool = True,
+    speaker_check: bool = True,
 ) -> SelectionOutcome:
-    """Send one candidate for detection and decide whether it verifies."""
+    """Send one candidate for detection and decide whether it verifies.
+
+    `speaker_check=False` is ablation A1 (accept any speaking face); it exists
+    for evaluation and is never turned off in normal use.
+    """
     clip = build_clip(candidate, manifest, work_dir, name=name)
 
     window = tuple(w for w in words if candidate.start <= w.start <= candidate.end)
@@ -88,6 +114,8 @@ def verify_candidate(
         codec.encode(candidate.speaker_id) if candidate.speaker_id else None,
         min_speaking_ms=min_speaking_ms,
         cut_frames=cuts,
+        onset_frame=onset_frame_for(candidate, clip) if onset_constraint else None,
+        match_speaker=speaker_check,
     )
 
 
@@ -103,6 +131,8 @@ def run(
     output_dir: Path,
     min_speaking_ms: float = MIN_SPEAKING_MS,
     detect_scene_cuts: bool = True,
+    onset_constraint: bool = True,
+    speaker_check: bool = True,
 ) -> tuple[ExtractionResult, tuple[CandidateAttempt, ...]]:
     """Verify candidates in order, stopping at the first that is on screen.
 
@@ -133,6 +163,8 @@ def run(
                 name=f"cand{index}",
                 min_speaking_ms=min_speaking_ms,
                 detect_scene_cuts=detect_scene_cuts,
+                onset_constraint=onset_constraint,
+                speaker_check=speaker_check,
             )
         except ASDError as exc:
             # One candidate failing does not doom the rest -- a later occurrence

@@ -18,6 +18,7 @@ ENV_KEYS = [
     "WHISPER_MODEL",
     "USE_CACHE",
     "MIN_SPEAKING_MS",
+    "LANGUAGE",
 ]
 
 
@@ -77,6 +78,21 @@ class TestDeviceChoice:
     def test_rejects_unknown_device(self) -> None:
         with pytest.raises(ValueError):
             Settings(device="tpu")  # type: ignore[arg-type]
+
+
+class TestLanguage:
+    """Any video, not only English: the language is configurable."""
+
+    def test_english_is_the_default(self) -> None:
+        assert Settings().whisper_language() == "en"
+
+    @pytest.mark.parametrize("value", ["auto", "AUTO", " auto ", ""])
+    def test_auto_means_detect(self, value: str) -> None:
+        assert Settings(language=value).whisper_language() is None
+
+    def test_explicit_code_is_passed_through(self, monkeypatch: pytest.MonkeyPatch) -> None:
+        monkeypatch.setenv("LANGUAGE", "Hi")
+        assert Settings().whisper_language() == "hi"
 
 
 class TestRequiredCredentials:

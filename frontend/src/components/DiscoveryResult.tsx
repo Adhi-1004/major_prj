@@ -1,5 +1,8 @@
-import type { WireCandidateError } from "../api/types";
+import { useState } from "react";
+
+import type { WireCandidateError, WireLine } from "../api/types";
 import { formatTimecode, type RunView } from "../model/view";
+import { CheckYourself } from "./CheckYourself";
 import { OffCameraRow, ResultCardView } from "./ResultCardView";
 
 type Discovery = Extract<RunView, { kind: "discovery" }>;
@@ -7,11 +10,27 @@ type Discovery = Extract<RunView, { kind: "discovery" }>;
 export function DiscoveryResult({
   view,
   onReset,
+  lines,
+  videoUrl,
 }: {
   view: Discovery;
   onReset: () => void;
+  lines?: WireLine[] | undefined;
+  videoUrl?: string | undefined;
 }) {
+  const [checking, setChecking] = useState(false);
   const { onScreen, uncertain, offCamera, processed, total, truncated, errors } = view;
+  const canCheck = Boolean(videoUrl && lines && lines.length > 0);
+
+  if (checking && canCheck) {
+    return (
+      <CheckYourself
+        lines={lines as WireLine[]}
+        videoUrl={videoUrl as string}
+        onClose={() => setChecking(false)}
+      />
+    );
+  }
   const filed = onScreen.length + uncertain.length + offCamera.length;
   const unprocessed = Math.max(0, total - processed);
 
@@ -31,6 +50,16 @@ export function DiscoveryResult({
             <p className="mono" style={{ margin: 0 }}>
               {processed} of {total}
             </p>
+            {canCheck ? (
+              <button
+                type="button"
+                className="btn btn--primary"
+                style={{ marginTop: "var(--s3)" }}
+                onClick={() => setChecking(true)}
+              >
+                Check it yourself
+              </button>
+            ) : null}
           </div>
         </div>
 

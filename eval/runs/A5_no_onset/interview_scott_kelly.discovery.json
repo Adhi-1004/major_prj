@@ -1,0 +1,354 @@
+{
+  "clip_id": "interview_scott_kelly",
+  "genre": "interview",
+  "config": "A5_no_onset",
+  "overrides": {
+    "onset_constraint": false
+  },
+  "run_at": "2026-11-18T17:51:12.167555+00:00",
+  "status": "success",
+  "error": null,
+  "diagnostics": {
+    "mode": "discovery",
+    "fps": 59.94,
+    "duration": 261.5,
+    "frame_count": 15671,
+    "resolution": "640x360",
+    "words": 741,
+    "segments": 20,
+    "speakers": 2,
+    "candidates": 13,
+    "verified_seconds": 228.34
+  },
+  "elapsed_seconds": 30.547,
+  "stage_seconds": {
+    "ingestion": 0.047,
+    "normalization": 0.0,
+    "transcription": 0.047,
+    "diarization": 0.031,
+    "alignment": 0.015,
+    "active_speaker_detection": 30.407
+  },
+  "asd_requests_sent": 0,
+  "asd_cache_hits": 13,
+  "cold_run": false,
+  "lines": [
+    {
+      "index": 0,
+      "line_start": 0.0,
+      "line_end": 4.38,
+      "window": [
+        0.0,
+        4.38
+      ],
+      "speaker": "SPEAKER_01",
+      "text": "NASA astronaut Scott Kelly at the Baikonur Cosmodrome. Scott, you're",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 1,
+      "line_start": 4.38,
+      "line_end": 16.04,
+      "window": [
+        4.38,
+        16.04
+      ],
+      "speaker": "SPEAKER_00",
+      "text": "back at the launch site and now just six months away from 12 months away from the planet. Is the reality of the magnitude of the mission starting to strike home, starting to really sink in?",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 2,
+      "line_start": 16.44,
+      "line_end": 37.26,
+      "window": [
+        16.44,
+        37.26
+      ],
+      "speaker": "SPEAKER_01",
+      "text": "Yeah, I think so. Being here in Baikonur, it's the first step to get into space. And my training has not been all that busy. since I started about a year and a half, two years ago. It's been a pretty nice pace, but I think now is when it really starts to pick up.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 1002,
+      "confidence": 0.9311,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9311,
+        "terms": {
+          "asr": 0.9653,
+          "face": 0.8693,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 3,
+      "line_start": 38.58,
+      "line_end": 56.16,
+      "window": [
+        38.58,
+        56.16
+      ],
+      "speaker": "SPEAKER_01",
+      "text": "With the final exams we had as a backup crew and then coming here and then going back to Houston, I anticipate having a lot more events scheduled and then a lot more travel leading up to coming back to Russia and then back here in February and March. So",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 2327,
+      "confidence": 0.9323,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9323,
+        "terms": {
+          "asr": 0.9775,
+          "face": 0.8599,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 4,
+      "line_start": 56.16,
+      "line_end": 71.0,
+      "window": [
+        56.16,
+        71.0
+      ],
+      "speaker": "SPEAKER_00",
+      "text": "from this point on, what is the most difficult part of the training? Is it the training itself or tending to personal issues to get your family support, your loved ones in a position where you know you're not going to see them for a year?",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 5,
+      "line_start": 72.66,
+      "line_end": 95.64,
+      "window": [
+        72.66,
+        95.64
+      ],
+      "speaker": "SPEAKER_01",
+      "text": "You know, the training is not much different than what I did last time. There's certainly more payload training because I'll be on the space station longer. The Soyuz training is a little bit different in that we do it with Gennady Padalka for ASSET and then Sergey Volkov we'll be coming home with a year later.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 4386,
+      "confidence": 0.9201,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9201,
+        "terms": {
+          "asr": 0.9351,
+          "face": 0.8732,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 6,
+      "line_start": 97.22,
+      "line_end": 118.86,
+      "window": [
+        97.22,
+        118.86
+      ],
+      "speaker": "SPEAKER_01",
+      "text": "But I think mostly it'll be more of a challenge in that I am getting ready to be gone for about, It will be really about 14 months, which is a pretty long time for me, you know, leaving from home and leaving a 19 -year -old at home in my house. So that's going to be a little bit more challenging this time.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 5852,
+      "confidence": 0.9255,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9255,
+        "terms": {
+          "asr": 0.9414,
+          "face": 0.8797,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 7,
+      "line_start": 119.38,
+      "line_end": 127.14,
+      "window": [
+        119.38,
+        127.14
+      ],
+      "speaker": "SPEAKER_00",
+      "text": "Do you look at this as a marathon, Scott? And if so, how do you and Mikhail Kornienko control the pacing of such a long mission?",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 8,
+      "line_start": 128.46,
+      "line_end": 163.16,
+      "window": [
+        128.46,
+        158.46
+      ],
+      "speaker": "SPEAKER_01",
+      "text": "You know, I've talked to some guys that have been on the space station recently, and they recognize that this will be a challenge. When I asked them, hey, could you stay another nine months, how would you feel about staying another six months, depending on where they are in the flight, they definitely recognize the challenge of it. But I think going into it with the mindset right from the beginning that I'm going to be there for a whole year is going to make it easier than certainly if you were on the space station and had been there for six months and then you were told you have to stay another six for some reason. and that would certainly be a lot harder.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 7722,
+      "confidence": 0.9162,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9162,
+        "terms": {
+          "asr": 0.9291,
+          "face": 0.8699,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 9,
+      "line_start": 164.5,
+      "line_end": 174.4,
+      "window": [
+        164.5,
+        174.4
+      ],
+      "speaker": "SPEAKER_01",
+      "text": "So I think it is in some ways a mental thing, you know, preparing yourself for, you know, the long haul. And as far as controlling the pace, we've discussed that.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 9879,
+      "confidence": 0.9418,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9418,
+        "terms": {
+          "asr": 0.9752,
+          "face": 0.8851,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 10,
+      "line_start": 175.48,
+      "line_end": 199.72,
+      "window": [
+        175.48,
+        199.72
+      ],
+      "speaker": "SPEAKER_01",
+      "text": "I think I'm going to have to have a little bit different pace or perspective on the whole thing this time than I did last time. You know, they say the long -duration flight is like a marathon and the shuttle flight is like a sprint. What I say, especially for my last flight, is like, was that the last flight actually kind of felt like a long shuttle flight, except you had a little bit more time on the weekend. So it was like a long sprint.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 10541,
+      "confidence": 0.9305,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9305,
+        "terms": {
+          "asr": 0.9668,
+          "face": 0.8665,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    },
+    {
+      "index": 11,
+      "line_start": 200.74,
+      "line_end": 213.28,
+      "window": [
+        200.74,
+        213.28
+      ],
+      "speaker": "SPEAKER_00",
+      "text": "And finally, Scott, this is the first time humans will have spent a year in space in almost two decades. What do you think is ultimately going to be the significance that we'll take away from this mission?",
+      "status": "not_on_screen",
+      "error_reason": null,
+      "frame_number": null,
+      "confidence": 0.0,
+      "reason": "no_face_detected",
+      "breakdown": null
+    },
+    {
+      "index": 12,
+      "line_start": 213.78,
+      "line_end": 260.3,
+      "window": [
+        213.78,
+        243.78
+      ],
+      "speaker": "SPEAKER_01",
+      "text": "Well, someday we're going to go to Mars. And we have the facilities on board the space station to really study the effects of space on longer duration space flights. I mean, six months is a long time, but going to Mars is going to take a lot longer than that. So having the capability that the International Space Station provides to study the human element of this is going to be, you know, I think significantly better than what we've, in our previous experience that the Russians and the Soviets experienced on the Mir space station just because of how technology has progressed and their hardware has improved over this period of time.",
+      "status": "success",
+      "error_reason": null,
+      "frame_number": 12838,
+      "confidence": 0.9267,
+      "reason": null,
+      "breakdown": {
+        "score": 0.9267,
+        "terms": {
+          "asr": 0.9295,
+          "face": 0.8945,
+          "stability": 1.0
+        },
+        "weights": {
+          "asr": 0.25,
+          "face": 0.25,
+          "stability": 0.1
+        }
+      }
+    }
+  ]
+}

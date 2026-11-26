@@ -76,3 +76,10 @@ class AmbiguityReason(StrEnum):
 
     NO_FACE_DETECTED = "no_face_detected"
     """No face was found anywhere in the candidate window."""
+
+    SPOKEN_BEFORE_ONSET = "spoken_before_onset"
+    """The expected speaker was seen speaking only before the queried words began.
+
+    Raised by the onset constraint: speech in the padding ahead of the line is
+    the speaker's previous sentence, not this one, so it cannot be the answer.
+    """

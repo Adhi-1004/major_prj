@@ -23,6 +23,7 @@ from collections.abc import Callable
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from enum import StrEnum
+from pathlib import Path
 from typing import Any
 
 from dialogue_extractor.domain.enums import StageName, Status
@@ -61,6 +62,15 @@ class Job:
     diagnostics: dict[str, Any] = field(default_factory=dict)
     progress: dict[str, int] | None = None
     partial: list[dict[str, Any]] = field(default_factory=list)
+    lines: list[dict[str, Any]] = field(default_factory=list)
+    """Every candidate line of a discovery sweep, in order, with its verdict.
+
+    Unlike `partial` (results only, for the progress view) this keeps every
+    line -- including failures -- with its time span, which is what the
+    "check it yourself" demo needs to play each line back.
+    """
+    video_path: Path | None = None
+    """This job's normalized video, kept so the demo can play it back."""
     created_at: datetime = field(default_factory=lambda: datetime.now(UTC))
     started_at: datetime | None = None
     finished_at: datetime | None = None
@@ -90,6 +100,10 @@ class Job:
             payload["progress"] = dict(self.progress)
         if self.partial:
             payload["partial"] = list(self.partial)
+        if self.lines and self.state in (JobState.DONE, JobState.FAILED):
+            payload["lines"] = list(self.lines)
+        if self.video_path is not None:
+            payload["video"] = f"/jobs/{self.id}/video"
         if self.result is not None:
             payload["result"] = self.result
         if self.diagnostics:
@@ -165,6 +179,10 @@ class JobStore:
             return
         oldest = min(finished, key=lambda j: j.created_at)
         del self._jobs[oldest.id]
+        if oldest.video_path is not None:
+            # Demo videos are hundreds of MB each; one leaving the store takes
+            # its file with it, so the folder cannot grow without bound.
+            oldest.video_path.unlink(missing_ok=True)
         log.debug("api.job_evicted", job_id=oldest.id)
 
     def _work(self, job: Job) -> None:
@@ -219,8 +237,30 @@ class JobStore:
                 "current": progress.processed,
                 "total": progress.total,
             }
-            if progress.result is not None:
-                job.partial.append(progress.result.to_dict())
+            result = progress.result.to_dict() if progress.result is not None else None
+            if result is not None:
+                job.partial.append(result)
+            job.lines.append(
+                {
+                    "index": progress.index,
+                    "start": progress.line_start
+                    if progress.line_start is not None
+                    else progress.start,
+                    "end": progress.line_end if progress.line_end is not None else progress.end,
+                    "text": progress.text,
+                    "speaker": progress.speaker_id,
+                    "status": result["status"] if result else "error",
+                    "frame_number": result.get("frame_number") if result else None,
+                    "timestamp": result.get("timestamp") if result else None,
+                    "confidence": result.get("confidence") if result else None,
+                    "reason": (result.get("ambiguity_reason") if result else None)
+                    or progress.error_reason,
+                }
+            )
+
+    def record_video(self, job: Job, path: Path) -> None:
+        with self._lock:
+            job.video_path = path
 
     def record_result(
         self, job: Job, result: dict[str, Any], diagnostics: dict[str, Any]

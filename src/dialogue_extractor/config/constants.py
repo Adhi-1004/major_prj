@@ -191,6 +191,21 @@ flicker cannot produce a confident wrong answer, short enough not to miss a
 genuinely brief line.
 """
 
+ONSET_TOLERANCE_SECONDS: Final[float] = 0.30
+"""How far before the first matched word's ASR start a speaking run may begin.
+
+The onset constraint exists because the candidate window is padded by
+WINDOW_PAD_SECONDS on both sides: when the same speaker is already talking in
+the lead-in, the earliest qualifying run starts on their *previous* sentence and
+the reported frame precedes the queried line. Requiring the run to start at or
+after the line's onset removes that error.
+
+The tolerance absorbs ASR word-timestamp jitter (roughly +/-0.2-0.4 s, see
+WINDOW_PAD_SECONDS), so a word whose recognised start is slightly late does not
+push the answer past the true onset. It is a parameter of ablation A5, not a
+value fitted to any video.
+"""
+
 SCENE_CUT_THRESHOLD: Final[float] = 0.4
 """ffmpeg scene-score threshold for a shot change."""
 

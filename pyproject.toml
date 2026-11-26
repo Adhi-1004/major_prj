@@ -41,6 +41,9 @@ ignore = ["B008"]
 # Tests assert that curly and straight forms normalize identically, so they
 # must contain both.
 "tests/unit/matching/test_text_normalizer.py" = ["RUF001", "RUF002"]
+# Table writers: header rows and LaTeX templates are clearer as one literal
+# per line than wrapped across several.
+"src/dialogue_extractor/eval/report.py" = ["E501"]
 
 [tool.mypy]
 python_version = "3.11"

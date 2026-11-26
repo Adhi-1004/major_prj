@@ -1,0 +1,883 @@
+{
+  "clip_id": "film_his_girl_friday",
+  "title": "His Girl Friday (1940)",
+  "genre": "film",
+  "fps": 25.0,
+  "frame_count": 10500,
+  "duration": 420.0,
+  "video_file": "film_his_girl_friday.mp4",
+  "lines": [
+    {
+      "line_id": "film_his_girl_friday-L000",
+      "line_start": 0.0,
+      "line_end": 1.16,
+      "speaker": "SPEAKER_03",
+      "text": "See, you did very little spoiling.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L001",
+      "line_start": 1.24,
+      "line_end": 6.2,
+      "speaker": "SPEAKER_01",
+      "text": "I'd like to spoil him just once. Sure you don't want me to go in with you? No, no, I can handle it. Well, things get rough. Remember, I'm here.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L002",
+      "line_start": 6.38,
+      "line_end": 12.06,
+      "speaker": "SPEAKER_03",
+      "text": "I'll come running, partner. Well, hello, Jim. Hello, Hildy. How are you? Hi, Hildy.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L003",
+      "line_start": 12.06,
+      "line_end": 16.76,
+      "speaker": "SPEAKER_02",
+      "text": "Welcome back. Hello, Hildy. How have you been? Hi, Hildy. Hello, Hildy.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L004",
+      "line_start": 17.4,
+      "line_end": 22.96,
+      "speaker": "SPEAKER_00",
+      "text": "Hello, Beatrice. How's advice to the love lawn? Fine. My cat just had kittens again. Her own fault. Yeah, hello, Hildy. Glad to see you back. Glad to",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L005",
+      "line_start": 22.96,
+      "line_end": 27.66,
+      "speaker": "SPEAKER_03",
+      "text": "see you. What? Hi, Jim. Hello, Hildy. You still around? A little",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L006",
+      "line_start": 28.94,
+      "line_end": 29.88,
+      "speaker": "SPEAKER_01",
+      "text": "more round the chin, boss.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L007",
+      "line_start": 31.08,
+      "line_end": 31.76,
+      "speaker": "SPEAKER_02",
+      "text": "What do you want?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L008",
+      "line_start": 32.04,
+      "line_end": 33.6,
+      "speaker": "SPEAKER_03",
+      "text": "Your ex -wife is here. Do you want to see her?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L009",
+      "line_start": 35.3,
+      "line_end": 37.5,
+      "speaker": "SPEAKER_02",
+      "text": "Well... Well, hello, Hildy.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L010",
+      "line_start": 38.0,
+      "line_end": 38.68,
+      "speaker": "SPEAKER_03",
+      "text": "Hello, Walter.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L011",
+      "line_start": 38.82,
+      "line_end": 39.42,
+      "speaker": "SPEAKER_02",
+      "text": "Hi, Hildy.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L012",
+      "line_start": 40.5,
+      "line_end": 42.74,
+      "speaker": "SPEAKER_03",
+      "text": "Oh, hello, Louie. How's the big slot machine king?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L013",
+      "line_start": 43.04,
+      "line_end": 54.08,
+      "speaker": "SPEAKER_01",
+      "text": "Oh, I ain't doing that no more. I'm retired. You know what I mean? Say, Walter. I'm busy, Duffy. Oh, hello, Hildy. Hello, Duffy. Listen, Walter. Keep going. I'm busy. I thought you ought to know that the governor didn't sign that reprieve. What? And tomorrow morning, Earl Williams dies and makes a sucker out of us.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L014",
+      "line_start": 54.98,
+      "line_end": 55.3,
+      "speaker": null,
+      "text": "Well,",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L015",
+      "line_start": 56.16,
+      "line_end": 61.16,
+      "speaker": "SPEAKER_01",
+      "text": "what are you going to do? Get the governor on the phone. I can't why not can't locate him is out fishing How",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L016",
+      "line_start": 61.16,
+      "line_end": 62.12,
+      "speaker": "SPEAKER_02",
+      "text": "many places to fish",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L017",
+      "line_start": 62.12,
+      "line_end": 64.42,
+      "speaker": "SPEAKER_01",
+      "text": "are there at least to the Atlantic and Pacific?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L018",
+      "line_start": 64.62,
+      "line_end": 66.36,
+      "speaker": "SPEAKER_02",
+      "text": "All right, that simplifies it doesn't it? And",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L019",
+      "line_start": 66.36,
+      "line_end": 67.72,
+      "speaker": "SPEAKER_01",
+      "text": "tell him what",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L020",
+      "line_start": 67.72,
+      "line_end": 69.06,
+      "speaker": "SPEAKER_03",
+      "text": "right Duffy he's thinking",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L021",
+      "line_start": 70.5,
+      "line_end": 77.26,
+      "speaker": "SPEAKER_02",
+      "text": "Tell him if you're repriever Williams will support him for senator I tell him the morning post to be behind him hook line and sinker But you can't do why not",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L022",
+      "line_start": 77.26,
+      "line_end": 81.96,
+      "speaker": "SPEAKER_01",
+      "text": "because we've been a democratic paper for over 20 years All right after we get the reprieve we'll",
+      "ask_onset": true
+    },
+    {
+      "line_id": "film_his_girl_friday-L023",
+      "line_start": 81.96,
+      "line_end": 89.3,
+      "speaker": "SPEAKER_02",
+      "text": "be democratic again. Go on Duffy get going Remember, the Morning Post expects every city editor to do his duty. You two, Louie, get out of here. Okay, boy.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L024",
+      "line_start": 93.04,
+      "line_end": 93.36,
+      "speaker": null,
+      "text": "Well,",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L025",
+      "line_start": 95.04,
+      "line_end": 96.5,
+      "speaker": "SPEAKER_03",
+      "text": "Walter, I see you're still at it.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L026",
+      "line_start": 96.98,
+      "line_end": 99.62,
+      "speaker": "SPEAKER_02",
+      "text": "It's the first time I ever dove across the governor. What can I do for you?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L027",
+      "line_start": 100.34,
+      "line_end": 101.78,
+      "speaker": "SPEAKER_03",
+      "text": "Well, would you mind if I sat down?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L028",
+      "line_start": 102.1,
+      "line_end": 104.4,
+      "speaker": "SPEAKER_02",
+      "text": "There's been a lamp burning in the window for you, honey. Here.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L029",
+      "line_start": 105.1,
+      "line_end": 120.53,
+      "speaker": "SPEAKER_03",
+      "text": "Oh, I jumped out that window a long time ago, Walter. Oh, may I have one of those? Sure. And the match. Thank you.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L030",
+      "line_start": 120.95,
+      "line_end": 121.27,
+      "speaker": null,
+      "text": "How",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L031",
+      "line_start": 126.58,
+      "line_end": 127.12,
+      "speaker": "SPEAKER_02",
+      "text": "long is it?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L032",
+      "line_start": 127.64,
+      "line_end": 128.34,
+      "speaker": "SPEAKER_03",
+      "text": "How long is what?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L033",
+      "line_start": 128.6,
+      "line_end": 131.38,
+      "speaker": "SPEAKER_02",
+      "text": "You know what. How long is it since we've seen each other?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L034",
+      "line_start": 132.94,
+      "line_end": 140.42,
+      "speaker": "SPEAKER_03",
+      "text": "Oh, well, let's see. I spent six weeks in Reno, then Bermuda. About four months, I guess. Seems like yesterday to me.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L035",
+      "line_start": 141.28,
+      "line_end": 144.34,
+      "speaker": "SPEAKER_02",
+      "text": "Maybe it was yesterday, Hildy. Been seeing me in your dreams?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L036",
+      "line_start": 145.16,
+      "line_end": 148.62,
+      "speaker": "SPEAKER_03",
+      "text": "No, no, Mama doesn't dream about you anymore, Walter. You wouldn't know the old girl now. Ah,",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L037",
+      "line_start": 148.62,
+      "line_end": 151.96,
+      "speaker": "SPEAKER_02",
+      "text": "yes, I would. I'd know you any time, any place. Any",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L038",
+      "line_start": 151.96,
+      "line_end": 156.52,
+      "speaker": "SPEAKER_03",
+      "text": "place, anywhere. Ah, you're repeating yourself, Walter. That's the speech you made the night you proposed. Yeah,",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L039",
+      "line_start": 156.52,
+      "line_end": 157.58,
+      "speaker": "SPEAKER_02",
+      "text": "I know that you still remember it.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L040",
+      "line_start": 157.6,
+      "line_end": 159.94,
+      "speaker": "SPEAKER_03",
+      "text": "Of course I remember it. If I didn't remember it, I wouldn't have divorced you.",
+      "ask_onset": true
+    },
+    {
+      "line_id": "film_his_girl_friday-L041",
+      "line_start": 160.36,
+      "line_end": 169.0,
+      "speaker": "SPEAKER_02",
+      "text": "Yeah, I sort of wish you hadn't done that, Hildy. Done what? Divorced me. Makes a fellow lose all faith in himself. Gives him a... almost gives him a feeling he wasn't wanted. Oh,",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L042",
+      "line_start": 169.0,
+      "line_end": 170.78,
+      "speaker": "SPEAKER_03",
+      "text": "now, look, Junior, that's what divorces are for.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L043",
+      "line_start": 171.14,
+      "line_end": 182.56,
+      "speaker": "SPEAKER_02",
+      "text": "Nonsense. You've got an old -fashioned idea. Divorce is something that lasts forever, till death do us part. Why, divorce doesn't mean anything nowadays, Hildy. Just a few words, mumbled over you by a judge. We've got something between us nothing can change.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L044",
+      "line_start": 183.56,
+      "line_end": 186.12,
+      "speaker": "SPEAKER_03",
+      "text": "Oh, well, I suppose you're right in a way, Walter. Sure",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L045",
+      "line_start": 186.12,
+      "line_end": 186.62,
+      "speaker": "SPEAKER_02",
+      "text": "I'm right.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L046",
+      "line_start": 186.84,
+      "line_end": 188.32,
+      "speaker": "SPEAKER_03",
+      "text": "I am fond of you, you know.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L047",
+      "line_start": 188.58,
+      "line_end": 189.26,
+      "speaker": "SPEAKER_02",
+      "text": "And the girl?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L048",
+      "line_start": 189.74,
+      "line_end": 191.5,
+      "speaker": "SPEAKER_03",
+      "text": "I often wish you weren't such a stinker.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L049",
+      "line_start": 193.4,
+      "line_end": 197.2,
+      "speaker": "SPEAKER_02",
+      "text": "Latin, I suppose. You must come up and meet my mother. Why on earth did you",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L050",
+      "line_start": 197.2,
+      "line_end": 201.0,
+      "speaker": "SPEAKER_03",
+      "text": "promise not to fight the divorce and do everything you possibly could to gum up the whole works?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L051",
+      "line_start": 201.14,
+      "line_end": 205.76,
+      "speaker": "SPEAKER_02",
+      "text": "Well, I meant to let you go, Hildy, but you know how it is. You never miss the water till the well runs dry. Oh,",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L052",
+      "line_start": 205.78,
+      "line_end": 215.08,
+      "speaker": "SPEAKER_03",
+      "text": "big fat lummox like you hiring an aeroplane to write. Hildy, don't be hasty. Remember my dimple, Walter. Delayed our divorce 20 minutes while the judge went out to watch it.",
+      "ask_onset": true
+    },
+    {
+      "line_id": "film_his_girl_friday-L053",
+      "line_start": 215.18,
+      "line_end": 222.72,
+      "speaker": "SPEAKER_02",
+      "text": "Well, I don't want to brag, but I've still got the dimple and in the same place. Look, Hildy, I only acted like any husband who didn't want to see his home broken up. What",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L054",
+      "line_start": 222.72,
+      "line_end": 223.38,
+      "speaker": "SPEAKER_03",
+      "text": "home? What",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L055",
+      "line_start": 223.38,
+      "line_end": 225.38,
+      "speaker": "SPEAKER_02",
+      "text": "home? Don't you remember the home I promised you? Sure",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L056",
+      "line_start": 225.38,
+      "line_end": 230.04,
+      "speaker": "SPEAKER_03",
+      "text": "I do. That was the one we were to have right after the honeymoon. That honeymoon.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L057",
+      "line_start": 230.52,
+      "line_end": 237.3,
+      "speaker": "SPEAKER_02",
+      "text": "Oh, was it my fault? Did I know that coal mine was gonna have another cave -in? I intended to be with you on our honeymoon, Hildy. Honest, I did. All",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L058",
+      "line_start": 237.3,
+      "line_end": 244.58,
+      "speaker": "SPEAKER_03",
+      "text": "I know is that instead of two weeks in Atlantic City with my bridegroom... I spent two weeks in a coal mine with John Krupski. You don't deny that, do you, Walter?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L059",
+      "line_start": 244.74,
+      "line_end": 248.16,
+      "speaker": "SPEAKER_02",
+      "text": "Deny it? I'm proud of it. We've beaten the whole country on that story. Well, suppose we",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L060",
+      "line_start": 248.16,
+      "line_end": 258.56,
+      "speaker": "SPEAKER_03",
+      "text": "did. That isn't what I got married for. Oh, what is the good of... Look, now, look, Walter. What I came up here to tell you is that you must stop phoning me a dozen times a day, sending me 20 telegrams. I",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L061",
+      "line_start": 258.56,
+      "line_end": 260.88,
+      "speaker": "SPEAKER_02",
+      "text": "write a beautiful telegram, don't I? Everybody says so. Are you",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L062",
+      "line_start": 260.88,
+      "line_end": 262.0,
+      "speaker": "SPEAKER_03",
+      "text": "going to listen to what I have to say?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L063",
+      "line_start": 262.24,
+      "line_end": 272.12,
+      "speaker": "SPEAKER_02",
+      "text": "Look, look, what's the use of fighting, Hildy? I'll tell you what you do. You come back to work on the paper. If we find we can't get along in a friendly fashion, we'll get married again. What? Certainly. I haven't any hard feelings.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L064",
+      "line_start": 273.2,
+      "line_end": 278.84,
+      "speaker": "SPEAKER_03",
+      "text": "Oh, Walter, you're wonderful in a loathsome sort of way. Now, will you please be quiet just long enough for me to tell you what I came up here to say?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L065",
+      "line_start": 279.34,
+      "line_end": 281.96,
+      "speaker": "SPEAKER_02",
+      "text": "I have a lunch date already. I cannot",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L066",
+      "line_start": 281.96,
+      "line_end": 282.38,
+      "speaker": "SPEAKER_00",
+      "text": "break it.",
+      "ask_onset": true
+    },
+    {
+      "line_id": "film_his_girl_friday-L067",
+      "line_start": 282.6,
+      "line_end": 283.56,
+      "speaker": "SPEAKER_03",
+      "text": "Will you take your hands",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L068",
+      "line_start": 283.56,
+      "line_end": 284.68,
+      "speaker": "SPEAKER_00",
+      "text": "off me? What are you playing, osteopath?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L069",
+      "line_start": 284.84,
+      "line_end": 291.48,
+      "speaker": "SPEAKER_03",
+      "text": "Temper, temper. Oh, listen, Walter. You are no longer my husband and no longer my boss. And you're not going to be my boss.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L070",
+      "line_start": 291.76,
+      "line_end": 292.84,
+      "speaker": "SPEAKER_02",
+      "text": "What's that supposed to mean?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L071",
+      "line_start": 293.14,
+      "line_end": 294.08,
+      "speaker": "SPEAKER_03",
+      "text": "Just what I say.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L072",
+      "line_start": 294.38,
+      "line_end": 296.0,
+      "speaker": "SPEAKER_01",
+      "text": "You mean you're not coming back to work on the paper?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L073",
+      "line_start": 296.14,
+      "line_end": 298.1,
+      "speaker": "SPEAKER_03",
+      "text": "You are right, Mr. Burns, for the first time today. Ah,",
+      "ask_onset": true
+    },
+    {
+      "line_id": "film_his_girl_friday-L074",
+      "line_start": 298.54,
+      "line_end": 300.4,
+      "speaker": "SPEAKER_02",
+      "text": "got a better offer, huh? You",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L075",
+      "line_start": 300.4,
+      "line_end": 301.54,
+      "speaker": "SPEAKER_03",
+      "text": "bet I've got a better offer. All",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L076",
+      "line_start": 301.54,
+      "line_end": 309.64,
+      "speaker": "SPEAKER_02",
+      "text": "right, go on, take it, work for somebody else. That's the gratitude I get. Oh, I wish you'd stop panting. What were you when you came here five years ago? A little college girl from a school of journalism. I took a doll -faced hick.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L077",
+      "line_start": 309.8,
+      "line_end": 311.64,
+      "speaker": "SPEAKER_03",
+      "text": "Well, you wouldn't take me if I hadn't been doll -faced. Oh,",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L078",
+      "line_start": 311.7,
+      "line_end": 318.98,
+      "speaker": "SPEAKER_02",
+      "text": "why should I? I told you a novelty. You'd have a face around here a man could look at without shuddering. Listen, Walter, please. Listen, I made a great reporter out of you, Hildy, but you won't be half as good on any other paper, and you know it. We're a team.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L079",
+      "line_start": 319.12,
+      "line_end": 325.0,
+      "speaker": "SPEAKER_03",
+      "text": "That's what we are. You need me, and I need you, and the paper needs... Listen, Walter, please.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L080",
+      "line_start": 325.68,
+      "line_end": 326.0,
+      "speaker": "SPEAKER_02",
+      "text": "The",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L081",
+      "line_start": 326.0,
+      "line_end": 330.2,
+      "speaker": "SPEAKER_03",
+      "text": "paper's going to have to get along without me. So will you. It just didn't work out, Walter.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L082",
+      "line_start": 330.52,
+      "line_end": 336.5,
+      "speaker": "SPEAKER_02",
+      "text": "Well, it would have worked out if you'd been satisfied with just being editor and reporter, but not you. You had to marry me, spoil everything.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L083",
+      "line_start": 336.74,
+      "line_end": 339.34,
+      "speaker": "SPEAKER_03",
+      "text": "I wasn't satisfied. I suppose I proposed to you.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L084",
+      "line_start": 339.66,
+      "line_end": 348.42,
+      "speaker": "SPEAKER_02",
+      "text": "Well, you practically did, making goo -goo eyes at me for two years until I broke down. Oh, Walter. And I still claim I was tight the night I proposed to you. If you'd have been the gentleman, you'd have forgotten all about it, but not you.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L085",
+      "line_start": 348.54,
+      "line_end": 348.98,
+      "speaker": "SPEAKER_00",
+      "text": "Why, you...",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L086",
+      "line_start": 349.38,
+      "line_end": 351.58,
+      "speaker": "SPEAKER_02",
+      "text": "You're losing your eye. You used to be at a pitch better than that.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L087",
+      "line_start": 351.66,
+      "line_end": 355.4,
+      "speaker": "SPEAKER_01",
+      "text": "Hello? Yeah? What? Sweeney? What can I do for you?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L088",
+      "line_start": 355.64,
+      "line_end": 355.88,
+      "speaker": null,
+      "text": "What?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L089",
+      "line_start": 356.48,
+      "line_end": 363.58,
+      "speaker": "SPEAKER_01",
+      "text": "Wait a minute. I'm not Sweeney. I'm Duffy. Listen, Sweeney, you can't do that to me. Not today of all days. What's the matter with you? Are you loony?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L090",
+      "line_start": 365.3,
+      "line_end": 367.04,
+      "speaker": "SPEAKER_02",
+      "text": "Jumping, Jehoshaphat. Now, listen, Sweeney, this",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L091",
+      "line_start": 367.04,
+      "line_end": 369.12,
+      "speaker": "SPEAKER_01",
+      "text": "is no time...",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L092",
+      "line_start": 369.12,
+      "line_end": 373.14,
+      "speaker": "SPEAKER_02",
+      "text": "Oh, all right, I suppose so. Yes, if you have to, you have to.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L093",
+      "line_start": 373.94,
+      "line_end": 374.56,
+      "speaker": "SPEAKER_03",
+      "text": "He had to.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L094",
+      "line_start": 374.76,
+      "line_end": 378.94,
+      "speaker": "SPEAKER_02",
+      "text": "How do you like that? Everything happens to me. 365 days in a year, and this has to be the day.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L095",
+      "line_start": 379.78,
+      "line_end": 380.52,
+      "speaker": "SPEAKER_03",
+      "text": "What's the matter, Walter?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L096",
+      "line_start": 380.9,
+      "line_end": 381.18,
+      "speaker": "SPEAKER_02",
+      "text": "Sweeney.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L097",
+      "line_start": 381.28,
+      "line_end": 381.52,
+      "speaker": "SPEAKER_03",
+      "text": "Dead?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L098",
+      "line_start": 382.12,
+      "line_end": 385.58,
+      "speaker": "SPEAKER_02",
+      "text": "Ah, he might just as well be. The only man on the paper that can write, and he picks today to have a baby.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L099",
+      "line_start": 385.86,
+      "line_end": 387.48,
+      "speaker": "SPEAKER_03",
+      "text": "Well, he didn't do it on purpose, did he? I",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L100",
+      "line_start": 387.48,
+      "line_end": 393.94,
+      "speaker": "SPEAKER_02",
+      "text": "don't care whether he did or not. He's supposed to be covering the Earl Williams case. And where is he? Walking up and down in the hospital. Is there no sense of honor in this country? Well,",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L101",
+      "line_start": 394.0,
+      "line_end": 395.0,
+      "speaker": "SPEAKER_03",
+      "text": "haven't you got anybody else?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L102",
+      "line_start": 395.3,
+      "line_end": 407.08,
+      "speaker": "SPEAKER_02",
+      "text": "No. No, there's nobody else on the paper that can write. This'll break me. Unless... He'll be. I'm busy. Now, look how he... Oh, please,",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L103",
+      "line_start": 407.22,
+      "line_end": 407.84,
+      "speaker": "SPEAKER_03",
+      "text": "save your breath. Look, darling,",
+      "ask_onset": true
+    },
+    {
+      "line_id": "film_his_girl_friday-L104",
+      "line_start": 407.98,
+      "line_end": 410.1,
+      "speaker": "SPEAKER_02",
+      "text": "this'll bring us back together again. Just the way we used to be. That's just what",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L105",
+      "line_start": 410.1,
+      "line_end": 411.68,
+      "speaker": "SPEAKER_03",
+      "text": "I'm afraid of any time, any place, anywhere.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L106",
+      "line_start": 411.86,
+      "line_end": 415.44,
+      "speaker": "SPEAKER_02",
+      "text": "Don't mock me. This is bigger than anything that ever happened to us. Don't do it for me. Do it for the paper. It's grants,",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L107",
+      "line_start": 415.6,
+      "line_end": 416.12,
+      "speaker": "SPEAKER_03",
+      "text": "then, golly.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_his_girl_friday-L108",
+      "line_start": 416.22,
+      "line_end": 419.94,
+      "speaker": "SPEAKER_02",
+      "text": "If you won't do it for love, how about money? Forget the other offer. I'll raise you $20 ,000.",
+      "ask_onset": false
+    }
+  ]
+}

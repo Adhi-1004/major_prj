@@ -78,6 +78,7 @@ const REASON_LABEL: Record<string, string> = {
   max_speakers_reached: "Too many faces in frame",
   speaker_mismatch: "A different person was speaking",
   no_face_detected: "No face detected",
+  spoken_before_onset: "Speaker seen only before the line began",
 };
 
 export function reasonLabel(reason: string): string {

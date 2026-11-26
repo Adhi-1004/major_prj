@@ -1,0 +1,611 @@
+{
+  "clip_id": "film_charade",
+  "title": "Charade (1963)",
+  "genre": "film",
+  "fps": 23.98,
+  "frame_count": 10073,
+  "duration": 420.058382,
+  "video_file": "film_charade.mp4",
+  "lines": [
+    {
+      "line_id": "film_charade-L000",
+      "line_start": 0.0,
+      "line_end": 9.4,
+      "speaker": "SPEAKER_02",
+      "text": "Can't he do something constructive, like start an avalanche or something? Va jouer, mon ch\u00e9ri. When you start to it like this, something is the matter.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L001",
+      "line_start": 12.78,
+      "line_end": 27.14,
+      "speaker": "SPEAKER_03",
+      "text": "Sylvie, I'm getting a divorce. What? From Charles? He's the only husband I have. I've tried to make it work, really, I have, but... But what? Oh, I can't explain. It's just that I'm too miserable to go on any longer like this.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L002",
+      "line_start": 29.66,
+      "line_end": 39.08,
+      "speaker": "SPEAKER_02",
+      "text": "It is infuriating that your unhappiness does not turn to fat. I don't understand. Why do you want a divorce?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L003",
+      "line_start": 39.96,
+      "line_end": 42.46,
+      "speaker": "SPEAKER_03",
+      "text": "Because I don't love him, and he obviously doesn't love me.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L004",
+      "line_start": 43.0,
+      "line_end": 48.14,
+      "speaker": "SPEAKER_02",
+      "text": "That's no reason to get a divorce. With a rich husband and this year's close, you",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L005",
+      "line_start": 48.14,
+      "line_end": 53.2,
+      "speaker": "SPEAKER_03",
+      "text": "won't find it difficult to make some new friends. Look, I admit I came to Paris to escape American provincial,",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L006",
+      "line_start": 53.42,
+      "line_end": 55.18,
+      "speaker": "SPEAKER_02",
+      "text": "but that doesn't mean I'm ready for French traditional.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L007",
+      "line_start": 56.34,
+      "line_end": 74.96,
+      "speaker": "SPEAKER_03",
+      "text": "I loathe the whole idea of divorce, Sylvie. But if only Charles had been honest with me. That's all I ask of anybody, the simple truth. Both. But with Charles, everything is secrecy and lies. He's hiding something from me, Sylvie. Something terrible. And it frightens me.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L008",
+      "line_start": 75.48,
+      "line_end": 76.58,
+      "speaker": "SPEAKER_01",
+      "text": "Does he belong to you?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L009",
+      "line_start": 78.26,
+      "line_end": 80.58,
+      "speaker": "SPEAKER_03",
+      "text": "Well, it's hers. Where'd you find him? Robbing a bank?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L010",
+      "line_start": 80.84,
+      "line_end": 82.52,
+      "speaker": "SPEAKER_01",
+      "text": "He was throwing snowballs at Baron Rothschild.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L011",
+      "line_start": 82.9,
+      "line_end": 83.16,
+      "speaker": null,
+      "text": "Oh,",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L012",
+      "line_start": 83.26,
+      "line_end": 83.96,
+      "speaker": "SPEAKER_03",
+      "text": "thank you.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L013",
+      "line_start": 84.68,
+      "line_end": 85.68,
+      "speaker": "SPEAKER_01",
+      "text": "Do we know each other?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L014",
+      "line_start": 86.16,
+      "line_end": 87.46,
+      "speaker": "SPEAKER_03",
+      "text": "Why, do you think we're going to?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L015",
+      "line_start": 87.98,
+      "line_end": 89.26,
+      "speaker": "SPEAKER_01",
+      "text": "I don't know. How would I know?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L016",
+      "line_start": 89.6,
+      "line_end": 94.44,
+      "speaker": "SPEAKER_03",
+      "text": "Because I already know an awful lot of people. and until one of them dies, I couldn't possibly meet anyone else.",
+      "ask_onset": true
+    },
+    {
+      "line_id": "film_charade-L017",
+      "line_start": 94.82,
+      "line_end": 98.16,
+      "speaker": "SPEAKER_01",
+      "text": "Well, if anyone goes on the critical list, let me know.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L018",
+      "line_start": 99.08,
+      "line_end": 102.02,
+      "speaker": "SPEAKER_03",
+      "text": "Quitter. You give up awfully",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L019",
+      "line_start": 102.02,
+      "line_end": 107.54,
+      "speaker": "SPEAKER_02",
+      "text": "easily, don't you? Bien, Jean -Louis, let us make a walk. I've never seen a Rothschild before.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L020",
+      "line_start": 115.53,
+      "line_end": 119.01,
+      "speaker": "SPEAKER_01",
+      "text": "Clever fellow. Almost missed me. Thank you.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L021",
+      "line_start": 120.59,
+      "line_end": 121.83,
+      "speaker": "SPEAKER_03",
+      "text": "You're blocking my view.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L022",
+      "line_start": 122.27,
+      "line_end": 125.39,
+      "speaker": "SPEAKER_01",
+      "text": "Oh, which view would you prefer?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L023",
+      "line_start": 125.67,
+      "line_end": 130.85,
+      "speaker": "SPEAKER_03",
+      "text": "The one you're blocking. It's my last chance. I'm flying back to Paris this afternoon. What's your name?",
+      "ask_onset": true
+    },
+    {
+      "line_id": "film_charade-L024",
+      "line_start": 131.37,
+      "line_end": 131.99,
+      "speaker": "SPEAKER_01",
+      "text": "Peter Joshua.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L025",
+      "line_start": 132.49,
+      "line_end": 133.89,
+      "speaker": "SPEAKER_03",
+      "text": "Oh, mine's Regina Lampert.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L026",
+      "line_start": 134.57,
+      "line_end": 135.73,
+      "speaker": "SPEAKER_01",
+      "text": "Is there a Mr. Lampert?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L027",
+      "line_start": 135.83,
+      "line_end": 135.99,
+      "speaker": "SPEAKER_03",
+      "text": "Yes.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L028",
+      "line_start": 136.17,
+      "line_end": 136.69,
+      "speaker": "SPEAKER_01",
+      "text": "Good for you.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L029",
+      "line_start": 136.85,
+      "line_end": 138.13,
+      "speaker": "SPEAKER_03",
+      "text": "No, it isn't. I'm getting a divorce.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L030",
+      "line_start": 138.43,
+      "line_end": 139.65,
+      "speaker": "SPEAKER_01",
+      "text": "Please, not on my account.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L031",
+      "line_start": 139.91,
+      "line_end": 141.55,
+      "speaker": "SPEAKER_03",
+      "text": "Oh, no. You see, I don't really love him.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L032",
+      "line_start": 141.75,
+      "line_end": 142.67,
+      "speaker": "SPEAKER_01",
+      "text": "Well, at least you're honest.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L033",
+      "line_start": 143.27,
+      "line_end": 144.63,
+      "speaker": "SPEAKER_03",
+      "text": "Is there a Mrs. Joshua?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L034",
+      "line_start": 145.71,
+      "line_end": 147.05,
+      "speaker": "SPEAKER_01",
+      "text": "Yes, but we're divorced.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L035",
+      "line_start": 147.63,
+      "line_end": 149.51,
+      "speaker": "SPEAKER_03",
+      "text": "Oh, that wasn't a proposal. I'm just curious.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L036",
+      "line_start": 150.67,
+      "line_end": 151.83,
+      "speaker": "SPEAKER_01",
+      "text": "Is your husband with you?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L037",
+      "line_start": 152.09,
+      "line_end": 154.69,
+      "speaker": "SPEAKER_03",
+      "text": "Oh, no. Charles is never with me. What do people call you? Pete?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L038",
+      "line_start": 155.71,
+      "line_end": 158.91,
+      "speaker": "SPEAKER_01",
+      "text": "Mr. Joshua. I've enjoyed talking with you.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L039",
+      "line_start": 159.19,
+      "line_end": 160.37,
+      "speaker": "SPEAKER_03",
+      "text": "Oh, now you're angry.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L040",
+      "line_start": 160.67,
+      "line_end": 164.13,
+      "speaker": "SPEAKER_01",
+      "text": "No, no, I'm not angry. I just have a lot of packing to do. I'm going back to Paris too.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L041",
+      "line_start": 164.39,
+      "line_end": 169.03,
+      "speaker": "SPEAKER_03",
+      "text": "Well, wasn't it Shakespeare who said when strangers do meet and fire off lands, they should ere long see each other again?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L042",
+      "line_start": 169.85,
+      "line_end": 174.35,
+      "speaker": "SPEAKER_01",
+      "text": "Shakespeare never said that. How do you know? It's terrible. You just made it up.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L043",
+      "line_start": 174.53,
+      "line_end": 174.77,
+      "speaker": null,
+      "text": "Well,",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L044",
+      "line_start": 174.83,
+      "line_end": 176.25,
+      "speaker": "SPEAKER_03",
+      "text": "it sounds right. You going to call me?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L045",
+      "line_start": 176.55,
+      "line_end": 177.17,
+      "speaker": "SPEAKER_01",
+      "text": "Are you in the book?",
+      "ask_onset": true
+    },
+    {
+      "line_id": "film_charade-L046",
+      "line_start": 177.53,
+      "line_end": 178.39,
+      "speaker": "SPEAKER_03",
+      "text": "Well, Charles is.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L047",
+      "line_start": 178.77,
+      "line_end": 180.47,
+      "speaker": "SPEAKER_01",
+      "text": "Is there only one Charles Lampert? hmm",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L048",
+      "line_start": 180.47,
+      "line_end": 182.53,
+      "speaker": "SPEAKER_03",
+      "text": "lord",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L049",
+      "line_start": 182.53,
+      "line_end": 185.05,
+      "speaker": "SPEAKER_01",
+      "text": "i hope so goodbye",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L050",
+      "line_start": 197.98,
+      "line_end": 210.98,
+      "speaker": "SPEAKER_03",
+      "text": "sylvie and thanks when you get your divorce are you going back to america well don't you want me to stay yes of course but if you went back and wrote me a letter you could have the stamps i'll get you some here okay okay goodbye",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L051",
+      "line_start": 291.7,
+      "line_end": 298.56,
+      "speaker": "SPEAKER_00",
+      "text": "i'm inspector edward grandpierre of the police judiciaire would you be so kind as to come with positive",
+      "ask_onset": true
+    },
+    {
+      "line_id": "film_charade-L052",
+      "line_start": 326.44,
+      "line_end": 353.18,
+      "speaker": "SPEAKER_00",
+      "text": "you loved him we discovered your husband's body lying next to the tracks of the paris bordeaux railroad line he",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L053",
+      "line_start": 354.78,
+      "line_end": 361.8,
+      "speaker": "SPEAKER_00",
+      "text": "was dressed only in his pajamas do you know of any reason why he might have wanted to leave france leave",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L054",
+      "line_start": 361.8,
+      "line_end": 364.72,
+      "speaker": "SPEAKER_03",
+      "text": "no your",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L055",
+      "line_start": 364.72,
+      "line_end": 372.56,
+      "speaker": "SPEAKER_00",
+      "text": "husband possessed a ticket of passage on the maranguape it sailed for venezuela this morning at seven i'm",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L056",
+      "line_start": 372.56,
+      "line_end": 374.72,
+      "speaker": "SPEAKER_03",
+      "text": "very confused he",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L057",
+      "line_start": 374.72,
+      "line_end": 376.46,
+      "speaker": "SPEAKER_00",
+      "text": "was american Your husband Swiss",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L058",
+      "line_start": 376.46,
+      "line_end": 377.38,
+      "speaker": "SPEAKER_03",
+      "text": "a",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L059",
+      "line_start": 377.38,
+      "line_end": 379.36,
+      "speaker": "SPEAKER_00",
+      "text": "Swiss his profession.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L060",
+      "line_start": 379.86,
+      "line_end": 381.82,
+      "speaker": "SPEAKER_03",
+      "text": "He didn't have one He",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L061",
+      "line_start": 381.82,
+      "line_end": 382.78,
+      "speaker": "SPEAKER_00",
+      "text": "was a wealthy man.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L062",
+      "line_start": 383.02,
+      "line_end": 385.34,
+      "speaker": "SPEAKER_03",
+      "text": "I suppose so. I don't know about",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L063",
+      "line_start": 385.34,
+      "line_end": 386.52,
+      "speaker": "SPEAKER_00",
+      "text": "how wealthy would you say?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L064",
+      "line_start": 386.68,
+      "line_end": 387.58,
+      "speaker": "SPEAKER_03",
+      "text": "I don't know",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L065",
+      "line_start": 388.22,
+      "line_end": 389.64,
+      "speaker": "SPEAKER_00",
+      "text": "Where did he keep his money?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L066",
+      "line_start": 390.48,
+      "line_end": 391.52,
+      "speaker": "SPEAKER_03",
+      "text": "I? Don't know",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L067",
+      "line_start": 392.54,
+      "line_end": 394.82,
+      "speaker": "SPEAKER_00",
+      "text": "Beside yourself who is his nearest relative?",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L068",
+      "line_start": 395.9,
+      "line_end": 396.9,
+      "speaker": "SPEAKER_03",
+      "text": "I? Don't know",
+      "ask_onset": true
+    },
+    {
+      "line_id": "film_charade-L069",
+      "line_start": 397.76,
+      "line_end": 399.98,
+      "speaker": "SPEAKER_00",
+      "text": "That's absurd madam. Don't tell not absurd.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L070",
+      "line_start": 400.7,
+      "line_end": 402.92,
+      "speaker": "SPEAKER_03",
+      "text": "I know I'm sorry.",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L071",
+      "line_start": 403.12,
+      "line_end": 403.98,
+      "speaker": "SPEAKER_00",
+      "text": "It is all right",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L072",
+      "line_start": 405.02,
+      "line_end": 406.36,
+      "speaker": "SPEAKER_03",
+      "text": "I wish you wouldn't.",
+      "ask_onset": true
+    },
+    {
+      "line_id": "film_charade-L073",
+      "line_start": 406.5,
+      "line_end": 407.02,
+      "speaker": null,
+      "text": "Les",
+      "ask_onset": false
+    },
+    {
+      "line_id": "film_charade-L074",
+      "line_start": 411.98,
+      "line_end": 419.66,
+      "speaker": "SPEAKER_00",
+      "text": "effets de l 'enfer. On Wednesday last, your husband sold the entire contents of the apartment at public auction.",
+      "ask_onset": false
+    }
+  ]
+}

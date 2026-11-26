@@ -116,6 +116,34 @@ def build_router() -> APIRouter:
             )
         return JSONResponse(status_code=200, content=job.to_dict())
 
+    @router.get(
+        "/jobs/{job_id}/video",
+        summary="Play back a finished sweep's video",
+        tags=["extraction"],
+        response_class=FileResponse,
+    )
+    def get_job_video(job_id: str, request: Request) -> FileResponse:
+        """The normalized video a discovery sweep ran on.
+
+        Served for the "check it yourself" demo, which plays each line back so
+        a viewer can judge it before seeing the system's verdict. The path is
+        the one the job recorded -- never built from the request -- so this
+        cannot be steered at another file. Range requests are supported, which
+        is what lets the browser seek.
+        """
+        job = _store(request).get(job_id)
+        if job is None or job.video_path is None or not job.video_path.is_file():
+            raise HTTPException(
+                status_code=404,
+                detail={
+                    "status": Status.ERROR.value,
+                    "stage": "api",
+                    "reason": "no_video",
+                    "detail": f"No playable video for job {job_id!r}.",
+                },
+            )
+        return FileResponse(job.video_path, media_type="video/mp4")
+
     @router.get("/jobs", summary="List jobs", tags=["extraction"])
     def list_jobs(request: Request) -> JSONResponse:
         jobs = _store(request).list()
@@ -126,7 +154,7 @@ def build_router() -> APIRouter:
                     {
                         k: v
                         for k, v in job.to_dict().items()
-                        if k not in {"result", "diagnostics"}
+                        if k not in {"result", "diagnostics", "lines", "partial"}
                     }
                     for job in jobs
                 ],

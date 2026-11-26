@@ -80,7 +80,12 @@ export default function App() {
         ) : null}
 
         {state.phase === "done" && state.view?.kind === "discovery" ? (
-          <DiscoveryResult view={state.view} onReset={reset} />
+          <DiscoveryResult
+            view={state.view}
+            onReset={reset}
+            lines={state.snapshot?.lines}
+            videoUrl={state.snapshot?.video}
+          />
         ) : null}
 
         {state.phase === "failed" ? (

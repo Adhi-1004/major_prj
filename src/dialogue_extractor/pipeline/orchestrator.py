@@ -74,6 +74,10 @@ class PipelineRequest:
     window_pad_seconds: float = constants.WINDOW_PAD_SECONDS
     min_speaking_ms: float = constants.MIN_SPEAKING_MS
     detect_scene_cuts: bool = True
+    onset_constraint: bool = True
+    # The two below exist for ablation studies; normal use never changes them.
+    speaker_check: bool = True
+    min_clip_seconds: float = constants.ASD_MIN_CLIP_SECONDS
 
     @property
     def mode(self) -> Mode:
@@ -181,6 +185,10 @@ class Orchestrator:
         # the old always-fresh behaviour rather than a surprise.
         self._cache: Cache = cache or NullCache()
         self._media_fingerprint = media_fingerprint
+
+    @property
+    def output_dir(self) -> Path:
+        return self._output_dir
 
     @property
     def _frames_dir(self) -> Path:
@@ -324,7 +332,10 @@ class Orchestrator:
         tracker.enter(StageName.MATCHING, f"searching for {target!r}")
         matches = find_matches(words, target, score_floor=request.match_score_floor)
         candidates = candidates_from_matches(
-            matches, manifest.duration, pad=request.window_pad_seconds
+            matches,
+            manifest.duration,
+            pad=request.window_pad_seconds,
+            min_seconds=request.min_clip_seconds,
         )
         diagnostics["matches"] = len(matches)
         diagnostics["candidates"] = len(candidates)
@@ -344,8 +355,13 @@ class Orchestrator:
             output_dir=self._frames_dir,
             min_speaking_ms=request.min_speaking_ms,
             detect_scene_cuts=request.detect_scene_cuts,
+            onset_constraint=request.onset_constraint,
+            speaker_check=request.speaker_check,
         )
         diagnostics["candidates_verified"] = len(attempts)
+        diagnostics["verified_seconds"] = round(
+            sum(a.candidate.duration for a in attempts), 3
+        )
 
         payload = result.to_dict()
         payload["mode"] = Mode.TARGET.value
@@ -360,7 +376,9 @@ class Orchestrator:
         tracker: _StageTracker,
         diagnostics: dict[str, Any],
     ) -> dict[str, Any]:
-        candidates = candidates_from_segments(segments, manifest.duration)
+        candidates = candidates_from_segments(
+            segments, manifest.duration, min_seconds=request.min_clip_seconds
+        )
         diagnostics["candidates"] = len(candidates)
 
         tracker.enter(
@@ -382,6 +400,11 @@ class Orchestrator:
             min_speaking_ms=request.min_speaking_ms,
             detect_scene_cuts=request.detect_scene_cuts,
             on_candidate=tracker.on_candidate,
+            onset_constraint=request.onset_constraint,
+            speaker_check=request.speaker_check,
+        )
+        diagnostics["verified_seconds"] = round(
+            sum(c.duration for c in candidates[: result.candidates_processed]), 3
         )
 
         payload = result.to_dict()

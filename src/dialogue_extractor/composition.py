@@ -99,13 +99,16 @@ def build_transcriber(settings: Settings, cache: Cache) -> Transcriber:
     )
     from dialogue_extractor.audio.whisper_transcriber import WhisperTranscriber
 
-    inner = WhisperTranscriber(settings.whisper_model, device=settings.device)
+    language = settings.whisper_language()
+    inner = WhisperTranscriber(
+        settings.whisper_model, device=settings.device, language=language
+    )
     return CachedTranscriber(
         inner,
         cache,
         fingerprint=whisper_fingerprint(
             settings.whisper_model,
-            None,
+            language,
             constants.WHISPER_BEAM_SIZE,
             inner.compute_type,
         ),
@@ -127,8 +130,23 @@ def build_diarizer(settings: Settings, cache: Cache) -> Diarizer:
     )
 
 
-def build_asd(settings: Settings, provider_name: str | None = None) -> ASDProvider:
-    return get_provider(provider_name or settings.asd_provider, settings)
+def build_asd(
+    settings: Settings,
+    provider_name: str | None = None,
+    cache: Cache | None = None,
+) -> ASDProvider:
+    """The detection provider, behind a response cache unless caching is off.
+
+    A repeated request -- same clip bytes, same diarization -- is answered from
+    disk, which saves a metered network call and makes a repeated run
+    reproducible even if the remote service is not.
+    """
+    from dialogue_extractor.vision.providers.cached_asd import CachedASDProvider
+
+    provider = get_provider(provider_name or settings.asd_provider, settings)
+    if cache is None or isinstance(cache, NullCache):
+        return provider
+    return CachedASDProvider(provider, cache)
 
 
 def build_stages(
@@ -144,7 +162,7 @@ def build_stages(
         normalizer=FfmpegNormalizer(settings),
         transcriber=lambda: build_transcriber(settings, cache),
         diarizer=lambda: build_diarizer(settings, cache),
-        asd=lambda: build_asd(settings, provider_name),
+        asd=lambda: build_asd(settings, provider_name, cache),
         extractor=PyAVFrameExtractor(),
     )
 
